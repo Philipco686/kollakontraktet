@@ -9,17 +9,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Auktoritets-marinblå (förtroende)
         brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          900: '#0c4a6e',
+          50: '#f1f4fb',
+          100: '#dfe7f6',
+          200: '#c3d1ee',
+          300: '#97b0e0',
+          400: '#6588cf',
+          500: '#4264bc',
+          600: '#314da0',
+          700: '#1e3a8a',
+          800: '#1a316f',
+          900: '#172a5c',
+        },
+        // Förtroende-guld (accent / CTA)
+        accent: {
+          50: '#fdf6ec',
+          100: '#f9e6c8',
+          200: '#f2cd8d',
+          300: '#eab153',
+          400: '#e19a2c',
+          500: '#cf7d12',
+          600: '#b45309',
+          700: '#8f400b',
+          800: '#74340f',
+          900: '#602c10',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
       },
     },
   },

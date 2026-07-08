@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { extractText, getDocumentProxy } from 'unpdf'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,6 +9,15 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.json({ error: 'Ej autentiserad' }, { status: 401 })
+    }
+
+    // Spärr mot spam: max 30 PDF-uppladdningar per timme
+    const rate = await checkRateLimit(user.id, 'extract-pdf', 30, 60)
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'För många uppladdningar på kort tid. Vänta en stund och försök igen.' },
+        { status: 429 }
+      )
     }
 
     const formData = await request.formData()

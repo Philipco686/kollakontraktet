@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getAnalysisById } from '@/lib/supabase/queries'
 import { getResend, EMAIL_FROM, buildAnalysisEmailHtml } from '@/lib/email'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +10,15 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.json({ error: 'Ej autentiserad' }, { status: 401 })
+    }
+
+    // Spärr mot spam: max 10 mejl per timme
+    const rate = await checkRateLimit(user.id, 'email', 10, 60)
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'För många mejl på kort tid. Vänta en stund och försök igen.' },
+        { status: 429 }
+      )
     }
 
     const resend = getResend()

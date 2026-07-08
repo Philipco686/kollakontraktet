@@ -8,6 +8,7 @@ import {
   getFreeAnalysesUsed,
   incrementFreeAnalysesUsed,
 } from '@/lib/supabase/queries'
+import { checkRateLimit } from '@/lib/rate-limit'
 import type { AnalysisResult } from '@/types'
 
 const anthropic = new Anthropic({
@@ -30,6 +31,16 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       return NextResponse.json({ error: 'Ej autentiserad' }, { status: 401 })
+    }
+
+    // Spärr mot spam: max 20 analyser per timme oavsett paket
+    // (skyddar mot att ett kapat/obegränsat konto bränner AI-kostnader)
+    const rate = await checkRateLimit(user.id, 'analyze', 20, 60)
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'För många analyser på kort tid. Vänta en stund och försök igen.' },
+        { status: 429 }
+      )
     }
 
     const { contractText, title } = await request.json()

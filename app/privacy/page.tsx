@@ -22,9 +22,9 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900 mb-2">1. Personuppgiftsansvarig</h2>
             <p>
-              Kolla Kontraktet (”vi”, ”oss”) tillhandahålls av [DITT FÖRETAG / NAMN], org.nr [ORG.NR],
-              [ADRESS]. Vid frågor om hur vi behandlar dina personuppgifter, kontakta oss på
-              [din@epost.se].
+              Kolla Kontraktet (”vi”, ”oss”) drivs som en enskild tjänst av Philip Eriksson
+              (privatperson). Vid frågor om hur vi behandlar dina personuppgifter, kontakta oss på{' '}
+              <a href="mailto:kontakt@kollakontraktet.se" className="text-brand-600 hover:underline">kontakt@kollakontraktet.se</a>.
             </p>
           </section>
 
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
               <li>invända mot eller begränsa behandlingen.</li>
             </ul>
             <p className="mt-2">
-              Kontakta oss på [din@epost.se] för att utöva dina rättigheter. Du har även rätt att lämna
+              Kontakta oss på kontakt@kollakontraktet.se för att utöva dina rättigheter. Du har även rätt att lämna
               klagomål till Integritetsskyddsmyndigheten (IMY).
             </p>
           </section>

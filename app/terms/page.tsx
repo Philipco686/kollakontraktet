@@ -62,7 +62,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-slate-900 mb-2">5. Ångerrätt och återbetalning</h2>
             <p>
               Eftersom tjänsten är en digital tjänst som levereras omedelbart samtycker du till att
-              leveransen påbörjas direkt. Kontakta oss på [din@epost.se] vid frågor om återbetalning, så
+              leveransen påbörjas direkt. Kontakta oss på kontakt@kollakontraktet.se vid frågor om återbetalning, så
               hittar vi en rimlig lösning.
             </p>
           </section>

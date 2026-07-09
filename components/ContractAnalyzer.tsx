@@ -154,7 +154,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
   const riskColor = { low: 'bg-green-100 text-green-800 border-green-200', medium: 'bg-yellow-100 text-yellow-800 border-yellow-200', high: 'bg-red-100 text-red-800 border-red-200' }[r.risk_level]
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 animate-fade-up">
 
       {/* Åtgärder – döljs vid utskrift */}
       {!locked && (
@@ -403,7 +403,7 @@ function ClauseCard({ clause, expanded, onToggle }: { clause: Clause; expanded: 
   const borderColor = { low: 'border-l-green-400', medium: 'border-l-yellow-400', high: 'border-l-red-400' }[clause.risk_level]
 
   return (
-    <div className={`card border-l-4 ${borderColor}`}>
+    <div className={`card border-l-4 hover-lift ${borderColor}`}>
       <button onClick={onToggle} className="w-full flex items-center justify-between text-left gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <span>{riskEmoji}</span>

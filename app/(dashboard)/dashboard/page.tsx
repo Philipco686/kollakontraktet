@@ -17,13 +17,13 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="reveal">
         <h1 className="text-2xl font-bold text-slate-900">Välkommen tillbaka</h1>
         <p className="text-slate-500 mt-1">Vad vill du analysera idag?</p>
       </div>
 
       {/* Kvot-widget */}
-      <div className="card">
+      <div className="reveal card">
         {subscription ? (
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -61,7 +61,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Link
           href="/analyze"
-          className="card hover:shadow-md transition-shadow group flex items-center gap-4"
+          className="reveal reveal-d1 hover-lift card group flex items-center gap-4"
         >
           <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-brand-200 transition-colors">
             📄
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
 
         <Link
           href="/history"
-          className="card hover:shadow-md transition-shadow group flex items-center gap-4"
+          className="reveal reveal-d2 hover-lift card group flex items-center gap-4"
         >
           <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-slate-200 transition-colors">
             🕐
@@ -88,14 +88,14 @@ export default async function DashboardPage() {
 
       {/* Senaste analyser */}
       {recentAnalyses && recentAnalyses.length > 0 && (
-        <div>
+        <div className="reveal">
           <h2 className="text-lg font-semibold text-slate-900 mb-3">Senaste analyser</h2>
           <div className="space-y-3">
             {recentAnalyses.map(a => (
               <Link
                 key={a.id}
                 href="/history"
-                className="card hover:shadow-md transition-shadow flex items-center justify-between"
+                className="hover-lift card flex items-center justify-between"
               >
                 <div>
                   <h3 className="font-medium text-slate-900">{a.title}</h3>

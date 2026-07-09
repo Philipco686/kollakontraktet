@@ -136,7 +136,7 @@ export default function AnalysisHistory({ analyses }: Props) {
           <button
             key={a.id}
             onClick={() => setSelected(a)}
-            className="card w-full text-left hover:shadow-md transition-shadow flex items-center justify-between"
+            className="hover-lift card w-full text-left flex items-center justify-between"
           >
             <div>
               <h3 className="font-medium text-slate-900">{a.title}</h3>

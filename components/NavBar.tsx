@@ -19,6 +19,7 @@ export default function NavBar({ user }: { user: User }) {
     { href: '/dashboard', label: 'Översikt' },
     { href: '/analyze', label: 'Analysera' },
     { href: '/history', label: 'Historik' },
+    { href: '/team', label: 'Team' },
   ]
 
   return (

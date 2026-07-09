@@ -43,6 +43,64 @@ export async function getActiveSubscription(_supabase: Client, userId: string): 
   return data
 }
 
+// Max antal användare på ett Företag-team (inklusive ägaren)
+export const MAX_TEAM_TOTAL = 5
+
+// Användarens "effektiva" prenumeration: egen om den finns, annars via ett
+// Företag-team hen är medlem i (delad prenumeration).
+export async function getEffectiveSubscription(
+  supabase: Client,
+  userId: string,
+  email: string | null | undefined
+): Promise<Subscription | null> {
+  const own = await getActiveSubscription(supabase, userId)
+  if (own) return own
+  if (!email) return null
+
+  const admin = adminClient()
+  const { data: membership } = await admin
+    .from('team_members')
+    .select('owner_id')
+    .eq('email', email.toLowerCase())
+    .limit(1)
+    .maybeSingle()
+
+  if (!membership) return null
+
+  const { data: ownerSub } = await admin
+    .from('subscriptions')
+    .select('*')
+    .eq('user_id', membership.owner_id)
+    .eq('status', 'active')
+    .eq('plan', 'business')
+    .maybeSingle()
+
+  return ownerSub ?? null
+}
+
+export async function listTeamMembers(_supabase: Client, ownerId: string): Promise<{ email: string; created_at: string }[]> {
+  const { data } = await adminClient()
+    .from('team_members')
+    .select('email, created_at')
+    .eq('owner_id', ownerId)
+    .order('created_at', { ascending: true })
+  return data ?? []
+}
+
+export async function addTeamMember(_supabase: Client, ownerId: string, email: string) {
+  return adminClient()
+    .from('team_members')
+    .insert({ owner_id: ownerId, email: email.toLowerCase() })
+}
+
+export async function removeTeamMember(_supabase: Client, ownerId: string, email: string) {
+  return adminClient()
+    .from('team_members')
+    .delete()
+    .eq('owner_id', ownerId)
+    .eq('email', email.toLowerCase())
+}
+
 export async function getSubscriptionCustomer(_supabase: Client, userId: string): Promise<{ stripe_customer_id: string } | null> {
   const { data } = await adminClient()
     .from('subscriptions')

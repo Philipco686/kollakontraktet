@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { getActiveSubscription, getRecentAnalyses } from '@/lib/supabase/queries'
+import { getEffectiveSubscription, getRecentAnalyses } from '@/lib/supabase/queries'
 import Link from 'next/link'
 import { PLANS } from '@/lib/stripe'
 
@@ -7,7 +7,7 @@ export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const subscription = await getActiveSubscription(supabase, user!.id)
+  const subscription = await getEffectiveSubscription(supabase, user!.id, user!.email)
   const recentAnalyses = await getRecentAnalyses(supabase, user!.id)
 
   const plan = subscription?.plan ? PLANS[subscription.plan] : null

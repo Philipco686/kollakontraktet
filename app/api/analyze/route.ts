@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import {
-  getActiveSubscription,
+  getEffectiveSubscription,
   insertAnalysis,
   incrementAnalysisCount,
   getFreeAnalysesUsed,
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     // Avgör om användaren har kvot kvar i sitt paket, annars kör vi en
     // gratis teaser (sammanfattning gratis, resten låst bakom betalning).
-    const subscription = await getActiveSubscription(supabase, user.id)
+    const subscription = await getEffectiveSubscription(supabase, user.id, user.email)
     const limit = subscription?.plan ? MONTHLY_LIMIT[subscription.plan] ?? 0 : 0
     const hasQuota = !!subscription && subscription.analyses_used_this_month < limit
 

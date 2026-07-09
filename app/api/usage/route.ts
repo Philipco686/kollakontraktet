@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { getActiveSubscription } from '@/lib/supabase/queries'
+import { getEffectiveSubscription } from '@/lib/supabase/queries'
 
 export async function GET() {
   const supabase = await createClient()
@@ -10,7 +10,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Ej autentiserad' }, { status: 401 })
   }
 
-  const subscription = await getActiveSubscription(supabase, user.id)
+  const subscription = await getEffectiveSubscription(supabase, user.id, user.email)
 
   return NextResponse.json({ subscription })
 }

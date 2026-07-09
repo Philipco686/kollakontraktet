@@ -71,6 +71,9 @@ export default function AnalysisHistory({ analyses }: Props) {
                   Lås upp för att se alla klausuler, fällor, din ekonomiska risk och
                   förhandlingstips för det här avtalet.
                 </p>
+                <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-5 max-w-md mx-auto text-sm text-accent-800">
+                  🎁 <strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> ger dig en till analys att använda direkt.
+                </div>
                 <Link href="/pricing" className="btn-primary inline-block">
                   Lås upp hela analysen →
                 </Link>

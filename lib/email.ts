@@ -76,3 +76,27 @@ export function buildAnalysisEmailHtml(analysis: Analysis, siteUrl: string): str
     </div>
   </body></html>`
 }
+
+export function buildTeamInviteEmailHtml(inviterEmail: string, siteUrl: string): string {
+  return `<!doctype html>
+  <html lang="sv"><body style="margin:0;background:#f8fafc;font-family:-apple-system,Segoe UI,Roboto,sans-serif">
+    <div style="max-width:600px;margin:0 auto;padding:24px">
+      <p style="color:#1e3a8a;font-weight:700;font-size:18px;margin:0 0 16px">Kolla Kontraktet</p>
+      <div style="background:#fff;border-radius:16px;padding:28px;border:1px solid #e2e8f0;text-align:center">
+        <div style="font-size:32px">👥</div>
+        <h1 style="font-size:20px;color:#0f172a;margin:12px 0 8px">Du är inbjuden till ett team!</h1>
+        <p style="color:#334155;font-size:14px;line-height:1.6;margin:0 0 20px">
+          <strong>${inviterEmail}</strong> har lagt till dig i sitt Företag-team på Kolla Kontraktet.
+          Logga in med <strong>den här mejladressen</strong> så får du obegränsade avtalsanalyser –
+          utan att betala något själv.
+        </p>
+        <a href="${siteUrl}/login" style="background:#b45309;color:#fff;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:600;font-size:14px;display:inline-block">
+          Logga in och kom igång
+        </a>
+      </div>
+      <p style="color:#94a3b8;font-size:12px;text-align:center;margin-top:16px">
+        Fick du detta av misstag? Då kan du ignorera mejlet.
+      </p>
+    </div>
+  </body></html>`
+}

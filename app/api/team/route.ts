@@ -7,6 +7,7 @@ import {
   removeTeamMember,
   MAX_TEAM_TOTAL,
 } from '@/lib/supabase/queries'
+import { getResend, EMAIL_FROM, buildTeamInviteEmailHtml } from '@/lib/email'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -57,6 +58,22 @@ export async function POST(request: NextRequest) {
   const { error } = await addTeamMember(ctx.supabase, ctx.user.id, clean)
   if (error) {
     return NextResponse.json({ error: 'Kunde inte lägga till medlemmen' }, { status: 500 })
+  }
+
+  // Skicka inbjudningsmejl (om e-post är konfigurerat via RESEND_API_KEY)
+  const resend = getResend()
+  if (resend) {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.kollakontraktet.se'
+    try {
+      await resend.emails.send({
+        from: EMAIL_FROM,
+        to: clean,
+        subject: 'Du har bjudits in till ett team på Kolla Kontraktet',
+        html: buildTeamInviteEmailHtml(ctx.user.email ?? '', siteUrl),
+      })
+    } catch (err) {
+      console.error('Kunde inte skicka teaminbjudan:', err)
+    }
   }
 
   const updated = await listTeamMembers(ctx.supabase, ctx.user.id)

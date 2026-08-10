@@ -136,6 +136,26 @@ export async function getRecentAnalyses(_supabase: Client, userId: string, limit
   return data
 }
 
+export const PURGED_TEXT = '[Avtalstexten raderades automatiskt efter 90 dagar]'
+
+// Låter en användare radera sin egen analys
+export async function deleteAnalysis(_supabase: Client, userId: string, analysisId: string) {
+  return adminClient()
+    .from('analyses')
+    .delete()
+    .eq('id', analysisId)
+    .eq('user_id', userId)
+}
+
+// Gallrar bort själva avtalstexten (behåller analysresultatet) för gamla analyser
+export async function purgeOldContractText(_supabase: Client, cutoffIso: string) {
+  return adminClient()
+    .from('analyses')
+    .update({ original_text: PURGED_TEXT })
+    .lt('created_at', cutoffIso)
+    .neq('original_text', PURGED_TEXT)
+}
+
 export async function getAnalysisById(_supabase: Client, userId: string, analysisId: string): Promise<Analysis | null> {
   const { data } = await adminClient()
     .from('analyses')

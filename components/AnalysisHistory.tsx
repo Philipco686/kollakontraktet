@@ -11,9 +11,29 @@ interface Props {
 }
 
 export default function AnalysisHistory({ analyses }: Props) {
+  const [items, setItems] = useState<HistoryItem[]>(analyses)
   const [selected, setSelected] = useState<HistoryItem | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
-  if (analyses.length === 0) {
+  async function handleDelete(id: string) {
+    if (!confirm('Radera den här analysen permanent? Det går inte att ångra.')) return
+    setDeleting(true)
+    try {
+      const res = await fetch('/api/analyses', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      if (res.ok) {
+        setItems(prev => prev.filter(a => a.id !== id))
+        setSelected(null)
+      }
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  if (items.length === 0) {
     return (
       <div className="card text-center py-12">
         <p className="text-4xl mb-3">📋</p>
@@ -30,12 +50,21 @@ export default function AnalysisHistory({ analyses }: Props) {
     const result = selected.result as AnalysisResult
     return (
       <div className="space-y-4">
-        <button
-          onClick={() => setSelected(null)}
-          className="flex items-center gap-2 text-slate-500 hover:text-slate-700 text-sm"
-        >
-          ← Tillbaka till historik
-        </button>
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setSelected(null)}
+            className="flex items-center gap-2 text-slate-500 hover:text-slate-700 text-sm"
+          >
+            ← Tillbaka till historik
+          </button>
+          <button
+            onClick={() => handleDelete(selected.id)}
+            disabled={deleting}
+            className="text-sm text-slate-400 hover:text-red-600 transition-colors disabled:opacity-50"
+          >
+            {deleting ? 'Raderar...' : 'Ta bort analys'}
+          </button>
+        </div>
 
         <div className="card">
           <h2 className="text-xl font-bold text-slate-900 mb-1">{selected.title}</h2>
@@ -130,7 +159,7 @@ export default function AnalysisHistory({ analyses }: Props) {
 
   return (
     <div className="space-y-3">
-      {analyses.map(a => {
+      {items.map(a => {
         const result = a.result as AnalysisResult
         return (
           <button

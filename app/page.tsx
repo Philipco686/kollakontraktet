@@ -175,7 +175,8 @@ export default function LandingPage() {
       <footer className="border-t border-slate-100 py-8">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400">
           <span className="font-display font-medium text-slate-500">© 2025 Kolla Kontraktet</span>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
+            <Link href="/avtal" className="hover:text-slate-600">Avtalsguider</Link>
             <Link href="/pricing" className="hover:text-slate-600">Priser</Link>
             <Link href="/privacy" className="hover:text-slate-600">Integritetspolicy</Link>
             <Link href="/terms" className="hover:text-slate-600">Villkor</Link>

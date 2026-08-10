@@ -428,6 +428,25 @@ function ClauseCard({ clause, expanded, onToggle }: { clause: Clause; expanded: 
 }
 
 function PaywallCard() {
+  const [loading, setLoading] = useState(false)
+
+  async function unlock() {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: 'onetime' }),
+      })
+      const data = await res.json()
+      if (data.url) { window.location.href = data.url; return }
+      if (data.error === 'Ej autentiserad') { window.location.href = '/login'; return }
+      setLoading(false)
+    } catch {
+      setLoading(false)
+    }
+  }
+
   const lockedPreview = [
     '🔍 Fullständig genomgång av alla klausuler',
     '🪤 Vanliga fällor i just detta avtal',
@@ -455,10 +474,13 @@ function PaywallCard() {
       <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-6 max-w-md mx-auto text-sm text-accent-800">
         🎁 <strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> lägger till en till analys att använda direkt.
       </div>
-      <Link href="/pricing" className="btn-primary inline-block">
-        Lås upp hela analysen →
-      </Link>
-      <p className="text-xs text-slate-400 mt-3">Från 49 kr · ingen bindningstid</p>
+      <button onClick={unlock} disabled={loading} className="btn-primary inline-block disabled:opacity-60">
+        {loading ? 'Öppnar betalning...' : 'Lås upp för 49 kr →'}
+      </button>
+      <p className="text-xs text-slate-400 mt-3">
+        Engångsköp · ingen bindningstid ·{' '}
+        <Link href="/pricing" className="underline hover:text-slate-600">se prenumerationer</Link>
+      </p>
     </div>
   )
 }

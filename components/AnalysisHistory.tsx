@@ -14,6 +14,28 @@ export default function AnalysisHistory({ analyses }: Props) {
   const [items, setItems] = useState<HistoryItem[]>(analyses)
   const [selected, setSelected] = useState<HistoryItem | null>(null)
   const [deleting, setDeleting] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [genError, setGenError] = useState('')
+
+  async function generateFull(id: string) {
+    setGenerating(true)
+    setGenError('')
+    try {
+      const res = await fetch('/api/analyze/full', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setGenError(data.error ?? 'Något gick fel'); return }
+      setSelected(prev => (prev ? { ...prev, result: data.result } : prev))
+      setItems(prev => prev.map(a => (a.id === id ? { ...a, result: data.result } : a)))
+    } catch {
+      setGenError('Nätverksfel – försök igen')
+    } finally {
+      setGenerating(false)
+    }
+  }
 
   async function handleDelete(id: string) {
     if (!confirm('Radera den här analysen permanent? Det går inte att ångra.')) return
@@ -108,7 +130,7 @@ export default function AnalysisHistory({ analyses }: Props) {
                 </Link>
                 <p className="text-xs text-slate-400 mt-3">Från 49 kr · ingen bindningstid</p>
               </div>
-            ) : (
+            ) : (result.clauses && result.clauses.length > 0) ? (
               <>
                 {result.recommendations && result.recommendations.length > 0 && (
                   <div>
@@ -145,6 +167,23 @@ export default function AnalysisHistory({ analyses }: Props) {
                   </div>
                 </div>
               </>
+            ) : (
+              <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
+                <div className="text-4xl mb-3">🔓</div>
+                <h3 className="text-lg font-bold text-slate-900 mb-1">Upplåst – generera hela analysen</h3>
+                <p className="text-slate-600 mb-5 max-w-md mx-auto">
+                  Din betalning är klar. Klicka för att skapa den fullständiga analysen med alla
+                  klausuler, fällor, ekonomisk risk och förhandlingstips.
+                </p>
+                <button
+                  onClick={() => generateFull(selected.id)}
+                  disabled={generating}
+                  className="btn-primary inline-block disabled:opacity-60"
+                >
+                  {generating ? 'Genererar... (kan ta 30–60 sek)' : 'Generera fullständig analys'}
+                </button>
+                {genError && <p className="text-sm text-red-600 mt-3">{genError}</p>}
+              </div>
             )}
 
             <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed">

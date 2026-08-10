@@ -156,6 +156,14 @@ export async function purgeOldContractText(_supabase: Client, cutoffIso: string)
     .neq('original_text', PURGED_TEXT)
 }
 
+export async function updateAnalysisResult(_supabase: Client, analysisId: string, userId: string, result: unknown) {
+  return adminClient()
+    .from('analyses')
+    .update({ result })
+    .eq('id', analysisId)
+    .eq('user_id', userId)
+}
+
 export async function getAnalysisById(_supabase: Client, userId: string, analysisId: string): Promise<Analysis | null> {
   const { data } = await adminClient()
     .from('analyses')

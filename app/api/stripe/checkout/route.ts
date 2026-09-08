@@ -48,6 +48,14 @@ export async function POST(request: NextRequest) {
       ],
       success_url: `${siteUrl}/dashboard?success=true&plan=${plan}`,
       cancel_url: `${siteUrl}/pricing?canceled=true`,
+      // Information om omedelbar leverans och bortfallen ångerrätt visas på
+      // betalsidan (det aktiva samtycket sker redan innan checkout öppnas).
+      custom_text: {
+        submit: {
+          message:
+            'Genom att slutföra köpet begär du att den digitala tjänsten levereras direkt och samtycker till att din ångerrätt upphör när tjänsten har utförts.',
+        },
+      },
       metadata: {
         user_id: user.id,
         plan,

@@ -3,11 +3,18 @@
 import { useState } from 'react'
 import { PLANS } from '@/lib/stripe'
 import Link from 'next/link'
+import WithdrawalConsent from '@/components/WithdrawalConsent'
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null)
+  const [consent, setConsent] = useState(false)
+  const [consentError, setConsentError] = useState(false)
 
   async function handleCheckout(plan: keyof typeof PLANS) {
+    if (!consent) {
+      setConsentError(true)
+      return
+    }
     setLoading(plan)
     try {
       const res = await fetch('/api/stripe/checkout', {
@@ -91,7 +98,20 @@ export default function PricingPage() {
           />
         </div>
 
-        <p className="text-center text-sm text-slate-400 mt-8">
+        <div className="max-w-md mx-auto mt-10">
+          <WithdrawalConsent
+            checked={consent}
+            onChange={v => { setConsent(v); if (v) setConsentError(false) }}
+            error={consentError}
+          />
+          {consentError && (
+            <p className="text-xs text-red-600 mt-2 text-center">
+              Bocka i rutan ovan för att fortsätta till betalning.
+            </p>
+          )}
+        </div>
+
+        <p className="text-center text-sm text-slate-400 mt-6">
           Betalning sker säkert via Stripe. Avbryt prenumeration när som helst.
         </p>
       </div>

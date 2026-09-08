@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { Analysis, AnalysisResult } from '@/types'
 import Link from 'next/link'
 import FollowUpChat from '@/components/FollowUpChat'
+import WithdrawalConsent from '@/components/WithdrawalConsent'
 
 type HistoryItem = Pick<Analysis, 'id' | 'title' | 'created_at' | 'result' | 'is_unlocked'>
 
@@ -18,8 +19,10 @@ export default function AnalysisHistory({ analyses }: Props) {
   const [generating, setGenerating] = useState(false)
   const [genError, setGenError] = useState('')
   const [unlocking, setUnlocking] = useState(false)
+  const [consent, setConsent] = useState(false)
 
   async function startUnlock() {
+    if (!consent) return
     setUnlocking(true)
     try {
       const res = await fetch('/api/stripe/checkout', {
@@ -144,7 +147,10 @@ export default function AnalysisHistory({ analyses }: Props) {
                 <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-5 max-w-md mx-auto text-sm text-accent-800">
                   🎁 <strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> ger dig en till analys att använda direkt.
                 </div>
-                <button onClick={startUnlock} disabled={unlocking} className="btn-primary inline-block disabled:opacity-60">
+                <div className="max-w-md mx-auto mb-4">
+                  <WithdrawalConsent checked={consent} onChange={setConsent} id="withdrawal-consent-history" />
+                </div>
+                <button onClick={startUnlock} disabled={unlocking || !consent} className="btn-primary inline-block disabled:opacity-60">
                   {unlocking ? 'Öppnar betalning...' : 'Lås upp för 49 kr →'}
                 </button>
                 <p className="text-xs text-slate-400 mt-3">

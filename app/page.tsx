@@ -128,7 +128,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { title: 'Krypterad överföring', desc: 'All data skickas krypterat via HTTPS.' },
-              { title: 'Ingen människa läser ditt avtal', desc: 'Texten analyseras automatiskt – aldrig manuellt av personal.' },
+              { title: 'Ingen människa läser ditt avtal', desc: 'Texten analyseras automatiskt av vår AI – aldrig manuellt av personal.' },
               { title: 'GDPR-anpassat', desc: 'Du kan radera dina uppgifter när som helst.' },
               { title: 'Inte juridisk rådgivning', desc: 'Ett verktyg som hjälper dig förstå – rådgör med jurist vid tvivel.' },
             ].map(({ title, desc }, i) => (

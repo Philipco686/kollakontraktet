@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import FollowUpChat from '@/components/FollowUpChat'
+import WithdrawalConsent from '@/components/WithdrawalConsent'
 import type { Analysis, AnalysisResult, Clause, KeyFact, NegotiationTip, TimelineEvent } from '@/types'
 
 const LOADING_MESSAGES = [
@@ -433,8 +434,10 @@ function ClauseCard({ clause, expanded, onToggle }: { clause: Clause; expanded: 
 
 function PaywallCard() {
   const [loading, setLoading] = useState(false)
+  const [consent, setConsent] = useState(false)
 
   async function unlock() {
+    if (!consent) return
     setLoading(true)
     try {
       const res = await fetch('/api/stripe/checkout', {
@@ -478,7 +481,10 @@ function PaywallCard() {
       <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-6 max-w-md mx-auto text-sm text-accent-800">
         🎁 <strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> lägger till en till analys att använda direkt.
       </div>
-      <button onClick={unlock} disabled={loading} className="btn-primary inline-block disabled:opacity-60">
+      <div className="max-w-md mx-auto mb-4">
+        <WithdrawalConsent checked={consent} onChange={setConsent} />
+      </div>
+      <button onClick={unlock} disabled={loading || !consent} className="btn-primary inline-block disabled:opacity-60">
         {loading ? 'Öppnar betalning...' : 'Lås upp för 49 kr →'}
       </button>
       <p className="text-xs text-slate-400 mt-3">

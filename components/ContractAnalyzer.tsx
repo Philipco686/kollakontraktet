@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import FollowUpChat from '@/components/FollowUpChat'
 import type { Analysis, AnalysisResult, Clause, KeyFact, NegotiationTip, TimelineEvent } from '@/types'
 
 const LOADING_MESSAGES = [
@@ -385,6 +386,9 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
           </ul>
         </div>
       )}
+
+      {/* Följdfrågor – bara för upplåsta analyser */}
+      {!locked && <FollowUpChat analysisId={analysis.id} />}
 
       {/* Disclaimer – syns även i utskrift */}
       <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed">

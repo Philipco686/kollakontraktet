@@ -149,3 +149,66 @@ export async function analyzeContract(contractText: string, mode: 'teaser' | 'fu
   }
   return JSON.parse(jsonMatch[0]) as AnalysisResult
 }
+
+export interface ChatTurn {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+/**
+ * Svarar på en följdfråga om ett redan analyserat avtal. Grundar svaret i
+ * avtalstexten (om den finns kvar) och den sparade analysen. Låter
+ * Anthropic-fel bubbla upp för hantering i route.
+ */
+export async function answerContractQuestion(
+  contractText: string | null,
+  analysis: AnalysisResult,
+  question: string,
+  history: ChatTurn[] = []
+): Promise<string> {
+  const contractBlock = contractText
+    ? `AVTALSTEXT:\n${contractText}`
+    : `AVTALSTEXTEN HAR RADERATS (av integritetsskäl efter 90 dagar). Grunda svaret på sammanfattningen och klausulerna nedan.`
+
+  const analysisSummary = JSON.stringify({
+    summary: analysis.summary,
+    risk_level: analysis.risk_level,
+    key_facts: analysis.key_facts,
+    clauses: analysis.clauses,
+    economic_risk: analysis.economic_risk,
+    common_traps: analysis.common_traps,
+    unusual_terms: analysis.unusual_terms,
+  })
+
+  const system = `Du är en hjälpsam expert på svenska avtal. Användaren har redan fått en analys av ETT specifikt avtal och ställer nu följdfrågor om det.
+
+Regler:
+- Svara ALLTID på svenska, tydligt och konkret, som till en smart vän utan juridisk utbildning.
+- Grunda svaret i avtalet och analysen nedan. Om svaret inte framgår av materialet, säg det ärligt istället för att gissa.
+- Håll svaret kort och fokuserat (oftast under 150 ord) om inte frågan kräver mer.
+- Håll dig till detta avtal. Om användaren frågar om något helt orelaterat, be dem vänligt hålla sig till avtalet.
+- Upprepa INTE i varje svar att du inte är jurist – det står redan tydligt i gränssnittet.
+
+${contractBlock}
+
+ANALYS (JSON):
+${analysisSummary}`
+
+  const messages = [
+    ...history.map(t => ({ role: t.role, content: t.content })),
+    { role: 'user' as const, content: question },
+  ]
+
+  const message = await anthropic.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 1000,
+    system,
+    messages,
+  })
+
+  const content = message.content[0]
+  if (content.type !== 'text') {
+    throw new Error('Oväntat svar från AI')
+  }
+  return content.text
+}

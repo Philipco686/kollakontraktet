@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getEffectiveSubscription, getRecentAnalyses } from '@/lib/supabase/queries'
 import Link from 'next/link'
 import { PLANS } from '@/lib/stripe'
+import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -11,6 +12,10 @@ export default async function DashboardPage() {
   const recentAnalyses = await getRecentAnalyses(supabase, user!.id)
 
   const plan = subscription?.plan ? PLANS[subscription.plan] : null
+  const isOwnRecurring =
+    !!subscription &&
+    subscription.user_id === user!.id &&
+    (subscription.plan === 'personal' || subscription.plan === 'business')
   const usedAnalyses = subscription?.analyses_used_this_month ?? 0
   const totalAnalyses = plan?.analyses === Infinity ? '∞' : plan?.analyses ?? 0
   const usagePercent = plan?.analyses === Infinity ? 0 : Math.round((usedAnalyses / (plan?.analyses ?? 1)) * 100)
@@ -41,6 +46,14 @@ export default async function DashboardPage() {
                   className={`h-2 rounded-full transition-all ${usagePercent >= 80 ? 'bg-red-500' : 'bg-brand-500'}`}
                   style={{ width: `${Math.min(usagePercent, 100)}%` }}
                 />
+              </div>
+            )}
+            {isOwnRecurring && (
+              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                <p className="text-xs text-slate-400">
+                  Uppdatera kort, se kvitton eller avsluta när du vill.
+                </p>
+                <ManageSubscriptionButton />
               </div>
             )}
           </div>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Analysis, AnalysisResult } from '@/types'
 import Link from 'next/link'
+import FollowUpChat from '@/components/FollowUpChat'
 
 type HistoryItem = Pick<Analysis, 'id' | 'title' | 'created_at' | 'result' | 'is_unlocked'>
 
@@ -187,6 +188,8 @@ export default function AnalysisHistory({ analyses }: Props) {
                     ))}
                   </div>
                 </div>
+
+                <FollowUpChat analysisId={selected.id} />
               </>
             ) : (
               <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">

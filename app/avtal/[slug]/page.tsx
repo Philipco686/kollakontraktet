@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { Scale } from 'lucide-react'
 import { contractGuides, getGuide } from '@/lib/seo/contract-types'
 import { SITE_URL } from '@/lib/site'
+import GuideHero from '@/components/GuideHero'
+import GuideChecklist from '@/components/GuideChecklist'
 
 export function generateStaticParams() {
   return contractGuides.map(g => ({ slug: g.slug }))
@@ -31,6 +34,9 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   if (!guide) notFound()
 
   const others = contractGuides.filter(g => g.slug !== guide.slug)
+  const updatedDate = guide.updated
+    ? new Date(guide.updated).toLocaleDateString('sv-SE', { year: 'numeric', month: 'long', day: 'numeric' })
+    : null
 
   const faqJsonLd = guide.faq && guide.faq.length > 0 ? {
     '@context': 'https://schema.org',
@@ -53,15 +59,15 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   }
 
   // Ärlig författare/utgivare: organisationen (aldrig en påhittad jurist).
-  // Uppdatera datumen när guidens innehåll faktiskt ändras.
+  const articleDate = guide.updated ?? '2026-09-09'
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: guide.h1,
     description: guide.metaDescription,
     inLanguage: 'sv-SE',
-    datePublished: '2026-09-09',
-    dateModified: '2026-09-09',
+    datePublished: articleDate,
+    dateModified: articleDate,
     author: { '@type': 'Organization', name: 'Kolla Kontraktet', url: SITE_URL },
     publisher: {
       '@type': 'Organization',
@@ -87,12 +93,37 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       </header>
 
       <article className="max-w-3xl mx-auto px-4 py-14">
+        {/* Brödsmula */}
+        <nav className="text-sm text-slate-400 mb-6" aria-label="Brödsmula">
+          <Link href="/" className="hover:text-slate-600">Hem</Link>
+          <span className="mx-2">/</span>
+          <Link href="/avtal" className="hover:text-slate-600">Avtalsguider</Link>
+          <span className="mx-2">/</span>
+          <span className="text-slate-500">{guide.name}</span>
+        </nav>
+
+        <GuideHero name={guide.name} />
+
         <p className="text-sm font-semibold text-accent-600 uppercase tracking-wide mb-3">{guide.name}</p>
-        <h1 className="font-display text-3xl sm:text-4xl font-semibold text-slate-900 leading-tight tracking-tight mb-5">
+        <h1 className="font-display text-3xl sm:text-4xl font-semibold text-slate-900 leading-tight tracking-tight mb-4">
           {guide.h1}
         </h1>
-        <p className="text-lg text-slate-500 leading-relaxed mb-8">{guide.intro}</p>
-        <Link href="/login" className="btn-accent">Analysera ditt {guide.name.toLowerCase()} gratis →</Link>
+        {updatedDate && (
+          <p className="text-sm text-slate-400 mb-6">Senast uppdaterad {updatedDate} · Sammanställt av Kolla Kontraktet</p>
+        )}
+        <p className="text-lg text-slate-500 leading-relaxed">{guide.intro}</p>
+
+        {/* Långform-innehåll */}
+        {guide.sections?.map(s => (
+          <section key={s.heading} className="mt-12">
+            <h2 className="font-display text-2xl font-semibold text-slate-900 mb-4">{s.heading}</h2>
+            <div className="space-y-4">
+              {s.body.map((p, i) => (
+                <p key={i} className="text-slate-600 leading-relaxed">{p}</p>
+              ))}
+            </div>
+          </section>
+        ))}
 
         {/* Fällor */}
         <section className="mt-14">
@@ -107,27 +138,37 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           </div>
         </section>
 
-        {/* Checklista */}
+        {/* Det här säger lagen */}
+        {guide.lawRefs && guide.lawRefs.length > 0 && (
+          <section className="mt-12">
+            <h2 className="font-display text-2xl font-semibold text-slate-900 mb-6">Det här säger lagen</h2>
+            <div className="space-y-3">
+              {guide.lawRefs.map(l => (
+                <div key={l.law} className="rounded-2xl border border-slate-200 border-l-4 border-l-brand-500 p-5">
+                  <h3 className="font-semibold text-slate-900 mb-1">{l.law}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed">{l.note}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-400 mt-3">Lagtexterna finns i sin helhet på riksdagen.se.</p>
+          </section>
+        )}
+
+        {/* Checklista (interaktiv + utskrivbar) */}
         <section className="mt-12">
-          <h2 className="font-display text-2xl font-semibold text-slate-900 mb-6">Fråga detta innan du signerar</h2>
-          <ul className="space-y-2">
-            {guide.checklist.map(q => (
-              <li key={q} className="flex items-start gap-3 text-slate-700">
-                <span className="w-5 h-5 rounded border-2 border-slate-300 shrink-0 mt-0.5" />
-                {q}
-              </li>
-            ))}
-          </ul>
+          <h2 className="font-display text-2xl font-semibold text-slate-900 mb-2">Checklista: fråga detta innan du signerar</h2>
+          <p className="text-slate-500 text-sm mb-6">Kryssa av på skärmen (sparas i din webbläsare) eller skriv ut den som PDF.</p>
+          <GuideChecklist items={guide.checklist} storageKey={guide.slug} title={guide.name} />
         </section>
 
-        {/* Så hjälper verktyget */}
-        <section className="mt-12 bg-brand-900 rounded-3xl px-6 py-12 text-center">
+        {/* CTA – nedanför innehållet */}
+        <section className="mt-14 bg-brand-900 rounded-3xl px-6 py-12 text-center">
           <h2 className="font-display text-2xl font-semibold text-white mb-3">Slipp gissa – låt AI gå igenom avtalet</h2>
           <p className="text-brand-200 mb-6 max-w-lg mx-auto">
             Klistra in ditt {guide.name.toLowerCase()} så förklarar Kolla Kontraktet varje klausul på vanlig
             svenska, flaggar riskerna och ger dig förhandlingstips. Första analysen är gratis.
           </p>
-          <Link href="/login" className="btn-accent">Prova gratis nu</Link>
+          <Link href="/login" className="btn-accent">Analysera ditt {guide.name.toLowerCase()} gratis</Link>
         </section>
 
         {/* FAQ */}
@@ -145,12 +186,21 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           </section>
         )}
 
+        {/* Disclaimer */}
+        <div className="mt-12 rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed flex items-start gap-2">
+          <Scale className="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>Inte juridisk rådgivning.</strong> Guiden är allmän information i utbildningssyfte och tar inte
+            hänsyn till ditt specifika avtal. Rådgör med en jurist vid osäkerhet.
+          </span>
+        </div>
+
         {/* Andra avtalstyper (intern länkning) */}
         <section className="mt-14 pt-8 border-t border-slate-100">
           <h2 className="font-semibold text-slate-900 mb-4">Andra avtalstyper</h2>
           <div className="flex flex-wrap gap-2">
             {others.map(o => (
-              <Link key={o.slug} href={`/avtal/${o.slug}`} className="text-sm bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full px-3 py-1.5 text-slate-700">
+              <Link key={o.slug} href={`/avtal/${o.slug}`} className="text-sm bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 text-slate-700">
                 {o.name}
               </Link>
             ))}
@@ -160,7 +210,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
       <footer className="border-t border-slate-100 py-8">
         <div className="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-          <span className="font-display font-medium text-slate-500">© 2025 Kolla Kontraktet</span>
+          <span className="font-display font-medium text-slate-500">© 2026 Kolla Kontraktet</span>
           <div className="flex gap-6">
             <Link href="/pricing" className="hover:text-slate-600">Priser</Link>
             <Link href="/privacy" className="hover:text-slate-600">Integritetspolicy</Link>

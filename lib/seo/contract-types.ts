@@ -5,6 +5,9 @@ export interface ContractGuide {
   metaDescription: string
   h1: string
   intro: string
+  updated?: string // synligt "senast uppdaterad"-datum (ISO), sätts när guiden fått full behandling
+  sections?: { heading: string; body: string[] }[] // långform-innehåll
+  lawRefs?: { law: string; note: string }[] // riktiga lagcitat (E-E-A-T)
   traps: { title: string; body: string }[]
   checklist: string[]
   faq?: { q: string; a: string }[]
@@ -68,25 +71,103 @@ export const contractGuides: ContractGuide[] = [
   {
     slug: 'konsultavtal',
     name: 'Konsultavtal',
-    metaTitle: 'Konsultavtal: fällor kring ansvar, betalning och ägande | Kolla Kontraktet',
+    metaTitle: 'Konsultavtal: komplett guide till ansvar, betalning och ägande | Kolla Kontraktet',
     metaDescription:
-      'Uppsägningstid, ansvarsbegränsning, betalningstid och vem som äger arbetet. Vanliga fällor i konsultavtal – förklarat på vanlig svenska.',
-    h1: 'Konsultavtal: det här bör du kolla innan du signerar',
+      'Uppsägningstid, ansvarsbegränsning, betalningstid, immaterialrätt och F-skatt. En komplett guide till konsultavtal på vanlig svenska – med checklista och vad lagen säger.',
+    h1: 'Konsultavtal: den kompletta guiden innan du signerar',
+    updated: '2026-09-09',
     intro:
-      'Som konsult sitter du ofta i en svagare förhandlingsposition. Här är villkoren som kan kosta dig mest – och hur du analyserar ditt avtal snabbt.',
+      'Som konsult sitter du ofta i en svagare förhandlingsposition än den stora uppdragsgivaren – och det är i finstilta detaljer som ansvar, betalning och ägande avgörs. Den här guiden går igenom allt du bör kolla i ett konsultavtal, punkt för punkt, med konkreta exempel, vad lagen faktiskt säger, och en checklista du kan skriva ut.',
+    sections: [
+      {
+        heading: 'Vad är ett konsultavtal – och varför spelar orden roll?',
+        body: [
+          'Ett konsultavtal är ett uppdragsavtal mellan två näringsidkare: du (uppdragstagaren) utför en tjänst åt en uppdragsgivare mot ersättning. Till skillnad från ett anställningsavtal finns ingen särskild skyddslagstiftning som LAS – i stället gäller avtalsfrihet. Det betyder att det som står i avtalet är det som gäller, och att du själv måste bevaka dina intressen.',
+          'Eftersom det saknas en särskild "konsultlag" fylls luckor ut av allmänna regler i avtalslagen (1915:218) och, för många frågor, av köplagen (1990:931) som tillämpas analogt mellan företag. Men huvudregeln är enkel: har ni avtalat om något, gäller avtalet före lagens utfyllnad. Därför är varje klausul värd att läsa.',
+          'Kontrollera först grunderna: att rätt bolag och organisationsnummer står som parter, att uppdraget är tydligt avgränsat, när det börjar och slutar, och vad som händer om omfattningen ändras under resans gång.',
+        ],
+      },
+      {
+        heading: 'Ersättning och betalningsvillkor',
+        body: [
+          'Bestäm om du får betalt löpande (per timme) eller till fast pris. Vid fast pris bär du risken om uppdraget tar längre tid än beräknat – specificera då exakt vad som ingår, och hur ändrings- och tilläggsarbete ("ÄTA") prissätts.',
+          'Betalningstiden är en klassisk likviditetsfälla. Stora uppdragsgivare skjuter gärna in 60–90 dagars betalningstid. Enligt räntelagen (1975:635) är utgångspunkten 30 dagar om inget annat avtalats, och du har rätt till dröjsmålsränta (referensräntan plus åtta procentenheter) om betalning uteblir. Kortare betalningstid är nästan alltid förhandlingsbart – be om 15–30 dagar.',
+          'Reglera också faktureringen: hur ofta du fakturerar, om utlägg och resor ersätts, om du har rätt till a conto-betalning för långa uppdrag, och att priser anges exklusive moms. Ett förskott eller delbetalningar för ett stort uppdrag skyddar dig om samarbetet skulle brytas.',
+        ],
+      },
+      {
+        heading: 'Ansvar och ansvarsbegränsning',
+        body: [
+          'Det här är den enskilt viktigaste klausulen för din ekonomiska trygghet. Utan en ansvarsbegränsning kan du i teorin bli skadeståndsskyldig för hela den skada ett fel orsakar – belopp som vida kan överstiga vad du tjänat på uppdraget.',
+          'Standard i branschen är att ansvaret begränsas till ett belopp, ofta motsvarande arvodet för uppdraget (eller de senaste tolv månadernas arvode). Se också till att indirekta skador – till exempel uppdragsgivarens uteblivna vinst – uttryckligen undantas, och att det finns en tidsgräns för när krav måste framställas.',
+          'Kolla vad avtalet kräver i fråga om försäkring. Om du åläggs att hålla en ansvarsförsäkring, kontrollera att försäkringsbeloppet faktiskt täcker det avtalade ansvarstaket.',
+        ],
+      },
+      {
+        heading: 'Vem äger det du skapar? (immaterialrätt)',
+        body: [
+          'Detta är den vanligaste och dyraste tvistefrågan för konsulter. Enligt upphovsrättslagen (1960:729) uppstår upphovsrätten hos den fysiska person som skapar ett verk – alltså hos dig. Till skillnad från en anställning övergår rättigheterna inte automatiskt till uppdragsgivaren bara för att de betalar; det som gäller är det ni avtalat.',
+          'Skilj på att ge uppdragsgivaren en nyttjanderätt (licens) att använda resultatet, och att överlåta hela rätten. En full överlåtelse betyder att du inte längre får återanvända lösningen – inte ens komponenter, metoder eller kod du byggt upp genom åren. Många avtal formulerar detta brett ("allt material som tas fram") och sveper då oavsiktligt in även ditt tidigare, egna material.',
+          'Skriv in ett undantag för din bakgrundskunskap – generella metoder, mallar, kodbibliotek och verktyg du hade sedan innan – så att du behåller rätten att använda dem i framtida uppdrag. Reglera också rätten att få referera till uppdraget i din portfölj.',
+        ],
+      },
+      {
+        heading: 'Uppsägning, bindningstid och hävning',
+        body: [
+          'Kontrollera att uppsägningstiden är rimlig åt båda håll. En obalans där uppdragsgivaren kan avsluta med några dagars varsel medan du binds i månader är vanlig – och orimlig. Reglera vad som gäller för redan utfört och beställt arbete vid uppsägning, så att du får betalt för det du gjort.',
+          'Skilj på uppsägning (att avsluta enligt avtalets villkor) och hävning (att bryta avtalet i förtid på grund av avtalsbrott). Se att hävning kräver ett väsentligt avtalsbrott, och gärna en möjlighet att rätta felet inom skälig tid innan motparten får häva.',
+        ],
+      },
+      {
+        heading: 'Sekretess och konkurrens',
+        body: [
+          'Sekretessklausuler är rimliga, men kolla omfattning och längd. "Sekretess utan tidsbegränsning" binder dig i praktiken för alltid – 2–5 år efter uppdragets slut är vanligt och mer rimligt. Åtagandet bör dessutom vara ömsesidigt.',
+          'En konkurrensklausul som hindrar dig från att ta liknande uppdrag kan begränsa din försörjning. Oskäligt långtgående klausuler kan jämkas enligt 36 § avtalslagen, men det är bättre att förhandla ned dem från början än att lita på en framtida domstolsprövning. Kontrollera geografisk räckvidd, tidslängd och vad som faktiskt förbjuds.',
+        ],
+      },
+      {
+        heading: 'Konsult eller anställd? F-skatt och gränsdragning',
+        body: [
+          'Som konsult ansvarar du själv för dina skatter och sociala avgifter, vilket förutsätter godkännande för F-skatt. Se till att avtalet anger att du är en självständig uppdragstagare med F-skatt och att ersättningen är exklusive sociala avgifter.',
+          'Var uppmärksam på att om uppdraget i praktiken ser ut som en anställning – du jobbar heltid hos en enda uppdragsgivare, under deras arbetsledning, under lång tid – kan Skatteverket eller en domstol omvärdera relationen. Det kan få skatte- och avtalsrättsliga konsekvenser för båda parter. Ett tydligt avgränsat uppdrag med eget ansvar minskar den risken.',
+        ],
+      },
+    ],
+    lawRefs: [
+      { law: 'Avtalslagen (1915:218)', note: 'Grunden för att avtalet gäller – och 36 § som låter domstol jämka oskäliga villkor, t.ex. orimliga konkurrens- eller viteklausuler.' },
+      { law: 'Upphovsrättslagen (1960:729)', note: 'Upphovsrätten uppstår hos dig som skapar verket och övergår inte automatiskt till uppdragsgivaren utan avtal.' },
+      { law: 'Räntelagen (1975:635)', note: 'Betalning inom 30 dagar om inget annat avtalats, och rätt till dröjsmålsränta (referensränta + 8 procentenheter) vid sen betalning.' },
+      { law: 'Köplagen (1990:931)', note: 'Tillämpas analogt mellan företag där avtalet är tyst – men era egna villkor gäller före lagens utfyllnad.' },
+    ],
     traps: [
-      { title: 'Uppsägningstid', body: 'Lång uppsägningstid kan låsa dig, eller så kan uppdragsgivaren avsluta med kort varsel. Kolla att den är rimlig åt båda håll.' },
-      { title: 'Ansvarsbegränsning', body: 'Utan tak på ditt ansvar kan du bli skyldig stora belopp vid fel. Se till att ansvaret är beloppsbegränsat.' },
-      { title: 'Betalningstid', body: 'Betalningsvillkor på 60–90 dagar pressar din likviditet. Kortare betalningstid är ofta förhandlingsbart.' },
-      { title: 'Ägande av arbete och material', body: 'Vissa avtal tar även rättigheter till det du skapat innan uppdraget. Läs IP-klausulen noga.' },
-      { title: 'Sekretess utan tidsgräns', body: 'Sekretess "utan tidsbegränsning" kan binda dig för evigt. Kolla omfattning och längd.' },
+      { title: 'Obegränsat ansvar', body: 'Utan ett tak på ditt skadeståndsansvar kan ett enda misstag kosta dig långt mer än hela arvodet. Kräv att ansvaret beloppsbegränsas (ofta till arvodet) och att indirekta skador undantas.' },
+      { title: 'Bred överlåtelse av immateriella rättigheter', body: 'Formuleringar som "allt material som tas fram tillhör uppdragsgivaren" kan svepa in även din tidigare kod, dina mallar och metoder. Undanta din bakgrundskunskap uttryckligen.' },
+      { title: 'Lång betalningstid', body: 'Betalningsvillkor på 60–90 dagar pressar din likviditet. Enligt räntelagen är 30 dagar utgångspunkten – förhandla ned och skriv in dröjsmålsränta.' },
+      { title: 'Obalanserad uppsägning', body: 'Att uppdragsgivaren kan avsluta med kort varsel medan du binds i månader är en vanlig snedfördelning. Kräv symmetriska villkor och betalt för utfört arbete.' },
+      { title: 'Sekretess utan tidsgräns', body: 'Sekretess "utan tidsbegränsning" binder dig i praktiken för evigt. Sätt en rimlig gräns (2–5 år) och gör åtagandet ömsesidigt.' },
+      { title: 'Dold anställning', body: 'Ett uppdrag som i praktiken fungerar som en anställning kan omvärderas av Skatteverket. Håll uppdraget avgränsat och ditt oberoende tydligt.' },
     ],
     checklist: [
-      'Är uppsägningstiden rimlig för båda parter?',
-      'Är mitt ansvar beloppsbegränsat?',
-      'Hur lång är betalningstiden?',
-      'Vem äger det jag skapar – och gäller det även tidigare material?',
-      'Hur länge gäller sekretessen?',
+      'Är rätt bolag och organisationsnummer angivna som parter?',
+      'Är uppdraget tydligt avgränsat – och hur prissätts tilläggsarbete?',
+      'Är det löpande räkning eller fast pris, och vad ingår i priset?',
+      'Hur lång är betalningstiden, och finns dröjsmålsränta vid sen betalning?',
+      'Är mitt skadeståndsansvar beloppsbegränsat?',
+      'Är indirekta skador (t.ex. utebliven vinst) undantagna?',
+      'Ger jag en nyttjanderätt eller överlåter jag hela rätten till det jag skapar?',
+      'Är min bakgrundskunskap (tidigare kod, mallar, metoder) undantagen?',
+      'Är uppsägningstiden rimlig och symmetrisk för båda parter?',
+      'Hur länge gäller sekretessen – och är den ömsesidig?',
+      'Är en eventuell konkurrensklausul rimlig i tid och omfattning?',
+      'Framgår det att jag är självständig uppdragstagare med F-skatt?',
+    ],
+    faq: [
+      { q: 'Vem äger det jag skapar i ett konsultuppdrag?', a: 'Enligt upphovsrättslagen uppstår rätten hos dig som skapar verket. Uppdragsgivaren får bara de rättigheter ni avtalar om – därför är IP-klausulen avgörande. Skilj på att ge en nyttjanderätt och att överlåta hela rätten.' },
+      { q: 'Vad är en rimlig betalningstid i ett konsultavtal?', a: 'Utgångspunkten enligt räntelagen är 30 dagar om inget annat avtalats. 15–30 dagar är rimligt; 60–90 dagar bör du förhandla ned. Se också till att dröjsmålsränta gäller vid sen betalning.' },
+      { q: 'Måste jag gå med på obegränsat ansvar?', a: 'Nej – och du bör inte. Standard är att ansvaret begränsas till ett belopp, ofta motsvarande arvodet, med indirekta skador undantagna. Utan tak riskerar du belopp som vida överstiger vad du tjänat.' },
+      { q: 'Kan en konkurrensklausul hindra mig från framtida uppdrag?', a: 'Ja, om den accepteras. Oskäligt långtgående klausuler kan jämkas enligt 36 § avtalslagen, men det är bättre att förhandla ned tid, geografi och omfattning från början.' },
+      { q: 'Vad betyder ansvarsbegränsning i praktiken?', a: 'Att det finns ett tak för hur mycket du kan bli skyldig att betala om något går fel. Ett vanligt tak är arvodet för uppdraget. Det skyddar dig från att ett litet fel leder till ett orimligt stort skadestånd.' },
+      { q: 'Hur vet jag om jag är konsult eller egentligen anställd?', a: 'Ju mer självständigt och avgränsat uppdraget är – eget ansvar, flera kunder, egna verktyg, F-skatt – desto tydligare är konsultrollen. Ett uppdrag som i praktiken fungerar som en heltidsanställning kan omvärderas av Skatteverket.' },
     ],
   },
   {

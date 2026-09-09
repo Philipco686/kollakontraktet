@@ -32,7 +32,7 @@ export interface Analysis {
 }
 
 export interface KeyFact {
-  icon: string
+  icon?: string
   label: string
   value: string
 }

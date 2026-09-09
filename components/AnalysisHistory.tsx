@@ -5,6 +5,7 @@ import type { Analysis, AnalysisResult } from '@/types'
 import Link from 'next/link'
 import FollowUpChat from '@/components/FollowUpChat'
 import WithdrawalConsent from '@/components/WithdrawalConsent'
+import { Lock, LockOpen, Gift, Scale, ClipboardList } from 'lucide-react'
 
 type HistoryItem = Pick<Analysis, 'id' | 'title' | 'created_at' | 'result' | 'is_unlocked'>
 
@@ -80,7 +81,7 @@ export default function AnalysisHistory({ analyses }: Props) {
   if (items.length === 0) {
     return (
       <div className="card text-center py-12">
-        <p className="text-4xl mb-3">📋</p>
+        <ClipboardList className="w-10 h-10 mx-auto mb-3 text-slate-400" />
         <h2 className="text-lg font-semibold text-slate-900">Inga analyser ännu</h2>
         <p className="text-slate-500 mt-2 mb-6">Din historik visas här efter din första analys</p>
         <Link href="/analyze" className="btn-primary inline-block">
@@ -128,8 +129,7 @@ export default function AnalysisHistory({ analyses }: Props) {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {result.key_facts.map((f, i) => (
                   <div key={i} className="bg-slate-50 rounded-xl p-3 flex flex-col items-center text-center">
-                    <span className="text-2xl mb-1">{f.icon}</span>
-                    <span className="text-xs text-slate-500 mb-0.5">{f.label}</span>
+                    <span className="text-xs text-slate-500 mb-1">{f.label}</span>
                     <span className="font-semibold text-slate-900 text-sm">{f.value}</span>
                   </div>
                 ))}
@@ -138,14 +138,15 @@ export default function AnalysisHistory({ analyses }: Props) {
 
             {!selected.is_unlocked ? (
               <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
-                <div className="text-4xl mb-3">🔒</div>
+                <Lock className="w-9 h-9 mx-auto mb-3 text-brand-600" />
                 <h3 className="text-lg font-bold text-slate-900 mb-1">Resten är låst</h3>
                 <p className="text-slate-600 mb-5 max-w-md mx-auto">
                   Lås upp för att se alla klausuler, fällor, din ekonomiska risk och
                   förhandlingstips för det här avtalet.
                 </p>
-                <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-5 max-w-md mx-auto text-sm text-accent-800">
-                  🎁 <strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> ger dig en till analys att använda direkt.
+                <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-5 max-w-md mx-auto text-sm text-accent-800 flex items-start gap-2 text-left">
+                  <Gift className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span><strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> ger dig en till analys att använda direkt.</span>
                 </div>
                 <div className="max-w-md mx-auto mb-4">
                   <WithdrawalConsent checked={consent} onChange={setConsent} id="withdrawal-consent-history" />
@@ -178,9 +179,9 @@ export default function AnalysisHistory({ analyses }: Props) {
                     Klausuler ({result.clauses?.length ?? 0})
                   </h3>
                   <div className="flex flex-wrap gap-3 mb-3 text-xs text-slate-500">
-                    <span className="flex items-center gap-1">🟢 Låg risk – standardvillkor</span>
-                    <span className="flex items-center gap-1">🟡 Varning – ovanligt eller potentiellt dyrt</span>
-                    <span className="flex items-center gap-1">🔴 Hög risk – kan kosta dig pengar eller rättigheter</span>
+                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk – standardvillkor</span>
+                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning – ovanligt eller potentiellt dyrt</span>
+                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk – kan kosta dig pengar eller rättigheter</span>
                   </div>
                   <div className="space-y-2">
                     {result.clauses?.map((c, i) => (
@@ -199,7 +200,7 @@ export default function AnalysisHistory({ analyses }: Props) {
               </>
             ) : (
               <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
-                <div className="text-4xl mb-3">🔓</div>
+                <LockOpen className="w-9 h-9 mx-auto mb-3 text-brand-600" />
                 <h3 className="text-lg font-bold text-slate-900 mb-1">Upplåst – generera hela analysen</h3>
                 <p className="text-slate-600 mb-5 max-w-md mx-auto">
                   Din betalning är klar. Klicka för att skapa den fullständiga analysen med alla
@@ -216,9 +217,10 @@ export default function AnalysisHistory({ analyses }: Props) {
               </div>
             )}
 
-            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed">
-              ⚖️ <strong>Inte juridisk rådgivning.</strong> Detta är en AI-genererad tolkning i
-              informationssyfte och kan innehålla fel. Rådgör med en jurist vid osäkerhet.
+            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed flex items-start gap-2">
+              <Scale className="w-4 h-4 shrink-0 mt-0.5" />
+              <span><strong>Inte juridisk rådgivning.</strong> Detta är en AI-genererad tolkning i
+              informationssyfte och kan innehålla fel. Rådgör med en jurist vid osäkerhet.</span>
             </div>
           </div>
         </div>
@@ -242,7 +244,7 @@ export default function AnalysisHistory({ analyses }: Props) {
                 {new Date(a.created_at).toLocaleDateString('sv-SE')}
                 {a.is_unlocked
                   ? ` · ${result.clauses?.length ?? 0} klausuler`
-                  : ' · 🔒 Lås upp'}
+                  : <span className="inline-flex items-center gap-1 align-middle"> · <Lock className="w-3 h-3" /> Lås upp</span>}
               </p>
             </div>
             <RiskBadge level={result.risk_level} />

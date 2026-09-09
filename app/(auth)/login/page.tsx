@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { MailCheck } from 'lucide-react'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -50,8 +51,8 @@ export default function LoginPage() {
         <div className="card space-y-4">
           {sent ? (
             <div className="text-center py-4">
-              <div className="text-4xl mb-3">📬</div>
-              <h2 className="font-semibold text-slate-900">Kolla din inbox!</h2>
+              <MailCheck className="w-10 h-10 mx-auto mb-3 text-brand-600" />
+              <h2 className="font-semibold text-slate-900">Kolla din inbox</h2>
               <p className="text-slate-500 mt-2 text-sm">
                 Vi har skickat en inloggningslänk till <strong>{email}</strong>
               </p>

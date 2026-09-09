@@ -15,13 +15,13 @@ Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanf�
   "summary": "2-3 meningar som sammanfattar vad avtalet handlar om",
   "risk_level": "low|medium|high",
   "key_facts": [
-    { "icon": "💰", "label": "Lön/ersättning", "value": "45 000 kr/mån" }
+    { "label": "Lön/ersättning", "value": "45 000 kr/mån" }
   ]
 }
 
 Regler:
 - Skriv allt på svenska
-- key_facts: 4-8 konkreta faktapunkter relevanta för detta avtal (lön, hyra, tid, deposition, uppsägning, etc.), var och en med passande emoji
+- key_facts: 4-8 konkreta faktapunkter relevanta för detta avtal (lön, hyra, tid, deposition, uppsägning, etc.), var och en med label och value (ingen emoji)
 - risk_level: "high" om avtalet kan kosta mycket pengar eller förlust av rättigheter, annars "medium"/"low"
 - Svara med enbart JSON-objektet, utan inledande text eller markdown.
 
@@ -39,7 +39,7 @@ Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanf�
   "summary": "2-3 meningar som sammanfattar vad avtalet handlar om",
   "risk_level": "low|medium|high",
   "key_facts": [
-    { "icon": "💰", "label": "Lön/ersättning", "value": "45 000 kr/mån" }
+    { "label": "Lön/ersättning", "value": "45 000 kr/mån" }
   ],
   "quick_summary": {
     "what_is_it_about": "Vad handlar avtalet om? (1-2 meningar)",

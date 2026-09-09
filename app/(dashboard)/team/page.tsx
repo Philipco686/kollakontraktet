@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getActiveSubscription, MAX_TEAM_TOTAL } from '@/lib/supabase/queries'
 import TeamManager from '@/components/TeamManager'
 import Link from 'next/link'
+import { Users } from 'lucide-react'
 
 export default async function TeamPage() {
   const supabase = await createClient()
@@ -20,7 +21,7 @@ export default async function TeamPage() {
         <TeamManager ownerEmail={user!.email ?? ''} max={MAX_TEAM_TOTAL} />
       ) : (
         <div className="card text-center py-12">
-          <div className="text-4xl mb-3">👥</div>
+          <Users className="w-10 h-10 mx-auto mb-3 text-brand-600" />
           <h2 className="text-lg font-semibold text-slate-900">Team ingår i Företag-paketet</h2>
           <p className="text-slate-500 mt-2 mb-6 max-w-md mx-auto">
             Med Företag delar du prenumerationen med upp till {MAX_TEAM_TOTAL} användare och får

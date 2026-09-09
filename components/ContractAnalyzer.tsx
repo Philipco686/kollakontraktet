@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import FollowUpChat from '@/components/FollowUpChat'
 import WithdrawalConsent from '@/components/WithdrawalConsent'
+import {
+  FileText, Download, Mail, Check, PenLine, Gift, AlertTriangle, Coins,
+  BarChart3, AlertOctagon, Zap, Handshake, CalendarDays, CheckCircle2,
+  ListChecks, Scale, Lock, Search,
+} from 'lucide-react'
 import type { Analysis, AnalysisResult, Clause, KeyFact, NegotiationTip, TimelineEvent } from '@/types'
 
 const LOADING_MESSAGES = [
@@ -96,7 +101,7 @@ export default function ContractAnalyzer() {
               <span className="flex items-center gap-2 text-sm text-slate-500"><Spinner />Läser PDF...</span>
             ) : (
               <>
-                <span className="text-2xl mb-1">📄</span>
+                <FileText className="w-6 h-6 mb-1 text-slate-400" />
                 <span className="text-sm font-medium text-slate-700">Klicka för att ladda upp ett PDF-avtal</span>
                 <span className="text-xs text-slate-400 mt-0.5">Texten fylls i automatiskt nedan</span>
               </>
@@ -161,11 +166,13 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Åtgärder – döljs vid utskrift */}
       {!locked && (
         <div className="no-print flex flex-wrap gap-3">
-          <button onClick={() => setPrintAll(true)} className="btn-secondary text-sm py-2 px-4">
-            📄 Ladda ner PDF
+          <button onClick={() => setPrintAll(true)} className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2">
+            <Download className="w-4 h-4" /> Ladda ner PDF
           </button>
-          <button onClick={handleEmail} disabled={emailState === 'sending' || emailState === 'sent'} className="btn-secondary text-sm py-2 px-4">
-            {emailState === 'sending' ? 'Skickar...' : emailState === 'sent' ? '✓ Skickad!' : '✉️ Maila analysen'}
+          <button onClick={handleEmail} disabled={emailState === 'sending' || emailState === 'sent'} className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2">
+            {emailState === 'sending' ? 'Skickar...' : emailState === 'sent'
+              ? <><Check className="w-4 h-4" /> Skickad</>
+              : <><Mail className="w-4 h-4" /> Maila analysen</>}
           </button>
           {emailState === 'error' && <span className="text-sm text-red-600 self-center">{emailMsg}</span>}
         </div>
@@ -187,8 +194,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {r.key_facts.map((f: KeyFact, i: number) => (
               <div key={i} className="bg-slate-50 rounded-xl p-3 flex flex-col items-center text-center">
-                <span className="text-2xl mb-1">{f.icon}</span>
-                <span className="text-xs text-slate-500 mb-0.5">{f.label}</span>
+                <span className="text-xs text-slate-500 mb-1">{f.label}</span>
                 <span className="font-semibold text-slate-900 text-sm">{f.value}</span>
               </div>
             ))}
@@ -205,14 +211,14 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
           <h3 className="font-semibold text-slate-900 mb-4">Kort version – 1 minut</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              { label: 'Vad handlar det om?', value: r.quick_summary.what_is_it_about, icon: '📄' },
-              { label: 'Vad förbinder jag mig till?', value: r.quick_summary.what_do_i_commit_to, icon: '✍️' },
-              { label: 'Vad får jag tillbaka?', value: r.quick_summary.what_do_i_get, icon: '🎁' },
-              { label: 'Största risken?', value: r.quick_summary.biggest_risk, icon: '⚠️' },
-            ].map(({ label, value, icon }) => (
+              { label: 'Vad handlar det om?', value: r.quick_summary.what_is_it_about, Icon: FileText },
+              { label: 'Vad förbinder jag mig till?', value: r.quick_summary.what_do_i_commit_to, Icon: PenLine },
+              { label: 'Vad får jag tillbaka?', value: r.quick_summary.what_do_i_get, Icon: Gift },
+              { label: 'Största risken?', value: r.quick_summary.biggest_risk, Icon: AlertTriangle },
+            ].map(({ label, value, Icon }) => (
               <div key={label} className="bg-slate-50 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <span>{icon}</span>
+                  <Icon className="w-4 h-4 text-brand-600 shrink-0" />
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
                 </div>
                 <p className="text-slate-700 text-sm leading-relaxed">{value}</p>
@@ -226,7 +232,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {r.economic_risk && r.economic_risk.max_amount > 0 && (
         <div className="card border-l-4 border-red-400">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-slate-900">💸 Ekonomisk risk – worst case</h3>
+            <h3 className="font-semibold text-slate-900 flex items-center gap-2"><Coins className="w-5 h-5 text-accent-600" /> Ekonomisk risk – worst case</h3>
             <span className="text-2xl font-bold text-red-600">
               {r.economic_risk.max_amount.toLocaleString('sv-SE')} {r.economic_risk.currency}
             </span>
@@ -245,7 +251,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {r.standard_comparison && (
         <div className="card">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-slate-900">📊 Jämförelse med svenska standardavtal</h3>
+            <h3 className="font-semibold text-slate-900 flex items-center gap-2"><BarChart3 className="w-5 h-5 text-brand-600" /> Jämförelse med svenska standardavtal</h3>
             <span className="text-2xl font-bold text-brand-700">{r.standard_comparison.percentage_standard}% standard</span>
           </div>
           <div className="w-full bg-slate-100 rounded-full h-3 mb-4">
@@ -254,8 +260,8 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
           {r.standard_comparison.deviations.length > 0 && (
             <ul className="space-y-1">
               {r.standard_comparison.deviations.map((d: string, i: number) => (
-                <li key={i} className="text-sm text-amber-700 flex gap-2">
-                  <span className="shrink-0">🟡</span>{d}
+                <li key={i} className="text-sm text-amber-700 flex gap-2.5 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 mt-1.5" />{d}
                 </li>
               ))}
             </ul>
@@ -266,11 +272,11 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Det här missar folk */}
       {r.common_traps?.length > 0 && (
         <div className="card border-l-4 border-amber-400">
-          <h3 className="font-semibold text-slate-900 mb-3">🪤 Det här missar folk ofta</h3>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><AlertTriangle className="w-5 h-5 text-amber-500" /> Det här missar folk ofta</h3>
           <ul className="space-y-2">
             {r.common_traps.map((t: string, i: number) => (
-              <li key={i} className="text-sm text-slate-700 flex gap-2">
-                <span className="shrink-0">⚠️</span>{t}
+              <li key={i} className="text-sm text-slate-700 flex gap-2.5 items-start">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 mt-1.5" />{t}
               </li>
             ))}
           </ul>
@@ -280,11 +286,11 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Konsekvenser */}
       {r.consequences?.length > 0 && (
         <div className="card">
-          <h3 className="font-semibold text-slate-900 mb-3">⚡ Vad händer om du bryter avtalet?</h3>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><Zap className="w-5 h-5 text-red-500" /> Vad händer om du bryter avtalet?</h3>
           <ul className="space-y-2">
             {r.consequences.map((c: string, i: number) => (
-              <li key={i} className="text-sm text-slate-700 flex gap-2 bg-red-50 rounded-lg p-3">
-                <span className="shrink-0">🔴</span>{c}
+              <li key={i} className="text-sm text-slate-700 flex gap-2.5 items-start bg-red-50 rounded-lg p-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0 mt-1.5" />{c}
               </li>
             ))}
           </ul>
@@ -294,11 +300,11 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Ovanliga villkor */}
       {r.unusual_terms?.length > 0 && (
         <div className="card border-l-4 border-red-400">
-          <h3 className="font-semibold text-slate-900 mb-3">🚨 Ovanliga eller oskäliga villkor</h3>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><AlertOctagon className="w-5 h-5 text-red-500" /> Ovanliga eller oskäliga villkor</h3>
           <ul className="space-y-2">
             {r.unusual_terms.map((u: string, i: number) => (
-              <li key={i} className="text-sm text-slate-700 flex gap-2">
-                <span className="shrink-0">❗</span>{u}
+              <li key={i} className="text-sm text-slate-700 flex gap-2.5 items-start">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0 mt-1.5" />{u}
               </li>
             ))}
           </ul>
@@ -310,9 +316,9 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
         <div>
           <h3 className="font-semibold text-slate-900 mb-2">Klausuler ({r.clauses.length})</h3>
           <div className="flex flex-wrap gap-x-4 gap-y-1 mb-4 text-sm">
-            <span className="flex items-center gap-1.5 text-slate-500"><span>🟢</span> Låg risk – standardvillkor</span>
-            <span className="flex items-center gap-1.5 text-slate-500"><span>🟡</span> Varning – ovanligt eller potentiellt dyrt</span>
-            <span className="flex items-center gap-1.5 text-slate-500"><span>🔴</span> Hög risk – kan kosta dig pengar eller rättigheter</span>
+            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk – standardvillkor</span>
+            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning – ovanligt eller potentiellt dyrt</span>
+            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk – kan kosta dig pengar eller rättigheter</span>
           </div>
           <div className="space-y-2">
             {r.clauses.map((c: Clause, i: number) => (
@@ -325,7 +331,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Förhandlingstips */}
       {r.negotiation_tips?.length > 0 && (
         <div className="card">
-          <h3 className="font-semibold text-slate-900 mb-4">🤝 Det här kan du förhandla</h3>
+          <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2"><Handshake className="w-5 h-5 text-brand-600" /> Det här kan du förhandla</h3>
           <div className="space-y-4">
             {r.negotiation_tips.map((tip: NegotiationTip, i: number) => (
               <div key={i} className="border border-slate-100 rounded-xl p-4">
@@ -344,7 +350,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Tidslinje */}
       {r.timeline?.length > 0 && (
         <div className="card">
-          <h3 className="font-semibold text-slate-900 mb-3">📅 Viktiga datum</h3>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><CalendarDays className="w-5 h-5 text-brand-600" /> Viktiga datum</h3>
           <div className="space-y-2">
             {r.timeline.map((t: TimelineEvent, i: number) => (
               <div key={i} className="flex items-start gap-4 py-2 border-b border-slate-50 last:border-0">
@@ -362,7 +368,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Rekommendationer */}
       {r.recommendations?.length > 0 && (
         <div className="card border-l-4 border-brand-500">
-          <h3 className="font-semibold text-slate-900 mb-3">✅ Rekommendationer</h3>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-brand-600" /> Rekommendationer</h3>
           <ul className="space-y-2">
             {r.recommendations.map((rec: string, i: number) => (
               <li key={i} className="flex items-start gap-2 text-slate-700 text-sm">
@@ -376,7 +382,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* Checklista */}
       {r.pre_signing_checklist?.length > 0 && (
         <div className="card">
-          <h3 className="font-semibold text-slate-900 mb-3">☑️ Fråga detta innan du signerar</h3>
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><ListChecks className="w-5 h-5 text-brand-600" /> Fråga detta innan du signerar</h3>
           <ul className="space-y-2">
             {r.pre_signing_checklist.map((q: string, i: number) => (
               <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
@@ -392,10 +398,11 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {!locked && <FollowUpChat analysisId={analysis.id} />}
 
       {/* Disclaimer – syns även i utskrift */}
-      <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed">
-        ⚖️ <strong>Inte juridisk rådgivning.</strong> Detta är en AI-genererad tolkning i informationssyfte
+      <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed flex items-start gap-2">
+        <Scale className="w-4 h-4 shrink-0 mt-0.5" />
+        <span><strong>Inte juridisk rådgivning.</strong> Detta är en AI-genererad tolkning i informationssyfte
         och kan innehålla fel. Fatta inte viktiga beslut enbart baserat på analysen – rådgör med en jurist
-        vid osäkerhet.
+        vid osäkerhet.</span>
       </div>
 
       <button onClick={onReset} className="btn-secondary w-full no-print">Analysera nytt avtal</button>
@@ -404,14 +411,14 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 }
 
 function ClauseCard({ clause, expanded, onToggle }: { clause: Clause; expanded: boolean; onToggle: () => void }) {
-  const riskEmoji = { low: '🟢', medium: '🟡', high: '🔴' }[clause.risk_level]
+  const riskColor = { low: 'bg-green-500', medium: 'bg-yellow-500', high: 'bg-red-500' }[clause.risk_level]
   const borderColor = { low: 'border-l-green-400', medium: 'border-l-yellow-400', high: 'border-l-red-400' }[clause.risk_level]
 
   return (
     <div className={`card border-l-4 hover-lift ${borderColor}`}>
       <button onClick={onToggle} className="w-full flex items-center justify-between text-left gap-2">
         <div className="flex items-center gap-2 min-w-0">
-          <span>{riskEmoji}</span>
+          <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${riskColor}`} />
           {clause.is_important && <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-medium shrink-0">Viktig</span>}
           <span className="font-medium text-slate-900 truncate">{clause.title}</span>
         </div>
@@ -455,31 +462,32 @@ function PaywallCard() {
   }
 
   const lockedPreview = [
-    '🔍 Fullständig genomgång av alla klausuler',
-    '🪤 Vanliga fällor i just detta avtal',
-    '⚡ Konsekvenser om du bryter avtalet',
-    '💸 Din ekonomiska risk i kronor (worst case)',
-    '🤝 Förhandlingstips med färdiga formuleringar',
-    '📅 Viktiga datum och deadlines',
-    '☑️ Checklista att gå igenom innan du signerar',
+    { Icon: Search, text: 'Fullständig genomgång av alla klausuler' },
+    { Icon: AlertTriangle, text: 'Vanliga fällor i just detta avtal' },
+    { Icon: Zap, text: 'Konsekvenser om du bryter avtalet' },
+    { Icon: Coins, text: 'Din ekonomiska risk i kronor (worst case)' },
+    { Icon: Handshake, text: 'Förhandlingstips med färdiga formuleringar' },
+    { Icon: CalendarDays, text: 'Viktiga datum och deadlines' },
+    { Icon: ListChecks, text: 'Checklista att gå igenom innan du signerar' },
   ]
   return (
     <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
-      <div className="text-4xl mb-3">🔒</div>
+      <Lock className="w-9 h-9 mx-auto mb-3 text-brand-600" />
       <h3 className="text-xl font-bold text-slate-900 mb-1">Det här är bara början</h3>
       <p className="text-slate-600 mb-5 max-w-md mx-auto">
         Du har sett sammanfattningen gratis. Lås upp hela analysen för att se exakt
         vad som gömmer sig i avtalet.
       </p>
       <ul className="text-left max-w-sm mx-auto space-y-2 mb-6">
-        {lockedPreview.map(item => (
-          <li key={item} className="flex items-center gap-2 text-sm text-slate-700">
-            <span className="text-slate-300">▰▰▰</span>{item}
+        {lockedPreview.map(({ Icon, text }) => (
+          <li key={text} className="flex items-center gap-2.5 text-sm text-slate-700">
+            <Icon className="w-4 h-4 text-brand-400 shrink-0" />{text}
           </li>
         ))}
       </ul>
-      <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-6 max-w-md mx-auto text-sm text-accent-800">
-        🎁 <strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> lägger till en till analys att använda direkt.
+      <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-6 max-w-md mx-auto text-sm text-accent-800 flex items-start gap-2 text-left">
+        <Gift className="w-4 h-4 shrink-0 mt-0.5" />
+        <span><strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> lägger till en till analys att använda direkt.</span>
       </div>
       <div className="max-w-md mx-auto mb-4">
         <WithdrawalConsent checked={consent} onChange={setConsent} />

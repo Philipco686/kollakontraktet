@@ -11,10 +11,13 @@ export function getResend(): Resend | null {
 
 export const EMAIL_FROM = process.env.EMAIL_FROM ?? 'Kolla Kontraktet <onboarding@resend.dev>'
 
+const riskDot = (color: string) =>
+  `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle"></span>`
+
 const riskText: Record<string, string> = {
-  low: '🟢 Låg risk',
-  medium: '🟡 Medel risk',
-  high: '🔴 Hög risk',
+  low: `${riskDot('#22c55e')}Låg risk`,
+  medium: `${riskDot('#eab308')}Medel risk`,
+  high: `${riskDot('#ef4444')}Hög risk`,
 }
 
 export function buildAnalysisEmailHtml(analysis: Analysis, siteUrl: string): string {
@@ -24,7 +27,6 @@ export function buildAnalysisEmailHtml(analysis: Analysis, siteUrl: string): str
   const facts = (r.key_facts ?? [])
     .map(
       f => `<td style="padding:8px;text-align:center;border:1px solid #e2e8f0;">
-        <div style="font-size:20px">${f.icon}</div>
         <div style="font-size:11px;color:#64748b">${f.label}</div>
         <div style="font-weight:600;font-size:13px;color:#0f172a">${f.value}</div>
       </td>`
@@ -50,8 +52,7 @@ export function buildAnalysisEmailHtml(analysis: Analysis, siteUrl: string): str
 
   const lockedBlock = locked
     ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:20px;text-align:center;margin-top:16px">
-        <div style="font-size:28px">🔒</div>
-        <p style="color:#0f172a;font-weight:600;margin:8px 0 4px">Resten av analysen är låst</p>
+        <p style="color:#0f172a;font-weight:600;margin:0 0 4px">Resten av analysen är låst</p>
         <p style="color:#64748b;font-size:13px;margin:0 0 12px">Lås upp för att se alla klausuler, ekonomisk risk och förhandlingstips.</p>
         <a href="${siteUrl}/pricing" style="background:#0284c7;color:#fff;text-decoration:none;padding:10px 20px;border-radius:10px;font-weight:600;font-size:14px">Lås upp hela analysen</a>
       </div>`
@@ -83,8 +84,7 @@ export function buildTeamInviteEmailHtml(inviterEmail: string, siteUrl: string):
     <div style="max-width:600px;margin:0 auto;padding:24px">
       <p style="color:#1e3a8a;font-weight:700;font-size:18px;margin:0 0 16px">Kolla Kontraktet</p>
       <div style="background:#fff;border-radius:16px;padding:28px;border:1px solid #e2e8f0;text-align:center">
-        <div style="font-size:32px">👥</div>
-        <h1 style="font-size:20px;color:#0f172a;margin:12px 0 8px">Du är inbjuden till ett team!</h1>
+        <h1 style="font-size:20px;color:#0f172a;margin:0 0 8px">Du är inbjuden till ett team</h1>
         <p style="color:#334155;font-size:14px;line-height:1.6;margin:0 0 20px">
           <strong>${inviterEmail}</strong> har lagt till dig i sitt Företag-team på Kolla Kontraktet.
           Logga in med <strong>den här mejladressen</strong> så får du obegränsade avtalsanalyser –

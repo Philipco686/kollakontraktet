@@ -3,6 +3,7 @@ import { getEffectiveSubscription, getRecentAnalyses } from '@/lib/supabase/quer
 import Link from 'next/link'
 import { PLANS } from '@/lib/stripe'
 import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
+import { FileText, History } from 'lucide-react'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -60,7 +61,7 @@ export default async function DashboardPage() {
         ) : (
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="font-medium text-slate-900">Din första analys är gratis 🎉</p>
+              <p className="font-medium text-slate-900">Din första analys är gratis</p>
               <p className="text-sm text-slate-500">Testa direkt – inget kort krävs.</p>
             </div>
             <Link href="/analyze" className="btn-primary text-sm whitespace-nowrap">
@@ -76,8 +77,8 @@ export default async function DashboardPage() {
           href="/analyze"
           className="reveal reveal-d1 hover-lift card group flex items-center gap-4"
         >
-          <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-brand-200 transition-colors">
-            📄
+          <div className="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center text-brand-700 group-hover:bg-brand-200 transition-colors">
+            <FileText className="w-6 h-6" />
           </div>
           <div>
             <h3 className="font-semibold text-slate-900">Analysera nytt avtal</h3>
@@ -89,8 +90,8 @@ export default async function DashboardPage() {
           href="/history"
           className="reveal reveal-d2 hover-lift card group flex items-center gap-4"
         >
-          <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-2xl group-hover:bg-slate-200 transition-colors">
-            🕐
+          <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 group-hover:bg-slate-200 transition-colors">
+            <History className="w-6 h-6" />
           </div>
           <div>
             <h3 className="font-semibold text-slate-900">Analyshistorik</h3>

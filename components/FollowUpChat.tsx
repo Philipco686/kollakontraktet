@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { MessageCircle, Scale } from 'lucide-react'
 
 type Turn = { role: 'user' | 'assistant'; content: string }
 
@@ -47,7 +48,7 @@ export default function FollowUpChat({ analysisId }: { analysisId: string }) {
   return (
     <div className="card no-print">
       <div className="flex items-center gap-2 mb-1">
-        <span className="text-xl">💬</span>
+        <MessageCircle className="w-5 h-5 text-brand-700" />
         <h3 className="font-semibold text-slate-900">Fråga om avtalet</h3>
       </div>
       <p className="text-sm text-slate-500 mb-4">
@@ -87,7 +88,7 @@ export default function FollowUpChat({ analysisId }: { analysisId: string }) {
               key={s}
               onClick={() => ask(s)}
               disabled={loading}
-              className="text-xs bg-slate-50 hover:bg-brand-50 border border-slate-200 hover:border-brand-200 text-slate-600 rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
+              className="text-xs bg-slate-50 hover:bg-brand-50 border border-slate-200 hover:border-brand-200 text-slate-600 rounded-lg px-3 py-1.5 transition-colors disabled:opacity-50"
             >
               {s}
             </button>
@@ -112,8 +113,9 @@ export default function FollowUpChat({ analysisId }: { analysisId: string }) {
 
       {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
 
-      <p className="text-xs text-slate-400 mt-3">
-        ⚖️ AI-genererade svar i informationssyfte – inte juridisk rådgivning.
+      <p className="text-xs text-slate-400 mt-3 flex items-center gap-1.5">
+        <Scale className="w-3.5 h-3.5 shrink-0" />
+        AI-genererade svar i informationssyfte – inte juridisk rådgivning.
       </p>
     </div>
   )

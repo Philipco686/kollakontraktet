@@ -17,28 +17,100 @@ export const contractGuides: ContractGuide[] = [
   {
     slug: 'hyreskontrakt',
     name: 'Hyreskontrakt',
-    metaTitle: 'Hyreskontrakt: fällor och vad du bör kolla | Kolla Kontraktet',
+    metaTitle: 'Hyreskontrakt: fällor, uppsägning och dina rättigheter | Kolla Kontraktet',
     metaDescription:
-      'Vad ska man kolla i ett hyreskontrakt? Vanliga fällor kring bindningstid, indexhöjning, reparationer och dolda kostnader – förklarat på vanlig svenska.',
-    h1: 'Hyreskontrakt: fällorna att känna till innan du skriver under',
+      'Vad gäller för hyra, höjningar, uppsägningstid och besittningsskydd? En komplett guide till hyreskontrakt på vanlig svenska – med checklista och vad hyreslagen säger.',
+    h1: 'Hyreskontrakt: den kompletta guiden till dina rättigheter',
+    updated: '2026-09-09',
     intro:
-      'Ett hyreskontrakt ser standardiserat ut, men detaljerna avgör vad det kostar dig. Här är de vanligaste fällorna – och hur du kan analysera ditt eget kontrakt på minuter.',
+      'Ett hyreskontrakt ser standardiserat ut, men detaljerna avgör vad boendet kostar och hur trygg du är. En viktig sak många missar: dina rättigheter beror på vilken typ av uthyrning det är. Den här guiden går igenom hyra, höjningar, uppsägning, besittningsskydd och avflyttning – och vad hyreslagen faktiskt säger.',
+    sections: [
+      {
+        heading: 'Vilken typ av hyra är det? (det avgör dina rättigheter)',
+        body: [
+          'Innan du läser detaljerna: ta reda på vilken sorts uthyrning kontraktet gäller, för det styr vilken lag som skyddar dig. Ett förstahandskontrakt direkt med en hyresvärd eller ett bostadsbolag omfattas av hyreslagen (12 kap. jordabalken) med starkt besittningsskydd.',
+          'Hyr du en hyresrätt i andra hand gäller också hyreslagen, men med särskilda regler – bland annat att du kan begära tillbaka överhyra hos hyresnämnden. Hyr du däremot någons egen bostadsrätt eller villa gäller i stället lagen om uthyrning av egen bostad (2012:978), som ger hyresvärden mer frihet: kostnadsbaserad hyra, kortare uppsägningstid och inget besittningsskydd.',
+          'Kort sagt: samma ord i kontraktet kan betyda olika saker beroende på upplägget. Kontrollera därför först om det är förstahand, andrahand av hyresrätt, eller uthyrning av egen bostad.',
+        ],
+      },
+      {
+        heading: 'Hyran: nivå, höjningar och indexklausuler',
+        body: [
+          'För en vanlig bostadslägenhet ska hyran enligt hyreslagen vara bestämd till beloppet. Klausuler som trappar upp hyran eller kopplar den till index (KPI) är bara tillåtna om avtalet är tidsbestämt och löper i minst tre år. En årlig indexhöjning i ett vanligt tillsvidareavtal är alltså ofta inte giltig – även om den står i kontraktet.',
+          'Hyresnivån för en hyresrätt bygger på bruksvärdet, alltså vad likvärdiga lägenheter kostar. Tycker du att hyran är oskälig kan du få den prövad hos hyresnämnden. Vid andrahandsuthyrning av en hyresrätt kan du dessutom begära tillbaka överhyra i efterhand.',
+          'Hyr du någons egen bostad gäller andra regler: då får hyresvärden ta ut en kostnadsbaserad hyra (rimlig kapitalkostnad plus driftskostnader), och den kan inte prövas mot bruksvärdet på samma sätt. Läs alltid klausulen om hyresjustering noga – särskilt om det finns ett "golv" som höjer oavsett index.',
+        ],
+      },
+      {
+        heading: 'Bindningstid och uppsägning',
+        body: [
+          'För en bostad har du som hyresgäst alltid rätt att säga upp avtalet med tre månaders uppsägningstid till ett månadsskifte – oavsett vad kontraktet säger. Ett villkor som binder dig längre än så är inte giltigt till din nackdel. (Vid uthyrning av egen bostad enligt privatuthyrningslagen är din uppsägningstid i stället kortare, en månad.)',
+          'Kolla om avtalet löper tillsvidare eller på bestämd tid, och om det förlängs automatiskt om ingen säger upp det. Ett tidsbestämt avtal som "förlängs med tolv månader i taget" kan låsa dig om du missar uppsägningsfönstret.',
+        ],
+      },
+      {
+        heading: 'Besittningsskydd – får du bo kvar?',
+        body: [
+          'Besittningsskydd betyder att du har rätt att bo kvar och få kontraktet förlängt även om hyresvärden vill säga upp dig, så länge du skött dig. Vid ett förstahandskontrakt på en bostad har du normalt ett starkt besittningsskydd.',
+          'Vid andrahandsuthyrning uppstår besittningsskydd först efter två år – men det avtalas mycket ofta bort med hyresnämndens godkännande, vilket är helt lagligt. Vid uthyrning av egen bostad finns inget besittningsskydd alls. Kontrollera därför om kontraktet innehåller ett avstående från besittningsskydd, så att du vet hur trygg din rätt att bo kvar faktiskt är.',
+        ],
+      },
+      {
+        heading: 'Deposition, avgifter och vad som ingår',
+        body: [
+          'Deposition är vanligt men inte särskilt reglerat i lag. Om du betalar en, se till att det står skriftligt hur stor den är, vad den får användas till och när du får tillbaka den. En deposition ska återbetalas när du flyttar ut, med avdrag bara för sådant du faktiskt är ansvarig för.',
+          'Ta reda på exakt vad som ingår i hyran och vad som tillkommer: värme, varmvatten, el, bredband, tv och eventuella andra avgifter. Poster utöver hyran kan lägga på tusenlappar per år, så det ska framgå tydligt.',
+        ],
+      },
+      {
+        heading: 'Skick, reparationer och avflyttning',
+        body: [
+          'Enligt hyreslagen är det hyresvärden som ska hålla bostaden i brukbart skick och sköta reparationer med skäliga tidsmellanrum. Var därför skeptisk mot klausuler som vältrar över allt underhåll på dig som hyresgäst – de kan vara ogiltiga.',
+          'Du ansvarar för skador du själv orsakar, men inte för normalt slitage (som att en matta nöts eller väggar mattas med tiden). Vid utflytt är det vanligt med en besiktning; se till att dokumentera bostadens skick när du flyttar in, gärna med foton, så att du inte får betala för slitage som redan fanns.',
+        ],
+      },
+      {
+        heading: 'Andrahandsuthyrning och inneboende',
+        body: [
+          'Vill du själv hyra ut i andra hand eller ta in en inneboende krävs oftast hyresvärdens samtycke, eller tillstånd från hyresnämnden om du har giltiga skäl. Att hyra ut i andra hand utan lov är en av de vanligaste orsakerna till att någon förlorar sitt förstahandskontrakt.',
+          'Kolla vad ditt kontrakt säger om detta innan du planerar att vara borta en period – reglerna är strikta och konsekvensen av att bryta mot dem kan bli att du blir av med bostaden.',
+        ],
+      },
+    ],
+    lawRefs: [
+      { law: 'Jordabalken (1970:994), 12 kap. ("hyreslagen")', note: 'Grunden för bostadshyra: din rätt att säga upp med tre månaders uppsägningstid, hyresvärdens underhållsansvar, besittningsskydd och skälig hyra.' },
+      { law: 'Lagen om uthyrning av egen bostad (2012:978)', note: 'Gäller när någon hyr ut sin egen bostadsrätt eller villa – kostnadsbaserad hyra, kortare uppsägningstid för hyresgästen och inget besittningsskydd.' },
+      { law: 'Hyresförhandlingslagen (1978:304)', note: 'Reglerar kollektivt förhandlade hyror, t.ex. i allmännyttan, där hyran sätts genom förhandling mellan hyresvärd och hyresgästförening.' },
+    ],
     traps: [
-      { title: 'Bindningstid och uppsägning', body: 'Bunden hyrestid kan låsa dig i månader efter att du vill flytta. Kolla uppsägningstiden och om avtalet förlängs automatiskt.' },
-      { title: 'Indexhöjning av hyran', body: 'Klausuler som höjer hyran med KPI – ibland med ett golv på flera procent – gör att hyran stiger varje år oavsett vad du tycker.' },
-      { title: 'Vem står för skador och reparationer?', body: 'Vissa kontrakt lägger allt underhåll på hyresgästen. Kolla vad du ansvarar för vid avflyttning och om "normalt slitage" räknas.' },
-      { title: 'Dolda kostnader', body: 'Värme, vatten, drift och andra avgifter utöver hyran kan lägga tusenlappar per år. Se till att veta vad som ingår.' },
+      { title: 'Indexhöjning som inte är tillåten', body: 'För en vanlig bostad får hyran bara trappas eller indexeras om avtalet är tidsbestämt i minst tre år. En årlig KPI-höjning i ett tillsvidareavtal är ofta ogiltig – även om den står i kontraktet.' },
+      { title: 'Överhyra i andra hand', body: 'Hyr du en hyresrätt i andra hand och betalar mer än förstahandshyran (plus ev. tillägg för möbler) kan du begära tillbaka mellanskillnaden hos hyresnämnden.' },
+      { title: 'Bindningstid som låser dig', body: 'För en bostad har du alltid rätt att säga upp med tre månaders uppsägningstid, oavsett vad kontraktet säger. Ett villkor som binder dig längre är inte giltigt till din nackdel.' },
+      { title: 'Underhåll som vältras över på dig', body: 'Hyresvärden ansvarar enligt lag för att hålla bostaden i brukbart skick. Var skeptisk mot klausuler som lägger allt reparationsansvar på hyresgästen.' },
+      { title: 'Avstående från besittningsskydd', body: 'I andrahands- och korttidskontrakt förekommer klausuler där du avstår rätten att bo kvar. Det kan vara helt lagligt – men se till att du förstår att din rätt att bo kvar då är svag.' },
+      { title: 'Dolda kostnader', body: 'Värme, vatten, el, bredband och andra avgifter utöver hyran kan lägga på tusenlappar per år. Kontrollera exakt vad som ingår och vad som tillkommer.' },
     ],
     checklist: [
-      'Hur lång är bindnings- och uppsägningstiden?',
-      'Kan hyran höjas – och med hur mycket per år?',
-      'Vad ansvarar jag för vid skador och avflyttning?',
-      'Vilka kostnader tillkommer utöver hyran?',
+      'Är det förstahand, andrahand av hyresrätt, eller uthyrning av egen bostad?',
+      'Är hyran skälig – och kan jag pröva den hos hyresnämnden?',
+      'Får hyran höjas, hur och med hur mycket? (Är index/trappning ens tillåtet här?)',
+      'Hur lång är bindnings- och uppsägningstiden? (Minst tre månader för mig?)',
       'Förlängs avtalet automatiskt om jag inte säger upp det?',
+      'Har jag besittningsskydd – eller avstår jag från rätten att bo kvar?',
+      'Vad ingår i hyran (värme, vatten, el, bredband)?',
+      'Vilka kostnader tillkommer utöver hyran?',
+      'Betalar jag deposition – hur stor, och hur/när får jag tillbaka den?',
+      'Vad ansvarar jag för vid skador – och räknas normalt slitage bort?',
+      'Vad gäller vid besiktning och städning när jag flyttar ut?',
+      'Får jag hyra ut i andra hand eller ha inneboende?',
     ],
     faq: [
-      { q: 'Vad är viktigast att kolla i ett hyreskontrakt?', a: 'Bindningstid, hur hyran kan höjas, vem som ansvarar för skador, och vilka kostnader som tillkommer utöver hyran.' },
-      { q: 'Kan hyresvärden höja hyran hur som helst?', a: 'Nej, men indexklausuler kan tillåta årliga höjningar. Läs klausulen om hyresjustering noga – ibland finns ett golv oavsett index.' },
+      { q: 'Kan hyresvärden höja hyran hur mycket som helst?', a: 'Nej. För en hyresrätt bygger hyran på bruksvärdet och kan prövas hos hyresnämnden om den är oskälig. Index- eller trappningsklausuler för en bostad är bara tillåtna om avtalet är tidsbestämt i minst tre år.' },
+      { q: 'Hur lång uppsägningstid har jag på ett hyreskontrakt?', a: 'För en bostad har du alltid rätt att säga upp med tre månaders uppsägningstid till ett månadsskifte, oavsett vad kontraktet säger. Vid uthyrning av egen bostad enligt privatuthyrningslagen är din uppsägningstid i stället en månad.' },
+      { q: 'Vad är besittningsskydd?', a: 'Rätten att bo kvar och få kontraktet förlängt även om hyresvärden vill säga upp dig, så länge du skött dig. Starkt vid förstahandskontrakt, uppstår efter två år i andra hand (men avtalas ofta bort), och saknas helt vid uthyrning av egen bostad.' },
+      { q: 'Kan jag få tillbaka överhyra i andra hand?', a: 'Ja. Hyr du en hyresrätt i andra hand och betalar mer än förstahandshyran kan du ansöka hos hyresnämnden om att få tillbaka mellanskillnaden. Ansök i tid efter att hyresförhållandet upphört.' },
+      { q: 'Vad räknas som normalt slitage?', a: 'Sådant som uppstår vid vanligt boende över tid – till exempel att mattor nöts eller ytor mattas. Det ska du inte behöva betala för. Du ansvarar däremot för skador du själv orsakar utöver normalt slitage.' },
+      { q: 'Måste jag ha tillstånd för att hyra ut i andra hand?', a: 'Ja, oftast krävs hyresvärdens samtycke eller tillstånd från hyresnämnden. Att hyra ut utan lov är en vanlig orsak till att man förlorar sitt förstahandskontrakt.' },
     ],
   },
   {

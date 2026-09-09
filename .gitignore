@@ -19,3 +19,6 @@ next-env.d.ts
 
 # Stripe CLI binär
 stripe.exe
+
+# Lokalt marknadsmaterial (ska inte i repot)
+kollakontraktet_ALLT.zip

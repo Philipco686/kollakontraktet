@@ -3,6 +3,7 @@ import Link from 'next/link'
 export const metadata = {
   title: 'Integritetspolicy – Kolla Kontraktet',
   description: 'Så behandlar Kolla Kontraktet dina personuppgifter enligt GDPR, inklusive AI-behandling och överföring till tredjeland.',
+  alternates: { canonical: '/privacy' },
 }
 
 const LAST_UPDATED = '8 september 2026'

@@ -1,10 +1,33 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import ScrollReveal from '@/components/ScrollReveal'
+import { SITE_URL } from '@/lib/site'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
+
+const softwareAppJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Kolla Kontraktet',
+  url: SITE_URL,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  description:
+    'AI-driven analys av juridiska avtal på svenska. Klistra in eller ladda upp ett hyreskontrakt, anställningsavtal eller konsultavtal och få klausulgenomgång, riskbedömning och förhandlingstips.',
+  offers: [
+    { '@type': 'Offer', name: 'Engångsanalys', price: '49', priceCurrency: 'SEK', url: `${SITE_URL}/pricing` },
+    { '@type': 'Offer', name: 'Personlig', price: '149', priceCurrency: 'SEK', url: `${SITE_URL}/pricing` },
+    { '@type': 'Offer', name: 'Företag', price: '499', priceCurrency: 'SEK', url: `${SITE_URL}/pricing` },
+  ],
+}
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       <ScrollReveal />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }} />
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-slate-100">

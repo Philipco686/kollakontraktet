@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { contractGuides } from '@/lib/seo/contract-types'
+import { SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Avtalsguider: fällor och råd per avtalstyp | Kolla Kontraktet',
@@ -9,9 +10,19 @@ export const metadata: Metadata = {
   alternates: { canonical: '/avtal' },
 }
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Hem', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'Avtalsguider', item: `${SITE_URL}/avtal` },
+  ],
+}
+
 export default function AvtalIndex() {
   return (
     <div className="min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <header className="border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="font-display font-semibold text-brand-800 text-lg">Kolla Kontraktet</Link>

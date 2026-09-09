@@ -3,6 +3,7 @@ import Link from 'next/link'
 export const metadata = {
   title: 'Användarvillkor – Kolla Kontraktet',
   description: 'Villkor för användning av Kolla Kontraktet, inklusive ångerrätt, betalning och ansvarsbegränsning.',
+  alternates: { canonical: '/terms' },
 }
 
 const LAST_UPDATED = '8 september 2026'

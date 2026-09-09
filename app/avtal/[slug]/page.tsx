@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { contractGuides, getGuide } from '@/lib/seo/contract-types'
+import { SITE_URL } from '@/lib/site'
 
 export function generateStaticParams() {
   return contractGuides.map(g => ({ slug: g.slug }))
@@ -41,8 +42,39 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     })),
   } : null
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Hem', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'Avtalsguider', item: `${SITE_URL}/avtal` },
+      { '@type': 'ListItem', position: 3, name: guide.name, item: `${SITE_URL}/avtal/${guide.slug}` },
+    ],
+  }
+
+  // Ärlig författare/utgivare: organisationen (aldrig en påhittad jurist).
+  // Uppdatera datumen när guidens innehåll faktiskt ändras.
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: guide.h1,
+    description: guide.metaDescription,
+    inLanguage: 'sv-SE',
+    datePublished: '2026-09-09',
+    dateModified: '2026-09-09',
+    author: { '@type': 'Organization', name: 'Kolla Kontraktet', url: SITE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Kolla Kontraktet',
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.svg` },
+    },
+    mainEntityOfPage: `${SITE_URL}/avtal/${guide.slug}`,
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {faqJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       )}

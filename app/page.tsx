@@ -90,7 +90,7 @@ export default function LandingPage() {
                 body="Hyran höjs automatiskt varje år. Med ett golv på 4 % betalar du mer även år då index knappt rör sig." />
               <div className="h-px bg-slate-100" />
               <Clause level="good" title="Uppsägningstid"
-                body="Tre månader — standard för en bostad, och gäller oavsett vad kontraktet säger." />
+                body="Tre månader, standard för en bostad. Gäller oavsett vad kontraktet säger." />
               <div className="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5">
                 <div>
                   <div className="text-xs text-slate-500">Ekonomisk risk, worst case</div>
@@ -143,7 +143,7 @@ export default function LandingPage() {
                 body="Inget tak på ditt skadeståndsansvar. Ett enda fel kan kosta dig långt mer än hela arvodet." />
               <div className="h-px bg-slate-100" />
               <Clause level="warn" title="Betalningstid 90 dagar"
-                body="Pressar din likviditet. Enligt räntelagen är 30 dagar utgångspunkten — det här går att förhandla." />
+                body="Pressar din likviditet. Enligt räntelagen är 30 dagar utgångspunkten, så det här går att förhandla." />
               <div className="h-px bg-slate-100" />
               <Clause level="good" title="Uppsägningstid"
                 body="Symmetrisk åt båda håll. Rimligt och standardenligt." />
@@ -204,7 +204,7 @@ export default function LandingPage() {
           <div className="relative z-10">
             <h2 className="font-display text-3xl sm:text-4xl font-medium text-white tracking-tight">Vad döljer sig i ditt avtal?</h2>
             <p className="text-[#c4cee4] mt-4 max-w-lg mx-auto leading-relaxed">
-              Testa gratis — din första analys kostar inget och tar under en minut. Inget kort krävs.
+              Testa gratis. Din första analys kostar inget och tar under en minut. Inget kort krävs.
             </p>
             <div className="mt-8">
               <Link href="/login" className="btn-accent btn-float text-base px-8 py-3.5">Prova gratis nu</Link>

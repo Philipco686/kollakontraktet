@@ -178,7 +178,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900 mb-2">11. Avtalsbenchmarken (frivilligt bidrag)</h2>
             <p>
-              När du laddar upp ett avtal kan du aktivt välja att bidra till Avtalsbenchmarken – ett
+              När du laddar upp ett avtal kan du aktivt välja att bidra till Avtalsbenchmarken, ett
               anonymiserat jämförelseunderlag som på sikt gör det möjligt att se om ett villkor är normalt.
               Det är helt frivilligt, kryssrutan är inte förifylld, och du kan analysera avtal utan att bidra.
             </p>

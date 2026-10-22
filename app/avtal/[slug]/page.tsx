@@ -130,7 +130,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           <h2 className="font-display text-2xl font-semibold text-slate-900 mb-6">Det här missar folk ofta</h2>
           <div className="space-y-4">
             {guide.traps.map(t => (
-              <div key={t.title} className="rounded-2xl border border-slate-200 border-l-4 border-l-accent-500 p-5">
+              <div key={t.title} className="rounded-2xl border border-slate-200 p-5">
                 <h3 className="font-semibold text-slate-900 mb-1">{t.title}</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">{t.body}</p>
               </div>
@@ -144,7 +144,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
             <h2 className="font-display text-2xl font-semibold text-slate-900 mb-6">Det här säger lagen</h2>
             <div className="space-y-3">
               {guide.lawRefs.map(l => (
-                <div key={l.law} className="rounded-2xl border border-slate-200 border-l-4 border-l-brand-500 p-5">
+                <div key={l.law} className="rounded-2xl border border-slate-200 p-5">
                   <h3 className="font-semibold text-slate-900 mb-1">{l.law}</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">{l.note}</p>
                 </div>

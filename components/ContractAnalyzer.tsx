@@ -225,7 +225,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 
       {/* 1-minutssammanfattning */}
       {r.quick_summary && (
-        <div className="card border-l-4 border-brand-500">
+        <div className="card">
           <h3 className="font-semibold text-slate-900 mb-4">Kort version (1 minut)</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
@@ -248,7 +248,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 
       {/* Ekonomisk risk */}
       {r.economic_risk && r.economic_risk.max_amount > 0 && (
-        <div className="card border-l-4 border-red-400">
+        <div className="card">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-slate-900 flex items-center gap-2"><Coins className="w-5 h-5 text-accent-600" /> Ekonomisk risk, worst case</h3>
             <span className="text-2xl font-bold text-red-600">
@@ -289,7 +289,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 
       {/* Det här missar folk */}
       {r.common_traps?.length > 0 && (
-        <div className="card border-l-4 border-amber-400">
+        <div className="card">
           <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><AlertTriangle className="w-5 h-5 text-amber-500" /> Det här missar folk ofta</h3>
           <ul className="space-y-2">
             {r.common_traps.map((t: string, i: number) => (
@@ -317,7 +317,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 
       {/* Ovanliga villkor */}
       {r.unusual_terms?.length > 0 && (
-        <div className="card border-l-4 border-red-400">
+        <div className="card">
           <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><AlertOctagon className="w-5 h-5 text-red-500" /> Ovanliga eller oskäliga villkor</h3>
           <ul className="space-y-2">
             {r.unusual_terms.map((u: string, i: number) => (
@@ -385,7 +385,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 
       {/* Rekommendationer */}
       {r.recommendations?.length > 0 && (
-        <div className="card border-l-4 border-brand-500">
+        <div className="card">
           <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-brand-600" /> Rekommendationer</h3>
           <ul className="space-y-2">
             {r.recommendations.map((rec: string, i: number) => (
@@ -430,10 +430,9 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
 
 function ClauseCard({ clause, expanded, onToggle }: { clause: Clause; expanded: boolean; onToggle: () => void }) {
   const riskColor = { low: 'bg-green-500', medium: 'bg-yellow-500', high: 'bg-red-500' }[clause.risk_level]
-  const borderColor = { low: 'border-l-green-400', medium: 'border-l-yellow-400', high: 'border-l-red-400' }[clause.risk_level]
 
   return (
-    <div className={`card border-l-4 hover-lift ${borderColor}`}>
+    <div className="card hover-lift">
       <button onClick={onToggle} className="w-full flex items-center justify-between text-left gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${riskColor}`} />

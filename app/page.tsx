@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import ScrollReveal from '@/components/ScrollReveal'
 import { SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -23,181 +22,201 @@ const softwareAppJsonLd = {
   ],
 }
 
+const contractTypes = [
+  'Hyreskontrakt', 'Anställningsavtal', 'Konsultavtal',
+  'Köpeavtal', 'Samboavtal', 'Bolånehandlingar',
+]
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
-      <ScrollReveal />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }} />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-slate-100">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <span className="font-display font-semibold text-brand-800 text-xl tracking-tight">Kolla Kontraktet</span>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900">Logga in</Link>
-            <Link href="/login" className="btn-accent text-sm py-2 px-4">Prova gratis</Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-50/60 to-white" />
-        {/* Svävande färgsken */}
-        <div className="pointer-events-none absolute -top-24 -left-16 w-72 h-72 rounded-full bg-brand-200/40 blur-3xl animate-float" />
-        <div className="pointer-events-none absolute top-8 -right-16 w-72 h-72 rounded-full bg-accent-200/40 blur-3xl animate-float" style={{ animationDelay: '2.5s' }} />
-
-        <div className="relative max-w-4xl mx-auto px-4 pt-20 pb-16 text-center">
-          <div className="animate-fade-up inline-flex items-center gap-2 bg-white border border-brand-100 text-brand-700 text-sm font-medium px-4 py-1.5 rounded-full mb-8 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-accent-500 animate-pulse-dot" />
-            AI-driven avtalsanalys på svenska
-          </div>
-          <h1 className="animate-fade-up-1 font-display text-4xl sm:text-6xl font-semibold text-slate-900 leading-[1.1] tracking-tight mb-6">
-            Förstå ditt avtal –{' '}
-            <span className="text-brand-700">innan du skriver under</span>
-          </h1>
-          <p className="animate-fade-up-2 text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Klistra in ditt hyreskontrakt, anställningsavtal eller konsultavtal. Du får en tydlig
-            analys med risker, dolda fällor och förhandlingstips – på vanlig svenska.
-          </p>
-          <div className="animate-fade-up-3 flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/login" className="btn-accent text-base px-8">Prova gratis – analysera ditt avtal</Link>
-            <Link href="#exempel" className="btn-secondary text-base">Se ett exempel</Link>
-          </div>
-          <div className="animate-fade-up-3 flex flex-wrap justify-center gap-x-6 gap-y-2 mt-8 text-sm text-slate-400">
-            <span className="flex items-center gap-1.5"><CheckIcon /> Första analysen gratis</span>
-            <span className="flex items-center gap-1.5"><CheckIcon /> Inget kort krävs</span>
-            <span className="flex items-center gap-1.5"><CheckIcon /> Klar på under en minut</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Exempel på analys */}
-      <section id="exempel" className="bg-slate-50 border-y border-slate-100 py-20">
-        <div className="max-w-3xl mx-auto px-4">
-          <div className="reveal text-center mb-12">
-            <p className="text-sm font-semibold text-accent-600 uppercase tracking-wide mb-2">Så ser analysen ut</p>
-            <h2 className="font-display text-3xl font-semibold text-slate-900">Riktigt exempel från ett hyreskontrakt</h2>
-          </div>
-
-          <div className="space-y-4">
-            <div className="reveal hover-lift bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Originaltext i avtalet</p>
-              <p className="text-slate-700 font-mono text-sm leading-relaxed">
-                &quot;Hyresvärden äger rätt att höja hyran en gång per år i enlighet med förändringen i
-                konsumentprisindex (KPI), dock med lägst 4 % per år oavsett indexutveckling.&quot;
-              </p>
+      {/* Hero – djup navy-botten med svävande kontroller */}
+      <div className="hero-depth">
+        <header className="relative z-10 border-b border-white/10">
+          <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <span className="w-7 h-7 rounded-lg bg-brand-700 grid place-items-center shrink-0">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12.5 9 16.5 19 7" stroke="#FBBF24" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <span className="font-display font-semibold text-white text-lg tracking-tight">Kolla Kontraktet</span>
             </div>
+            <div className="hidden sm:flex items-center gap-7 text-sm text-[#c4cee4]">
+              <Link href="/avtal" className="hover:text-white transition-colors">Avtalsguider</Link>
+              <Link href="/pricing" className="hover:text-white transition-colors">Priser</Link>
+            </div>
+            <div className="flex items-center gap-4">
+              <Link href="/login" className="text-sm font-medium text-[#c4cee4] hover:text-white transition-colors">Logga in</Link>
+              <Link href="/login" className="btn-accent btn-float text-sm py-2 px-4">Prova gratis</Link>
+            </div>
+          </div>
+        </header>
 
-            <div className="reveal reveal-d1 hover-lift bg-white rounded-2xl border border-amber-200 border-l-4 border-l-accent-500 p-6 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-accent-500" />
-                <span className="font-semibold text-slate-900">Indexreglering av hyra</span>
-                <span className="ml-auto text-xs bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-medium">Varning</span>
+        <section className="relative z-10 max-w-6xl mx-auto px-4 pt-16 pb-20 sm:pt-20 sm:pb-28 grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
+          <div className="max-w-xl">
+            <span className="text-xs font-semibold tracking-[0.14em] uppercase text-[#e7c892]">Avtalsanalys på svenska</span>
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.3rem] font-medium leading-[1.06] tracking-tight text-[#f6f8fc] mt-5">
+              Förstå ditt avtal <span className="text-[#f1c577]">innan</span> du skriver under.
+            </h1>
+            <p className="text-lg text-[#c4cee4] leading-relaxed mt-6 max-w-lg">
+              Klistra in ditt hyreskontrakt, anställningsavtal eller konsultavtal. AI:n flaggar riskerna,
+              förklarar varje klausul på vanlig svenska och visar vad de kan kosta dig.
+            </p>
+            <div className="flex flex-wrap items-center gap-4 mt-8">
+              <Link href="/login" className="btn-accent btn-float text-base px-7 py-3.5">Analysera ditt avtal</Link>
+              <Link href="#exempel" className="btn-glass rounded-xl px-6 py-3.5 text-base font-medium inline-flex items-center">Se ett exempel</Link>
+            </div>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 mt-7 text-sm text-[#93a1c2]">
+              <span className="flex items-center gap-1.5"><Tick /> Första analysen gratis</span>
+              <span className="flex items-center gap-1.5"><Tick /> Inget kort krävs</span>
+              <span className="flex items-center gap-1.5"><Tick /> Klart på under en minut</span>
+            </div>
+          </div>
+
+          {/* Svävande produktpanel – den riktiga analysen */}
+          <div className="panel-float bg-white rounded-2xl border border-white/10 overflow-hidden">
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
+              <div>
+                <div className="font-display font-semibold text-slate-900 text-[15px]">Hyreskontrakt, lägenhet</div>
+                <div className="text-xs text-slate-400 mt-0.5">11 klausuler analyserade</div>
               </div>
-              <p className="text-slate-700 text-sm leading-relaxed mb-3">
-                Din hyra höjs automatiskt varje år – du behöver inte godkänna det. Med ett golv på 4 %
-                betalar du mer även år då index knappt rör sig.
-              </p>
-              <div className="bg-brand-50 rounded-xl p-3">
-                <p className="text-xs font-semibold text-brand-700 mb-1">Det här kan du förhandla</p>
-                <p className="text-sm text-brand-900 italic">&quot;Jag vill ta bort golvet så att höjningen enbart följer KPI.&quot;</p>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 whitespace-nowrap">Medel risk</span>
+            </div>
+            <div className="p-5 flex flex-col gap-3.5">
+              <Clause level="warn" title="Indexreglering av hyra"
+                body="Hyran höjs automatiskt varje år. Med ett golv på 4 % betalar du mer även år då index knappt rör sig." />
+              <div className="h-px bg-slate-100" />
+              <Clause level="good" title="Uppsägningstid"
+                body="Tre månader — standard för en bostad, och gäller oavsett vad kontraktet säger." />
+              <div className="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5">
+                <div>
+                  <div className="text-xs text-slate-500">Ekonomisk risk, worst case</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Vid KPI 10 % på 12 mån hyra à 10 800 kr</div>
+                </div>
+                <div className="font-display text-2xl font-semibold text-red-700 tabular-nums">+12 960 kr</div>
               </div>
             </div>
-
-            <div className="reveal reveal-d2 hover-lift bg-white rounded-2xl border border-red-200 border-l-4 border-l-red-400 p-6 shadow-sm">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-slate-900">Ekonomisk risk – worst case</span>
-                <span className="font-display text-2xl font-semibold text-red-600">+12 960 kr/år</span>
-              </div>
-              <p className="text-sm text-slate-500 mt-1">Baserat på KPI 10 % på 12 månaders hyra à 10 800 kr</p>
-            </div>
-
-            <div className="reveal text-center pt-4">
-              <p className="text-sm text-slate-400 mb-4">+ 9 fler klausuler, förhandlingstips, viktiga datum och checklista</p>
-              <Link href="/login" className="btn-accent">Analysera ditt avtal gratis</Link>
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      {/* Hur det fungerar */}
-      <section className="max-w-5xl mx-auto px-4 py-20">
-        <h2 className="reveal font-display text-3xl font-semibold text-slate-900 text-center mb-14">Tre enkla steg</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
-          {[
-            { n: '1', title: 'Klistra in avtalet', desc: 'Kopiera texten eller ladda upp din PDF direkt i editorn.' },
-            { n: '2', title: 'AI analyserar', desc: 'Varje klausul granskas, risker flaggas och ovanliga villkor identifieras.' },
-            { n: '3', title: 'Förstå och förhandla', desc: 'Du får klara förklaringar, worst-case i kronor och konkreta förhandlingstips.' },
-          ].map(({ n, title, desc }, i) => (
-            <div key={n} className={`reveal reveal-d${i + 1} text-center`}>
-              <div className="w-12 h-12 rounded-full bg-brand-700 text-white font-display font-semibold text-lg flex items-center justify-center mx-auto mb-5">
-                {n}
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">{title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
-            </div>
+      {/* Fungerar för */}
+      <div className="border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-4 py-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600">
+          <span className="text-xs uppercase tracking-wider font-semibold text-slate-400">Fungerar för</span>
+          {contractTypes.map((t, i) => (
+            <span key={t} className="flex items-center gap-4">
+              {i > 0 && <span className="text-slate-300" aria-hidden="true">·</span>}
+              {t}
+            </span>
           ))}
+        </div>
+      </div>
+
+      {/* Så ser analysen ut */}
+      <section id="exempel" className="max-w-6xl mx-auto px-4 py-20 sm:py-24">
+        <div className="max-w-xl mb-10">
+          <span className="text-xs font-semibold tracking-[0.14em] uppercase text-accent-600">Så ser analysen ut</span>
+          <h2 className="font-display text-3xl sm:text-4xl font-medium text-slate-900 tracking-tight leading-tight mt-3.5">
+            Inte en sammanfattning. Ett råd.
+          </h2>
+          <p className="text-slate-500 text-base leading-relaxed mt-3.5">
+            En sammanfattning får du gratis av vilken AI som helst. Det värdefulla är att veta vilken klausul som
+            avviker, vad den kan kosta, och exakt vad du ska säga för att förhandla bort den.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-[1.25fr_1fr] gap-5 items-stretch">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
+              <div>
+                <div className="font-display font-semibold text-slate-900 text-[15px]">Konsultavtal</div>
+                <div className="text-xs text-slate-400 mt-0.5">Genomgång av klausuler</div>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 whitespace-nowrap">Medel risk</span>
+            </div>
+            <div className="p-5 flex flex-col gap-3.5">
+              <Clause level="bad" title="Obegränsat ansvar"
+                body="Inget tak på ditt skadeståndsansvar. Ett enda fel kan kosta dig långt mer än hela arvodet." />
+              <div className="h-px bg-slate-100" />
+              <Clause level="warn" title="Betalningstid 90 dagar"
+                body="Pressar din likviditet. Enligt räntelagen är 30 dagar utgångspunkten — det här går att förhandla." />
+              <div className="h-px bg-slate-100" />
+              <Clause level="good" title="Uppsägningstid"
+                body="Symmetrisk åt båda håll. Rimligt och standardenligt." />
+              <div className="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5">
+                <div>
+                  <div className="text-xs text-slate-500">Ekonomisk risk, worst case</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Vid vite om 6 månadsarvoden</div>
+                </div>
+                <div className="font-display text-2xl font-semibold text-red-700 tabular-nums">270 000 kr</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-brand-900 text-white rounded-2xl p-6 flex flex-col gap-4">
+            <span className="text-xs font-semibold tracking-[0.14em] uppercase text-[#e7c892]">Det här kan du förhandla</span>
+            <h3 className="font-display text-xl font-medium leading-snug">Be om ett tak på ansvaret.</h3>
+            <p className="font-display italic text-[15px] leading-relaxed text-brand-100 border-l-2 border-white/25 pl-3.5">
+              ”Jag vill begränsa mitt ansvar till arvodet för uppdraget, och att indirekta skador undantas.”
+            </p>
+            <div className="text-xs text-brand-200/90 mt-auto pt-2">
+              Färdig formulering · en av 6 förhandlingspunkter i den fulla analysen
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Trygghet */}
-      <section className="bg-brand-900 py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="reveal text-center mb-12">
-            <h2 className="font-display text-3xl font-semibold text-white mb-3">Dina dokument är säkra</h2>
-            <p className="text-brand-200">Juridiska dokument är känsliga. Så hanterar vi dem.</p>
+      <section className="bg-brand-900">
+        <div className="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 md:gap-12">
+          <div>
+            <h2 className="font-display text-3xl font-medium text-white tracking-tight">Dina dokument är säkra</h2>
+            <p className="text-brand-200 mt-3 max-w-sm leading-relaxed">
+              Juridiska dokument är känsliga. Så hanterar vi dem.
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-x-7 gap-y-6">
             {[
               { title: 'Krypterad överföring', desc: 'All data skickas krypterat via HTTPS.' },
-              { title: 'Ingen människa läser ditt avtal', desc: 'Texten analyseras automatiskt av vår AI – aldrig manuellt av personal.' },
+              { title: 'Ingen människa läser avtalet', desc: 'Texten analyseras automatiskt av AI, aldrig manuellt av personal.' },
               { title: 'GDPR-anpassat', desc: 'Du kan radera dina uppgifter när som helst.' },
-              { title: 'Inte juridisk rådgivning', desc: 'Ett verktyg som hjälper dig förstå – rådgör med jurist vid tvivel.' },
-            ].map(({ title, desc }, i) => (
-              <div key={title} className={`reveal ${i % 2 === 1 ? 'reveal-d1' : ''} hover-lift bg-brand-800/60 rounded-2xl p-5 flex gap-4`}>
-                <span className="text-accent-400 shrink-0 mt-0.5"><ShieldIcon /></span>
-                <div>
-                  <h3 className="font-semibold text-white mb-1">{title}</h3>
-                  <p className="text-sm text-brand-200 leading-relaxed">{desc}</p>
+              { title: 'Avtalstexten gallras', desc: 'Originaltexten raderas automatiskt efter 90 dagar.' },
+            ].map(({ title, desc }) => (
+              <div key={title}>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[#e7c892] shrink-0"><ShieldIcon /></span>
+                  <h3 className="font-semibold text-white text-[15px]">{title}</h3>
                 </div>
+                <p className="text-sm text-brand-200 leading-relaxed mt-1.5 pl-[26px]">{desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Avtalstyper */}
-      <section className="max-w-5xl mx-auto px-4 py-20">
-        <h2 className="reveal font-display text-2xl font-semibold text-slate-900 text-center mb-10">Fungerar för alla typer av avtal</h2>
-        <div className="reveal grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[
-            'Hyreskontrakt', 'Anställningsavtal', 'Köpeavtal',
-            'Konsultavtal', 'Samboavtal', 'Leverantörsavtal',
-            'Sekretessavtal (NDA)', 'Franchiseavtal', 'Bolånehandlingar',
-          ].map(type => (
-            <div key={type} className="hover-lift bg-slate-50 rounded-xl p-4 text-center text-sm text-slate-700 font-medium border border-slate-100 hover:border-brand-200">
-              {type}
+      {/* Avslutande CTA */}
+      <section className="max-w-6xl mx-auto px-4 py-20">
+        <div className="hero-depth rounded-3xl px-6 py-16 text-center">
+          <div className="relative z-10">
+            <h2 className="font-display text-3xl sm:text-4xl font-medium text-white tracking-tight">Vad döljer sig i ditt avtal?</h2>
+            <p className="text-[#c4cee4] mt-4 max-w-lg mx-auto leading-relaxed">
+              Testa gratis — din första analys kostar inget och tar under en minut. Inget kort krävs.
+            </p>
+            <div className="mt-8">
+              <Link href="/login" className="btn-accent btn-float text-base px-8 py-3.5">Prova gratis nu</Link>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="max-w-5xl mx-auto px-4 pb-20">
-        <div className="reveal bg-brand-700 rounded-3xl px-6 py-16 text-center">
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold text-white mb-4">Vad döljer sig i ditt avtal?</h2>
-          <p className="text-brand-200 mb-8 max-w-lg mx-auto">
-            Testa gratis – din första analys kostar inget och tar under en minut. Inget kort krävs.
-          </p>
-          <Link href="/login" className="btn-accent text-lg px-8">Prova gratis nu</Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="border-t border-slate-100 py-8">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-          <span className="font-display font-medium text-slate-500">© 2025 Kolla Kontraktet</span>
+          <span className="font-display font-medium text-slate-500">© 2026 Kolla Kontraktet</span>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
             <Link href="/avtal" className="hover:text-slate-600">Avtalsguider</Link>
             <Link href="/pricing" className="hover:text-slate-600">Priser</Link>
@@ -210,9 +229,22 @@ export default function LandingPage() {
   )
 }
 
-function CheckIcon() {
+function Clause({ level, title, body }: { level: 'good' | 'warn' | 'bad'; title: string; body: string }) {
+  const dot = { good: 'bg-green-500', warn: 'bg-amber-500', bad: 'bg-red-500' }[level]
   return (
-    <svg className="w-4 h-4 text-accent-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+    <div className="grid grid-cols-[auto_1fr] gap-3 items-start">
+      <span className={`w-2.5 h-2.5 rounded-full mt-[7px] shrink-0 ${dot}`} />
+      <div>
+        <div className="text-sm font-semibold text-slate-900">{title}</div>
+        <div className="text-[13px] text-slate-500 leading-snug mt-0.5">{body}</div>
+      </div>
+    </div>
+  )
+}
+
+function Tick() {
+  return (
+    <svg className="w-3.5 h-3.5 text-[#e7c892]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
   )
@@ -220,7 +252,7 @@ function CheckIcon() {
 
 function ShieldIcon() {
   return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v5c0 4.4-3 8.2-7 9-4-.8-7-4.6-7-9V7l7-4z" />
     </svg>
   )

@@ -106,7 +106,7 @@ export default function TeamManager({ ownerEmail, max }: { ownerEmail: string; m
         )}
 
         {!loading && members.length === 0 && (
-          <p className="text-sm text-slate-400 py-4">Inga medlemmar än – bjud in ditt team nedan.</p>
+          <p className="text-sm text-slate-400 py-4">Inga medlemmar än. Bjud in ditt team nedan.</p>
         )}
       </div>
 

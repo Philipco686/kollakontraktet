@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Integritetspolicy – Kolla Kontraktet',
+  title: 'Integritetspolicy | Kolla Kontraktet',
   description: 'Så behandlar Kolla Kontraktet dina personuppgifter enligt GDPR, inklusive AI-behandling och överföring till tredjeland.',
   alternates: { canonical: '/privacy' },
 }
@@ -103,12 +103,12 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-slate-900 mb-2">5. Personuppgiftsbiträden och mottagare</h2>
             <p>För att leverera tjänsten anlitar vi följande leverantörer, som behandlar uppgifter för vår räkning:</p>
             <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li><strong>Supabase</strong> – databas och inloggning (lagring av konto, analyser och avtalstext).</li>
-              <li><strong>Anthropic (USA)</strong> – AI-behandling av den avtalstext du skickar in, för att generera analysen.</li>
-              <li><strong>Vercel (USA)</strong> – drift och hosting av webbtjänsten.</li>
-              <li><strong>Stripe</strong> – hantering av betalningar.</li>
-              <li><strong>Resend (USA)</strong> – utskick av e-post när du begär det.</li>
-              <li><strong>Google</strong> – endast om du väljer att logga in med Google (autentisering).</li>
+              <li><strong>Supabase</strong>: databas och inloggning (lagring av konto, analyser och avtalstext).</li>
+              <li><strong>Anthropic (USA)</strong>: AI-behandling av den avtalstext du skickar in, för att generera analysen.</li>
+              <li><strong>Vercel (USA)</strong>: drift och hosting av webbtjänsten.</li>
+              <li><strong>Stripe</strong>: hantering av betalningar.</li>
+              <li><strong>Resend (USA)</strong>: utskick av e-post när du begär det.</li>
+              <li><strong>Google</strong>: endast om du väljer att logga in med Google (autentisering).</li>
             </ul>
             <p className="mt-2">
               Vi säljer aldrig dina personuppgifter och delar dem inte för marknadsföringsändamål.
@@ -121,7 +121,7 @@ export default function PrivacyPage() {
               Vissa av våra leverantörer (bland annat Anthropic, Vercel, Stripe och Resend) behandlar
               uppgifter i USA eller i andra länder utanför EU/EES. När uppgifter överförs dit sker det med
               stöd av lämpliga skyddsåtgärder enligt GDPR, i första hand EU-kommissionens
-              standardavtalsklausuler (SCC) och, i förekommande fall, certifiering under EU–US Data Privacy
+              standardavtalsklausuler (SCC) och, i förekommande fall, certifiering under EU-US Data Privacy
               Framework. Du kan kontakta oss för mer information om skyddsåtgärderna.
             </p>
           </section>

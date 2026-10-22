@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            'Vi kunde inte läsa text ur PDF:en. Den kan vara inskannad som bild – prova att kopiera in texten manuellt.',
+            'Vi kunde inte läsa text ur PDF:en. Den kan vara inskannad som bild. Prova att kopiera in texten manuellt.',
         },
         { status: 422 }
       )

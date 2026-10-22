@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
     if (error instanceof Anthropic.APIError) {
       if (error.status === 400 && error.message.includes('credit balance')) {
         return NextResponse.json(
-          { error: 'Tjänsten är tillfälligt otillgänglig. Vi jobbar på det – försök igen om en stund.' },
+          { error: 'Tjänsten är tillfälligt otillgänglig. Vi jobbar på det. Försök igen om en stund.' },
           { status: 503 }
         )
       }

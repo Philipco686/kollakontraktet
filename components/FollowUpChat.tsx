@@ -39,7 +39,7 @@ export default function FollowUpChat({ analysisId }: { analysisId: string }) {
       }
       setTurns(prev => [...prev, { role: 'assistant', content: data.answer }])
     } catch {
-      setError('Nätverksfel – försök igen')
+      setError('Nätverksfel. Försök igen')
     } finally {
       setLoading(false)
     }
@@ -115,7 +115,7 @@ export default function FollowUpChat({ analysisId }: { analysisId: string }) {
 
       <p className="text-xs text-slate-400 mt-3 flex items-center gap-1.5">
         <Scale className="w-3.5 h-3.5 shrink-0" />
-        AI-genererade svar i informationssyfte – inte juridisk rådgivning.
+        AI-genererade svar i informationssyfte, inte juridisk rådgivning.
       </p>
     </div>
   )

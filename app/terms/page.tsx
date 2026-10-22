@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Användarvillkor – Kolla Kontraktet',
+  title: 'Användarvillkor | Kolla Kontraktet',
   description: 'Villkor för användning av Kolla Kontraktet, inklusive ångerrätt, betalning och ansvarsbegränsning.',
   alternates: { canonical: '/terms' },
 }
@@ -101,8 +101,8 @@ export default function TermsPage() {
               Kolla Kontraktet är en digital tjänst som levereras omedelbart. Innan köpet genomförs ombeds du
               därför att <strong>uttryckligen begära att leveransen påbörjas direkt</strong> och att
               <strong> samtycka till att din ångerrätt upphör</strong> när tjänsten har fullgjorts. När du
-              lämnat detta samtycke och tjänsten därefter utförts i sin helhet – det vill säga när analysen
-              har genererats och gjorts tillgänglig för dig – har du inte längre någon ångerrätt för den
+              lämnat detta samtycke och tjänsten därefter utförts i sin helhet. Det vill säga när analysen
+              har genererats och gjorts tillgänglig för dig, har du inte längre någon ångerrätt för den
               tjänsten.
             </p>
             <p className="mt-2">

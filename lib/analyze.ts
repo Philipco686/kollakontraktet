@@ -5,7 +5,27 @@ export const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
-// Kort, billig prompt – bara det som visas i teasern
+// Tankstreck används inte i text som visas för användaren (designregel). Prompten ber AI:n att
+// undvika dem, och det här filtret tar bort de som ändå slinker igenom. Avtalscitat lämnas orörda.
+function stripDashes(s: string): string {
+  return s
+    .replace(/(\d)\s*[\u2013\u2014]\s*(\d)/g, '$1 till $2')
+    .replace(/\s+[\u2013\u2014]\s+/g, ', ')
+    .replace(/[\u2013\u2014]/g, '-')
+}
+
+function stripDashesDeep<T>(value: T, key?: string): T {
+  if (typeof value === 'string') return (key === 'original_text' ? value : stripDashes(value)) as T
+  if (Array.isArray(value)) return value.map(v => stripDashesDeep(v)) as T
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, stripDashesDeep(v, k)])
+    ) as T
+  }
+  return value
+}
+
+// Kort, billig prompt, bara det som visas i teasern
 function teaserPrompt(contractText: string): string {
   return `Du är en expert på svenska juridiska avtal. Ge en SNABB översikt av avtalet nedan.
 
@@ -23,15 +43,16 @@ Regler:
 - Skriv allt på svenska
 - key_facts: 4-8 konkreta faktapunkter relevanta för detta avtal (lön, hyra, tid, deposition, uppsägning, etc.), var och en med label och value (ingen emoji)
 - risk_level: "high" om avtalet kan kosta mycket pengar eller förlust av rättigheter, annars "medium"/"low"
+- Använd aldrig tankstreck eller långa streck i texten. Skriv med punkt, komma eller kolon i stället.
 - Svara med enbart JSON-objektet, utan inledande text eller markdown.
 
 AVTAL ATT ANALYSERA:
 ${contractText}`
 }
 
-// Full prompt – hela analysen
+// Full prompt, hela analysen
 function fullPrompt(contractText: string): string {
-  return `Du är en expert på svenska juridiska avtal. Analysera avtalet nedan som om du förklarar för en intelligent person utan juridisk utbildning – tydligt, konkret och ärligt.
+  return `Du är en expert på svenska juridiska avtal. Analysera avtalet nedan som om du förklarar för en intelligent person utan juridisk utbildning: tydligt, konkret och ärligt.
 
 Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanför JSON):
 
@@ -60,10 +81,10 @@ Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanf�
     "Fälla #1 som folk ofta missar i just detta avtal, t.ex. automatisk förlängning"
   ],
   "consequences": [
-    "Om du bryter mot X kan Y hända – beskriv konsekvenser konkret och i kronor om möjligt"
+    "Om du bryter mot X kan Y hända, beskriv konsekvenser konkret och i kronor om möjligt"
   ],
   "unusual_terms": [
-    "Denna klausul är ovanlig jämfört med normala svenska avtal – förklara varför"
+    "Denna klausul är ovanlig jämfört med normala svenska avtal, förklara varför"
   ],
   "negotiation_tips": [
     {
@@ -88,7 +109,7 @@ Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanf�
   "standard_comparison": {
     "percentage_standard": 78,
     "deviations": [
-      "24 månaders uppsägningstid är ovanligt lång – standard är 3 månader"
+      "24 månaders uppsägningstid är ovanligt lång, standard är 3 månader"
     ]
   },
   "recommendations": [
@@ -98,7 +119,7 @@ Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanf�
 
 Regler:
 - Skriv allt på svenska
-- Förklara som till en smart vän – inte som jurist
+- Förklara som till en smart vän, inte som jurist
 - risk_level "high" = kan kosta mycket pengar eller förlust av rättigheter
 - key_facts: 4-8 faktapunkter relevanta för detta specifika avtal
 - clauses: inkludera 6-12 viktiga klausuler
@@ -110,6 +131,7 @@ Regler:
 - timeline: plocka ut alla viktiga datum/deadlines från avtalet
 - pre_signing_checklist: 4-6 konkreta frågor att ställa motparten
 - standard_comparison.percentage_standard: uppskatta hur standardenligt avtalet är (0-100)
+- Använd aldrig tankstreck eller långa streck i texten (utom i citat ur avtalet). Skriv med punkt, komma eller kolon i stället.
 
 Svara med enbart JSON-objektet, utan inledande text, förklaringar eller markdown-formatering.
 
@@ -147,7 +169,7 @@ export async function analyzeContract(contractText: string, mode: 'teaser' | 'fu
   if (!jsonMatch) {
     throw new Error('Kunde inte tolka AI-svaret')
   }
-  return JSON.parse(jsonMatch[0]) as AnalysisResult
+  return stripDashesDeep(JSON.parse(jsonMatch[0]) as AnalysisResult)
 }
 
 export interface ChatTurn {
@@ -187,7 +209,8 @@ Regler:
 - Grunda svaret i avtalet och analysen nedan. Om svaret inte framgår av materialet, säg det ärligt istället för att gissa.
 - Håll svaret kort och fokuserat (oftast under 150 ord) om inte frågan kräver mer.
 - Håll dig till detta avtal. Om användaren frågar om något helt orelaterat, be dem vänligt hålla sig till avtalet.
-- Upprepa INTE i varje svar att du inte är jurist – det står redan tydligt i gränssnittet.
+- Upprepa INTE i varje svar att du inte är jurist. Det står redan tydligt i gränssnittet.
+- Använd aldrig tankstreck eller långa streck i svaret. Skriv med punkt, komma eller kolon i stället.
 
 ${contractBlock}
 
@@ -210,5 +233,5 @@ ${analysisSummary}`
   if (content.type !== 'text') {
     throw new Error('Oväntat svar från AI')
   }
-  return content.text
+  return stripDashes(content.text)
 }

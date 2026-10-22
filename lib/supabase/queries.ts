@@ -242,7 +242,7 @@ export async function incrementAnalysisCount(
 const BENCH_EMAIL_RE = /\b[^\s@]+@[^\s@]+\.[^\s@]+\b/gi
 const BENCH_PNR_RE = /\b\d{6,8}[-+ ]?\d{4}\b/g
 const BENCH_PHONE_RE = /\b(?:\+46|0)\s?\d[\d ]{6,}\d\b/g
-// Kronbelopp (t.ex. "45 000 kr", "1 200 000 SEK", "500:-") – behåller procent och tidsangivelser.
+// Kronbelopp (t.ex. "45 000 kr", "1 200 000 SEK", "500:-"), behåller procent och tidsangivelser.
 const BENCH_CURRENCY_RE = /\b\d{1,3}(?:[ .]\d{3})+(?:[.,]\d+)?\s?(?:kr|kronor|sek|:-)?\b|\b\d+(?:[.,]\d+)?\s?(?:kr|kronor|sek|:-)\b/gi
 
 function benchScrub(text: string): string {
@@ -257,7 +257,7 @@ function benchScrub(text: string): string {
 }
 
 // Normaliserar den fritt inmatade titeln till en kategori-slug. Sparar ALDRIG
-// råtiteln (kan innehålla parters namn) – bara den grova kategorin, annars null.
+// råtiteln (kan innehålla parters namn), bara den grova kategorin, annars null.
 export function classifyContractType(title: string): string | null {
   const t = (title || '').toLowerCase()
   const map: [string, string][] = [
@@ -278,7 +278,7 @@ export function classifyContractType(title: string): string | null {
 type BenchClause = { title?: string; original_text?: string; risk_level?: string }
 
 // Skriver avidentifierade klausuler till benchmark-underlaget. Fel här får aldrig
-// påverka användarens analys – anropas i try/catch och sväljer sina egna fel.
+// påverka användarens analys, anropas i try/catch och sväljer sina egna fel.
 export async function storeBenchmarkClauses(clauses: BenchClause[] | undefined, contractType: string | null) {
   if (!clauses || clauses.length === 0) return
   const rows = clauses.map(c => ({

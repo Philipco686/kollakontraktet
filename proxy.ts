@@ -8,8 +8,8 @@ export async function proxy(request: NextRequest) {
   const isProtected = protectedRoutes.some(route => pathname.startsWith(route))
   const isLogin = pathname === '/login'
 
-  // Publika sidor (start, priser, juridik m.m.) behöver ingen inloggningskoll –
-  // hoppa över databasanropet så de laddar snabbt och inte påverkas om Supabase är nere.
+  // Publika sidor (start, priser, juridik m.m.) behöver ingen inloggningskoll.
+  // Vi hoppar över databasanropet så de laddar snabbt och inte påverkas om Supabase är nere.
   if (!isProtected && !isLogin) {
     return NextResponse.next({ request })
   }

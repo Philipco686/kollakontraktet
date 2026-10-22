@@ -47,7 +47,7 @@ export default function ContractAnalyzer() {
       setContractText(data.text)
       if (!title) setTitle(file.name.replace(/\.pdf$/i, ''))
     } catch {
-      setError('Kunde inte läsa PDF:en – försök igen')
+      setError('Kunde inte läsa PDF:en. Försök igen')
     } finally {
       setUploading(false)
       e.target.value = ''
@@ -79,7 +79,7 @@ export default function ContractAnalyzer() {
       setResult(data.analysis)
       setLocked(!!data.locked)
     } catch {
-      setError('Nätverksfel – försök igen')
+      setError('Nätverksfel. Försök igen')
     } finally {
       setLoading(false)
     }
@@ -131,7 +131,7 @@ export default function ContractAnalyzer() {
           />
           <span className="text-slate-600">
             <strong className="text-slate-700">Var med och bygg Avtalsbenchmarken (frivilligt).</strong> Tillåt att
-            avidentifierade klausuler från det här avtalet används för att bygga upp svensk jämförelsedata – så att du
+            avidentifierade klausuler från det här avtalet används för att bygga upp svensk jämförelsedata, så att du
             och andra så småningom kan se om ett villkor är normalt. Aldrig parter, belopp eller identifierbara uppgifter,
             och aldrig kopplat till dig. Du får tillgång till jämförelserna när de är klara.
           </span>
@@ -171,7 +171,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       if (!res.ok) { setEmailState('error'); setEmailMsg(data.error ?? 'Kunde inte skicka'); return }
       setEmailState('sent')
     } catch {
-      setEmailState('error'); setEmailMsg('Nätverksfel – försök igen')
+      setEmailState('error'); setEmailMsg('Nätverksfel. Försök igen')
     }
   }
 
@@ -181,7 +181,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
   return (
     <div className="space-y-5 animate-fade-up">
 
-      {/* Åtgärder – döljs vid utskrift */}
+      {/* Åtgärder, döljs vid utskrift */}
       {!locked && (
         <div className="no-print flex flex-wrap gap-3">
           <button onClick={() => setPrintAll(true)} className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2">
@@ -226,7 +226,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {/* 1-minutssammanfattning */}
       {r.quick_summary && (
         <div className="card border-l-4 border-brand-500">
-          <h3 className="font-semibold text-slate-900 mb-4">Kort version – 1 minut</h3>
+          <h3 className="font-semibold text-slate-900 mb-4">Kort version (1 minut)</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { label: 'Vad handlar det om?', value: r.quick_summary.what_is_it_about, Icon: FileText },
@@ -250,7 +250,7 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
       {r.economic_risk && r.economic_risk.max_amount > 0 && (
         <div className="card border-l-4 border-red-400">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-slate-900 flex items-center gap-2"><Coins className="w-5 h-5 text-accent-600" /> Ekonomisk risk – worst case</h3>
+            <h3 className="font-semibold text-slate-900 flex items-center gap-2"><Coins className="w-5 h-5 text-accent-600" /> Ekonomisk risk, worst case</h3>
             <span className="text-2xl font-bold text-red-600">
               {r.economic_risk.max_amount.toLocaleString('sv-SE')} {r.economic_risk.currency}
             </span>
@@ -334,9 +334,9 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
         <div>
           <h3 className="font-semibold text-slate-900 mb-2">Klausuler ({r.clauses.length})</h3>
           <div className="flex flex-wrap gap-x-4 gap-y-1 mb-4 text-sm">
-            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk – standardvillkor</span>
-            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning – ovanligt eller potentiellt dyrt</span>
-            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk – kan kosta dig pengar eller rättigheter</span>
+            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk: standardvillkor</span>
+            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning: ovanligt eller potentiellt dyrt</span>
+            <span className="flex items-center gap-1.5 text-slate-500"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk: kan kosta dig pengar eller rättigheter</span>
           </div>
           <div className="space-y-2">
             {r.clauses.map((c: Clause, i: number) => (
@@ -412,14 +412,14 @@ function AnalysisResultView({ analysis, locked, onReset }: { analysis: Analysis;
         </div>
       )}
 
-      {/* Följdfrågor – bara för upplåsta analyser */}
+      {/* Följdfrågor, bara för upplåsta analyser */}
       {!locked && <FollowUpChat analysisId={analysis.id} />}
 
-      {/* Disclaimer – syns även i utskrift */}
+      {/* Disclaimer, syns även i utskrift */}
       <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed flex items-start gap-2">
         <Scale className="w-4 h-4 shrink-0 mt-0.5" />
         <span><strong>Inte juridisk rådgivning.</strong> Detta är en AI-genererad tolkning i informationssyfte
-        och kan innehålla fel. Fatta inte viktiga beslut enbart baserat på analysen – rådgör med en jurist
+        och kan innehålla fel. Fatta inte viktiga beslut enbart baserat på analysen. Rådgör med en jurist
         vid osäkerhet.</span>
       </div>
 

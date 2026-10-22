@@ -6,7 +6,7 @@ import { SITE_URL } from '@/lib/site'
 export const metadata: Metadata = {
   title: 'Avtalsguider: fällor och råd per avtalstyp | Kolla Kontraktet',
   description:
-    'Guider för de vanligaste svenska avtalen – hyreskontrakt, anställningsavtal, konsultavtal, NDA med flera. Se fällorna och analysera ditt eget avtal med AI.',
+    'Guider för de vanligaste svenska avtalen: hyreskontrakt, anställningsavtal, konsultavtal, NDA med flera. Se fällorna och analysera ditt eget avtal med AI.',
   alternates: { canonical: '/avtal' },
 }
 
@@ -35,7 +35,7 @@ export default function AvtalIndex() {
           Avtalsguider
         </h1>
         <p className="text-lg text-slate-500 max-w-2xl mb-10">
-          Vad ska man tänka på i olika avtal? Här är fällorna per avtalstyp – och du kan analysera ditt
+          Vad ska man tänka på i olika avtal? Här är fällorna per avtalstyp, och du kan analysera ditt
           eget avtal med AI på under en minut.
         </p>
 

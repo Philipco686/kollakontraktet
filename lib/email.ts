@@ -87,7 +87,7 @@ export function buildTeamInviteEmailHtml(inviterEmail: string, siteUrl: string):
         <h1 style="font-size:20px;color:#0f172a;margin:0 0 8px">Du är inbjuden till ett team</h1>
         <p style="color:#334155;font-size:14px;line-height:1.6;margin:0 0 20px">
           <strong>${inviterEmail}</strong> har lagt till dig i sitt Företag-team på Kolla Kontraktet.
-          Logga in med <strong>den här mejladressen</strong> så får du obegränsade avtalsanalyser –
+          Logga in med <strong>den här mejladressen</strong> så får du obegränsade avtalsanalyser,
           utan att betala något själv.
         </p>
         <a href="${siteUrl}/login" style="background:#b45309;color:#fff;text-decoration:none;padding:12px 24px;border-radius:10px;font-weight:600;font-size:14px;display:inline-block">

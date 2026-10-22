@@ -32,7 +32,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }} />
 
-      {/* Hero – djup navy-botten med svävande kontroller */}
+      {/* Hero, djup navy-botten med svävande kontroller */}
       <div className="hero-depth">
         <header className="relative z-10 border-b border-white/10">
           <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -76,10 +76,11 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Svävande produktpanel – den riktiga analysen */}
+          {/* Svävande produktpanel. Den riktiga analysen */}
           <div className="panel-float bg-white rounded-2xl border border-white/10 overflow-hidden">
             <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
               <div>
+                <div className="text-[11px] font-semibold tracking-[0.14em] uppercase text-accent-600 mb-1">Exempelanalys</div>
                 <div className="font-display font-semibold text-slate-900 text-[15px]">Hyreskontrakt, lägenhet</div>
                 <div className="text-xs text-slate-400 mt-0.5">11 klausuler analyserade</div>
               </div>
@@ -133,6 +134,7 @@ export default function LandingPage() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
               <div>
+                <div className="text-[11px] font-semibold tracking-[0.14em] uppercase text-accent-600 mb-1">Exempelanalys</div>
                 <div className="font-display font-semibold text-slate-900 text-[15px]">Konsultavtal</div>
                 <div className="text-xs text-slate-400 mt-0.5">Genomgång av klausuler</div>
               </div>
@@ -158,13 +160,13 @@ export default function LandingPage() {
           </div>
 
           <div className="bg-brand-900 text-white rounded-2xl p-6 flex flex-col gap-4">
-            <span className="text-xs font-semibold tracking-[0.14em] uppercase text-[#e7c892]">Det här kan du förhandla</span>
+            <span className="text-xs font-semibold tracking-[0.14em] uppercase text-[#e7c892]">Exempel: det här kan du förhandla</span>
             <h3 className="font-display text-xl font-medium leading-snug">Be om ett tak på ansvaret.</h3>
             <p className="font-display italic text-[15px] leading-relaxed text-brand-100 border-l-2 border-white/25 pl-3.5">
               ”Jag vill begränsa mitt ansvar till arvodet för uppdraget, och att indirekta skador undantas.”
             </p>
             <div className="text-xs text-brand-200/90 mt-auto pt-2">
-              Färdig formulering · en av 6 förhandlingspunkter i den fulla analysen
+              Så ser en färdig formulering ut i den fulla analysen
             </div>
           </div>
         </div>

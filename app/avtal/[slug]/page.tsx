@@ -161,9 +161,9 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           <GuideChecklist items={guide.checklist} storageKey={guide.slug} title={guide.name} />
         </section>
 
-        {/* CTA – nedanför innehållet */}
+        {/* CTA, nedanför innehållet */}
         <section className="mt-14 bg-brand-900 rounded-3xl px-6 py-12 text-center">
-          <h2 className="font-display text-2xl font-semibold text-white mb-3">Slipp gissa – låt AI gå igenom avtalet</h2>
+          <h2 className="font-display text-2xl font-semibold text-white mb-3">Slipp gissa. Låt AI gå igenom avtalet</h2>
           <p className="text-brand-200 mb-6 max-w-lg mx-auto">
             Klistra in ditt {guide.name.toLowerCase()} så förklarar Kolla Kontraktet varje klausul på vanlig
             svenska, flaggar riskerna och ger dig förhandlingstips. Första analysen är gratis.

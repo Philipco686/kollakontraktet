@@ -14,13 +14,13 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Kolla Kontraktet – Förstå dina avtal på vanlig svenska',
+  title: 'Kolla Kontraktet: Förstå dina avtal på vanlig svenska',
   description:
     'Analysera juridiska avtal med AI och få klara förklaringar på vanlig svenska. För privatpersoner och småföretagare.',
   keywords: ['avtal', 'juridik', 'AI', 'kontraktsanalys', 'Sverige'],
   openGraph: {
     title: 'Kolla Kontraktet',
-    description: 'Förstå dina avtal – utan juridisk utbildning',
+    description: 'Förstå dina avtal, utan juridisk utbildning',
     url: SITE_URL,
     siteName: 'Kolla Kontraktet',
     locale: 'sv_SE',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Kolla Kontraktet',
-    description: 'Förstå dina avtal – utan juridisk utbildning',
+    description: 'Förstå dina avtal, utan juridisk utbildning',
   },
 }
 

@@ -70,7 +70,7 @@ export default function PricingPage() {
             highlight={false}
           />
 
-          {/* Personlig – markerad */}
+          {/* Personlig, markerad */}
           <PricingCard
             name={PLANS.personal.name}
             price={PLANS.personal.price}

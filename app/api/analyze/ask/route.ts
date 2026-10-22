@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Fråga saknas' }, { status: 400 })
     }
     if (question.length > 1000) {
-      return NextResponse.json({ error: 'Frågan är för lång – korta ner den.' }, { status: 400 })
+      return NextResponse.json({ error: 'Frågan är för lång. Korta ner den.' }, { status: 400 })
     }
 
     const analysis = await getAnalysisById(supabase, user.id, id)

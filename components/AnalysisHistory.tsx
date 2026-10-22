@@ -54,7 +54,7 @@ export default function AnalysisHistory({ analyses }: Props) {
       setSelected(prev => (prev ? { ...prev, result: data.result } : prev))
       setItems(prev => prev.map(a => (a.id === id ? { ...a, result: data.result } : a)))
     } catch {
-      setGenError('Nätverksfel – försök igen')
+      setGenError('Nätverksfel. Försök igen')
     } finally {
       setGenerating(false)
     }
@@ -179,9 +179,9 @@ export default function AnalysisHistory({ analyses }: Props) {
                     Klausuler ({result.clauses?.length ?? 0})
                   </h3>
                   <div className="flex flex-wrap gap-3 mb-3 text-xs text-slate-500">
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk – standardvillkor</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning – ovanligt eller potentiellt dyrt</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk – kan kosta dig pengar eller rättigheter</span>
+                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk: standardvillkor</span>
+                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning: ovanligt eller potentiellt dyrt</span>
+                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk: kan kosta dig pengar eller rättigheter</span>
                   </div>
                   <div className="space-y-2">
                     {result.clauses?.map((c, i) => (
@@ -201,7 +201,7 @@ export default function AnalysisHistory({ analyses }: Props) {
             ) : (
               <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
                 <LockOpen className="w-9 h-9 mx-auto mb-3 text-brand-600" />
-                <h3 className="text-lg font-bold text-slate-900 mb-1">Upplåst – generera hela analysen</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-1">Upplåst: generera hela analysen</h3>
                 <p className="text-slate-600 mb-5 max-w-md mx-auto">
                   Din betalning är klar. Klicka för att skapa den fullständiga analysen med alla
                   klausuler, fällor, ekonomisk risk och förhandlingstips.
@@ -211,7 +211,7 @@ export default function AnalysisHistory({ analyses }: Props) {
                   disabled={generating}
                   className="btn-primary inline-block disabled:opacity-60"
                 >
-                  {generating ? 'Genererar... (kan ta 30–60 sek)' : 'Generera fullständig analys'}
+                  {generating ? 'Genererar... (kan ta 30 till 60 sek)' : 'Generera fullständig analys'}
                 </button>
                 {genError && <p className="text-sm text-red-600 mt-3">{genError}</p>}
               </div>

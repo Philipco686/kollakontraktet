@@ -19,7 +19,7 @@ export default function ManageSubscriptionButton({ className }: { className?: st
       setError(data.error ?? 'Kunde inte öppna portalen')
       setLoading(false)
     } catch {
-      setError('Nätverksfel – försök igen')
+      setError('Nätverksfel. Försök igen')
       setLoading(false)
     }
   }

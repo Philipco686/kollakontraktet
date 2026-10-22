@@ -42,7 +42,7 @@ export default function GuideChecklist({
     const rows = items
       .map(q => `<li>&#9744;&nbsp;&nbsp;${escapeHtml(q)}</li>`)
       .join('')
-    const html = `<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Checklista – ${escapeHtml(title)}</title>
+    const html = `<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Checklista: ${escapeHtml(title)}</title>
 <style>
   body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a;max-width:640px;margin:40px auto;padding:0 28px}
   .brand{color:#1e3a8a;font-weight:600;font-size:14px;margin-bottom:18px}
@@ -57,7 +57,7 @@ export default function GuideChecklist({
   <h1>Checklista: ${escapeHtml(title)}</h1>
   <p>Kryssa av innan du signerar.</p>
   <ul>${rows}</ul>
-  <p class="foot">Informationssyfte – inte juridisk rådgivning. kollakontraktet.se</p>
+  <p class="foot">Informationssyfte, inte juridisk rådgivning. kollakontraktet.se</p>
 </body></html>`
     const w = window.open('', '_blank', 'width=780,height=900')
     if (!w) return

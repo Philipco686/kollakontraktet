@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
-import { getAnalysisById, updateAnalysisResult, PURGED_TEXT } from '@/lib/supabase/queries'
+import { getAnalysisById, updateAnalysisResult, PURGED_TEXT, storeBenchmarkClauses, classifyContractType } from '@/lib/supabase/queries'
 import { analyzeContract } from '@/lib/analyze'
 import { checkRateLimit } from '@/lib/rate-limit'
 import type { AnalysisResult } from '@/types'
@@ -51,6 +51,11 @@ export async function POST(request: NextRequest) {
 
     const full = await analyzeContract(analysis.original_text, 'full')
     await updateAnalysisResult(supabase, id, user.id, full)
+
+    // Avtalsbenchmarken: lagra avidentifierade klausuler om användaren valt att bidra
+    if (analysis.benchmark_opt_in) {
+      await storeBenchmarkClauses(full.clauses, classifyContractType(analysis.title || ''))
+    }
 
     return NextResponse.json({ result: full })
   } catch (error) {

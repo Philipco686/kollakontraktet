@@ -176,7 +176,22 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-slate-900 mb-2">11. Ändringar av policyn</h2>
+            <h2 className="text-xl font-semibold text-slate-900 mb-2">11. Avtalsbenchmarken (frivilligt bidrag)</h2>
+            <p>
+              När du laddar upp ett avtal kan du aktivt välja att bidra till Avtalsbenchmarken – ett
+              anonymiserat jämförelseunderlag som på sikt gör det möjligt att se om ett villkor är normalt.
+              Det är helt frivilligt, kryssrutan är inte förifylld, och du kan analysera avtal utan att bidra.
+            </p>
+            <p className="mt-2">
+              Väljer du att bidra sparar vi enskilda klausuler i avidentifierad form. Vi sparar aldrig hela
+              dokument, parter, belopp eller andra identifierbara uppgifter, och bidraget kopplas inte till dig
+              eller ditt konto. Underlaget kan användas för att ta fram jämförelser och statistik i tjänsten och
+              i sammanställd form.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-slate-900 mb-2">12. Ändringar av policyn</h2>
             <p>
               Vi kan uppdatera denna policy. Vid väsentliga ändringar informerar vi dig via tjänsten eller
               e-post. Den senaste versionen finns alltid tillgänglig på den här sidan.

@@ -7,6 +7,8 @@ import {
   incrementAnalysisCount,
   getFreeAnalysesUsed,
   incrementFreeAnalysesUsed,
+  storeBenchmarkClauses,
+  classifyContractType,
 } from '@/lib/supabase/queries'
 import { checkRateLimit } from '@/lib/rate-limit'
 import { analyzeContract } from '@/lib/analyze'
@@ -40,7 +42,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { contractText, title } = await request.json()
+    const { contractText, title, contribute } = await request.json()
 
     if (!contractText || contractText.trim().length < 50) {
       return NextResponse.json(
@@ -100,9 +102,16 @@ export async function POST(request: NextRequest) {
       original_text: contractText,
       result,
       is_unlocked: !isTeaser,
+      benchmark_opt_in: !!contribute,
     })
 
     if (analysisError) throw analysisError
+
+    // Avtalsbenchmarken: lagra avidentifierade klausuler om användaren valt att bidra
+    // och vi faktiskt har en full analys (teaser saknar klausuler). Fel sväljs internt.
+    if (contribute && !isTeaser) {
+      await storeBenchmarkClauses((result as AnalysisResult).clauses, classifyContractType(title || ''))
+    }
 
     // Räkna upp rätt räknare beroende på om det var en teaser eller betald analys
     if (isTeaser) {

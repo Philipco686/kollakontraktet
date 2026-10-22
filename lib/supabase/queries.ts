@@ -232,3 +232,65 @@ export async function incrementAnalysisCount(
     .update({ analyses_used_this_month: currentCount + 1 })
     .eq('id', subscriptionId)
 }
+
+/* ---------- Avtalsbenchmarken ----------
+ * Avidentifierad klausullagring för att på sikt kunna svara på "är det här
+ * villkoret normalt?". Lagras BARA vid uttryckligt opt-in, aldrig kopplat till
+ * användare, aldrig hela dokument, och med belopp/PII strippat innan skrivning.
+ */
+
+const BENCH_EMAIL_RE = /\b[^\s@]+@[^\s@]+\.[^\s@]+\b/gi
+const BENCH_PNR_RE = /\b\d{6,8}[-+ ]?\d{4}\b/g
+const BENCH_PHONE_RE = /\b(?:\+46|0)\s?\d[\d ]{6,}\d\b/g
+// Kronbelopp (t.ex. "45 000 kr", "1 200 000 SEK", "500:-") – behåller procent och tidsangivelser.
+const BENCH_CURRENCY_RE = /\b\d{1,3}(?:[ .]\d{3})+(?:[.,]\d+)?\s?(?:kr|kronor|sek|:-)?\b|\b\d+(?:[.,]\d+)?\s?(?:kr|kronor|sek|:-)\b/gi
+
+function benchScrub(text: string): string {
+  return (text || '')
+    .replace(BENCH_EMAIL_RE, '[epost]')
+    .replace(BENCH_PNR_RE, '[personnr]')
+    .replace(BENCH_PHONE_RE, '[tel]')
+    .replace(BENCH_CURRENCY_RE, '[belopp]')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 2000)
+}
+
+// Normaliserar den fritt inmatade titeln till en kategori-slug. Sparar ALDRIG
+// råtiteln (kan innehålla parters namn) – bara den grova kategorin, annars null.
+export function classifyContractType(title: string): string | null {
+  const t = (title || '').toLowerCase()
+  const map: [string, string][] = [
+    ['hyres', 'hyreskontrakt'],
+    ['anställ', 'anstallningsavtal'], ['anstall', 'anstallningsavtal'],
+    ['konsult', 'konsultavtal'],
+    ['köpe', 'kopeavtal'], ['kope', 'kopeavtal'],
+    ['sekretess', 'nda-sekretessavtal'], ['nda', 'nda-sekretessavtal'],
+    ['sambo', 'samboavtal'],
+    ['leverantör', 'leverantorsavtal'], ['leverantor', 'leverantorsavtal'],
+    ['franchise', 'franchiseavtal'],
+    ['bolån', 'bolanehandlingar'], ['bolan', 'bolanehandlingar'],
+  ]
+  for (const [kw, slug] of map) if (t.includes(kw)) return slug
+  return null
+}
+
+type BenchClause = { title?: string; original_text?: string; risk_level?: string }
+
+// Skriver avidentifierade klausuler till benchmark-underlaget. Fel här får aldrig
+// påverka användarens analys – anropas i try/catch och sväljer sina egna fel.
+export async function storeBenchmarkClauses(clauses: BenchClause[] | undefined, contractType: string | null) {
+  if (!clauses || clauses.length === 0) return
+  const rows = clauses.map(c => ({
+    contract_type: contractType,
+    clause_type: (c.title ?? '').slice(0, 200) || null,
+    clause_text: benchScrub(c.original_text ?? ''),
+    risk_level: c.risk_level ?? null,
+    normalized_value: null,
+  }))
+  try {
+    await adminClient().from('benchmark_clauses').insert(rows)
+  } catch (e) {
+    console.error('Benchmark-lagring misslyckades (ignoreras):', e)
+  }
+}

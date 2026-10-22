@@ -28,6 +28,7 @@ export interface Analysis {
   original_text: string
   result: AnalysisResult
   is_unlocked: boolean
+  benchmark_opt_in?: boolean
   created_at: string
 }
 

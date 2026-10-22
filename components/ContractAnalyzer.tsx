@@ -31,6 +31,7 @@ export default function ContractAnalyzer() {
   const [locked, setLocked] = useState(false)
   const [statusIdx, setStatusIdx] = useState(0)
   const [uploading, setUploading] = useState(false)
+  const [contribute, setContribute] = useState(false)
 
   async function handlePdfUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -71,7 +72,7 @@ export default function ContractAnalyzer() {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contractText, title: title || 'Min analys' }),
+        body: JSON.stringify({ contractText, title: title || 'Min analys', contribute }),
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error ?? 'Något gick fel'); return }
@@ -119,6 +120,23 @@ export default function ContractAnalyzer() {
           <textarea className="input min-h-[300px] resize-y font-mono text-sm" placeholder="Klistra in hela avtalstexten här..." value={contractText} onChange={e => setContractText(e.target.value)} required />
           <p className="text-xs text-slate-400 mt-1">{contractText.length.toLocaleString('sv-SE')} tecken</p>
         </div>
+
+        <label htmlFor="benchmark-optin" className="flex items-start gap-2.5 text-left text-xs leading-relaxed cursor-pointer rounded-lg p-3 border border-slate-200 bg-slate-50">
+          <input
+            id="benchmark-optin"
+            type="checkbox"
+            checked={contribute}
+            onChange={e => setContribute(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 accent-brand-600"
+          />
+          <span className="text-slate-600">
+            <strong className="text-slate-700">Var med och bygg Avtalsbenchmarken (frivilligt).</strong> Tillåt att
+            avidentifierade klausuler från det här avtalet används för att bygga upp svensk jämförelsedata – så att du
+            och andra så småningom kan se om ett villkor är normalt. Aldrig parter, belopp eller identifierbara uppgifter,
+            och aldrig kopplat till dig. Du får tillgång till jämförelserna när de är klara.
+          </span>
+        </label>
+
         {error && <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 text-sm">{error}</div>}
         <button type="submit" className="btn-primary w-full" disabled={loading || contractText.trim().length < 50}>
           {loading ? <span className="flex items-center justify-center gap-2"><Spinner />{LOADING_MESSAGES[statusIdx]}</span> : 'Analysera avtal'}

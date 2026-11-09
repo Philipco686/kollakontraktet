@@ -108,7 +108,7 @@ export default async function DashboardPage() {
             {recentAnalyses.map(a => (
               <Link
                 key={a.id}
-                href="/history"
+                href={`/analys/${a.id}`}
                 className="hover-lift card flex items-center justify-between"
               >
                 <div>

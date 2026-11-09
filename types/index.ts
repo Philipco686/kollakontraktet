@@ -68,21 +68,39 @@ export interface StandardComparison {
   deviations: string[]
 }
 
+export type FindingIcon = 'shield' | 'pencil' | 'exit' | 'coin' | 'calendar' | 'lock'
+
+// Rubriken ("Förhandla först" osv.) härleds ur risk_level i koden, AI:n ger bara en mening.
+export interface Verdict {
+  headline: string
+}
+
+export interface MissingItem {
+  title: string
+  body: string
+}
+
 export interface AnalysisResult {
   summary: string
   risk_level: 'low' | 'medium' | 'high'
   key_facts: KeyFact[]
-  quick_summary: QuickSummary
   clauses: Clause[]
   common_traps: string[]
   consequences: string[]
   unusual_terms: string[]
-  negotiation_tips: NegotiationTip[]
   economic_risk: EconomicRisk
   timeline: TimelineEvent[]
   pre_signing_checklist: string[]
   standard_comparison: StandardComparison
   recommendations: string[]
+  // Äldre analyser har de här två från AI:n. Nya analyser får förhandlingstipsen byggda av
+  // förslagen per klausul, och verdict.headline ersätter quick_summary.
+  quick_summary?: QuickSummary
+  negotiation_tips?: NegotiationTip[]
+  // Nya valfria fält (analyser gjorda före resultatflödet saknar dem)
+  contract_type?: string
+  verdict?: Verdict
+  missing?: MissingItem[]
 }
 
 export interface Clause {
@@ -91,6 +109,13 @@ export interface Clause {
   plain_explanation: string
   risk_level: 'low' | 'medium' | 'high'
   is_important: boolean
+  // Nya valfria fält. `number` är exakt så som avtalet numrerar klausulen, null om det inte gör det.
+  number?: string | null
+  area?: string
+  icon?: FindingIcon
+  short?: string
+  // Förslag på ny formulering. null = ingen ändring behövs, saknas = okänt (äldre analys).
+  suggestion?: string | null
 }
 
 export interface Database {

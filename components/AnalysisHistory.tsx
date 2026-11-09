@@ -1,80 +1,29 @@
 'use client'
 
 import { useState } from 'react'
-import type { Analysis, AnalysisResult } from '@/types'
 import Link from 'next/link'
-import FollowUpChat from '@/components/FollowUpChat'
-import WithdrawalConsent from '@/components/WithdrawalConsent'
-import { Lock, LockOpen, Gift, Scale, ClipboardList } from 'lucide-react'
+import { ClipboardList, Lock, Trash2 } from 'lucide-react'
+import type { Analysis, AnalysisResult } from '@/types'
 
 type HistoryItem = Pick<Analysis, 'id' | 'title' | 'created_at' | 'result' | 'is_unlocked'>
 
-interface Props {
-  analyses: HistoryItem[]
-}
-
-export default function AnalysisHistory({ analyses }: Props) {
+// Listan över kundens analyser. Varje rad öppnar analysen på sin egen adress, /analys/<id>.
+export default function AnalysisHistory({ analyses }: { analyses: HistoryItem[] }) {
   const [items, setItems] = useState<HistoryItem[]>(analyses)
-  const [selected, setSelected] = useState<HistoryItem | null>(null)
-  const [deleting, setDeleting] = useState(false)
-  const [generating, setGenerating] = useState(false)
-  const [genError, setGenError] = useState('')
-  const [unlocking, setUnlocking] = useState(false)
-  const [consent, setConsent] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
-  async function startUnlock() {
-    if (!consent) return
-    setUnlocking(true)
-    try {
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: 'onetime' }),
-      })
-      const data = await res.json()
-      if (data.url) { window.location.href = data.url; return }
-      if (data.error === 'Ej autentiserad') { window.location.href = '/login'; return }
-      setUnlocking(false)
-    } catch {
-      setUnlocking(false)
-    }
-  }
-
-  async function generateFull(id: string) {
-    setGenerating(true)
-    setGenError('')
-    try {
-      const res = await fetch('/api/analyze/full', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      })
-      const data = await res.json()
-      if (!res.ok) { setGenError(data.error ?? 'Något gick fel'); return }
-      setSelected(prev => (prev ? { ...prev, result: data.result } : prev))
-      setItems(prev => prev.map(a => (a.id === id ? { ...a, result: data.result } : a)))
-    } catch {
-      setGenError('Nätverksfel. Försök igen')
-    } finally {
-      setGenerating(false)
-    }
-  }
-
-  async function handleDelete(id: string) {
+  async function handleDelete(item: HistoryItem) {
     if (!confirm('Radera den här analysen permanent? Det går inte att ångra.')) return
-    setDeleting(true)
+    setDeletingId(item.id)
     try {
       const res = await fetch('/api/analyses', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id: item.id }),
       })
-      if (res.ok) {
-        setItems(prev => prev.filter(a => a.id !== id))
-        setSelected(null)
-      }
+      if (res.ok) setItems(prev => prev.filter(a => a.id !== item.id))
     } finally {
-      setDeleting(false)
+      setDeletingId(null)
     }
   }
 
@@ -91,184 +40,57 @@ export default function AnalysisHistory({ analyses }: Props) {
     )
   }
 
-  if (selected) {
-    const result = selected.result as AnalysisResult
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => setSelected(null)}
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-700 text-sm"
-          >
-            ← Tillbaka till historik
-          </button>
-          <button
-            onClick={() => handleDelete(selected.id)}
-            disabled={deleting}
-            className="text-sm text-slate-400 hover:text-red-600 transition-colors disabled:opacity-50"
-          >
-            {deleting ? 'Raderar...' : 'Ta bort analys'}
-          </button>
-        </div>
-
-        <div className="card">
-          <h2 className="text-xl font-bold text-slate-900 mb-1">{selected.title}</h2>
-          <p className="text-sm text-slate-400 mb-4">
-            {new Date(selected.created_at).toLocaleDateString('sv-SE', {
-              year: 'numeric', month: 'long', day: 'numeric',
-            })}
-          </p>
-
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold text-slate-700 mb-2">Sammanfattning</h3>
-              <p className="text-slate-600 leading-relaxed">{result.summary}</p>
-            </div>
-
-            {result.key_facts && result.key_facts.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {result.key_facts.map((f, i) => (
-                  <div key={i} className="bg-slate-50 rounded-xl p-3 flex flex-col items-center text-center">
-                    <span className="text-xs text-slate-500 mb-1">{f.label}</span>
-                    <span className="font-semibold text-slate-900 text-sm">{f.value}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {!selected.is_unlocked ? (
-              <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
-                <Lock className="w-9 h-9 mx-auto mb-3 text-brand-600" />
-                <h3 className="text-lg font-bold text-slate-900 mb-1">Resten är låst</h3>
-                <p className="text-slate-600 mb-5 max-w-md mx-auto">
-                  Lås upp för att se alla klausuler, fällor, din ekonomiska risk och
-                  förhandlingstips för det här avtalet.
-                </p>
-                <div className="bg-accent-50 border border-accent-200 rounded-xl px-4 py-3 mb-5 max-w-md mx-auto text-sm text-accent-800 flex items-start gap-2 text-left">
-                  <Gift className="w-4 h-4 shrink-0 mt-0.5" />
-                  <span><strong>Nykundsbonus:</strong> köp engångsanalysen (49 kr) så låser vi upp den här analysen <em>och</em> ger dig en till analys att använda direkt.</span>
-                </div>
-                <div className="max-w-md mx-auto mb-4">
-                  <WithdrawalConsent checked={consent} onChange={setConsent} id="withdrawal-consent-history" />
-                </div>
-                <button onClick={startUnlock} disabled={unlocking || !consent} className="btn-primary inline-block disabled:opacity-60">
-                  {unlocking ? 'Öppnar betalning...' : 'Lås upp för 49 kr →'}
-                </button>
-                <p className="text-xs text-slate-400 mt-3">
-                  Engångsköp · ingen bindningstid ·{' '}
-                  <Link href="/pricing" className="underline hover:text-slate-600">se prenumerationer</Link>
-                </p>
-              </div>
-            ) : (result.clauses && result.clauses.length > 0) ? (
-              <>
-                {result.recommendations && result.recommendations.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold text-slate-700 mb-2">Rekommendationer</h3>
-                    <ul className="space-y-1">
-                      {result.recommendations.map((r, i) => (
-                        <li key={i} className="text-slate-600 text-sm flex gap-2">
-                          <span className="text-brand-500">→</span>{r}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <div>
-                  <h3 className="font-semibold text-slate-700 mb-2">
-                    Klausuler ({result.clauses?.length ?? 0})
-                  </h3>
-                  <div className="flex flex-wrap gap-3 mb-3 text-xs text-slate-500">
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" /> Låg risk: standardvillkor</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shrink-0" /> Varning: ovanligt eller potentiellt dyrt</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" /> Hög risk: kan kosta dig pengar eller rättigheter</span>
-                  </div>
-                  <div className="space-y-2">
-                    {result.clauses?.map((c, i) => (
-                      <div key={i} className="bg-slate-50 rounded-xl p-4">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-slate-900 text-sm">{c.title}</span>
-                          <RiskDot level={c.risk_level} />
-                        </div>
-                        <p className="text-slate-600 text-sm">{c.plain_explanation}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <FollowUpChat analysisId={selected.id} />
-              </>
-            ) : (
-              <div className="card border-2 border-brand-200 bg-gradient-to-b from-brand-50 to-white text-center">
-                <LockOpen className="w-9 h-9 mx-auto mb-3 text-brand-600" />
-                <h3 className="text-lg font-bold text-slate-900 mb-1">Upplåst: generera hela analysen</h3>
-                <p className="text-slate-600 mb-5 max-w-md mx-auto">
-                  Din betalning är klar. Klicka för att skapa den fullständiga analysen med alla
-                  klausuler, fällor, ekonomisk risk och förhandlingstips.
-                </p>
-                <button
-                  onClick={() => generateFull(selected.id)}
-                  disabled={generating}
-                  className="btn-primary inline-block disabled:opacity-60"
-                >
-                  {generating ? 'Genererar... (kan ta 30 till 60 sek)' : 'Generera fullständig analys'}
-                </button>
-                {genError && <p className="text-sm text-red-600 mt-3">{genError}</p>}
-              </div>
-            )}
-
-            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-500 leading-relaxed flex items-start gap-2">
-              <Scale className="w-4 h-4 shrink-0 mt-0.5" />
-              <span><strong>Inte juridisk rådgivning.</strong> Detta är en AI-genererad tolkning i
-              informationssyfte och kan innehålla fel. Rådgör med en jurist vid osäkerhet.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="space-y-3">
+    <ul className="space-y-3">
       {items.map(a => {
         const result = a.result as AnalysisResult
+        const clauseCount = result.clauses?.length ?? 0
         return (
-          <button
-            key={a.id}
-            onClick={() => setSelected(a)}
-            className="hover-lift card w-full text-left flex items-center justify-between"
-          >
-            <div>
-              <h3 className="font-medium text-slate-900">{a.title}</h3>
-              <p className="text-sm text-slate-500 mt-0.5">
-                {new Date(a.created_at).toLocaleDateString('sv-SE')}
-                {a.is_unlocked
-                  ? ` · ${result.clauses?.length ?? 0} klausuler`
-                  : <span className="inline-flex items-center gap-1 align-middle"> · <Lock className="w-3 h-3" /> Lås upp</span>}
-              </p>
-            </div>
-            <RiskBadge level={result.risk_level} />
-          </button>
+          <li key={a.id} className="hover-lift card flex items-center gap-2 p-0">
+            <Link
+              href={`/analys/${a.id}`}
+              className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-2xl p-6 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            >
+              <div className="min-w-0">
+                <h3 className="truncate font-medium text-slate-900">{a.title}</h3>
+                <p className="mt-0.5 text-sm text-slate-500">
+                  {new Date(a.created_at).toLocaleDateString('sv-SE', { timeZone: 'Europe/Stockholm' })}
+                  {!a.is_unlocked ? (
+                    <span className="inline-flex items-center gap-1 align-middle"> · <Lock className="h-3 w-3" aria-hidden="true" /> Lås upp</span>
+                  ) : clauseCount > 0 ? (
+                    ` · ${clauseCount} klausuler`
+                  ) : (
+                    ' · Redo att generera'
+                  )}
+                </p>
+              </div>
+              <RiskBadge level={result.risk_level} />
+            </Link>
+            <button
+              type="button"
+              onClick={() => handleDelete(a)}
+              disabled={deletingId === a.id}
+              aria-label={`Ta bort analysen ${a.title}`}
+              className="mr-4 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-50 hover:text-red-700 disabled:opacity-50 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            >
+              <Trash2 className="h-[18px] w-[18px]" aria-hidden="true" />
+            </button>
+          </li>
         )
       })}
-    </div>
+    </ul>
   )
-}
-
-function RiskDot({ level }: { level: string }) {
-  const colors = { low: 'bg-green-400', medium: 'bg-yellow-400', high: 'bg-red-400' }
-  return <span className={`w-2 h-2 rounded-full ${colors[level as keyof typeof colors] ?? 'bg-slate-300'}`} />
 }
 
 function RiskBadge({ level }: { level: string }) {
   const config = {
-    low: { label: 'Låg risk', class: 'bg-green-100 text-green-700' },
-    medium: { label: 'Medel risk', class: 'bg-yellow-100 text-yellow-700' },
-    high: { label: 'Hög risk', class: 'bg-red-100 text-red-700' },
-  }[level] ?? { label: level, class: 'bg-slate-100 text-slate-600' }
+    low: { label: 'Låg risk', class: 'bg-green-100 text-green-900' },
+    medium: { label: 'Medelrisk', class: 'bg-amber-100 text-amber-900' },
+    high: { label: 'Hög risk', class: 'bg-red-100 text-red-900' },
+  }[level] ?? { label: level, class: 'bg-slate-100 text-slate-700' }
 
   return (
-    <span className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${config.class}`}>
+    <span className={`whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-bold ${config.class}`}>
       {config.label}
     </span>
   )

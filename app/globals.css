@@ -146,4 +146,11 @@
     border: 1px solid #e2e8f0 !important;
     break-inside: avoid;
   }
+  /* Resultatflödet: alla anmärkningar skrivs ut öppna, och block bryts inte mitt i */
+  .print-expand[hidden] {
+    display: block !important;
+  }
+  .print-block {
+    break-inside: avoid;
+  }
 }

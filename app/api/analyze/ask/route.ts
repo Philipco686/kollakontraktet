@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { getAnalysisById, PURGED_TEXT } from '@/lib/supabase/queries'
-import { answerContractQuestion, type ChatTurn } from '@/lib/analyze'
+import { answerWithCitations, type ChatTurn } from '@/lib/analyze'
 import { checkRateLimit } from '@/lib/rate-limit'
 import type { AnalysisResult } from '@/types'
 
@@ -57,8 +57,9 @@ export async function POST(request: NextRequest) {
           .slice(-10)
       : []
 
-    const answer = await answerContractQuestion(contractText, result, question.trim(), safeHistory)
-    return NextResponse.json({ answer })
+    const reply = await answerWithCitations(contractText, result, question.trim(), safeHistory)
+    // `answer` finns kvar som ren text för klienter som laddats före den här versionen
+    return NextResponse.json({ ...reply, answer: [...reply.paragraphs, ...(reply.list ?? [])].join('\n\n') })
   } catch (error) {
     console.error('Följdfråge-fel:', error)
     if (error instanceof Anthropic.APIError && (error.status === 529 || error.status === 429)) {

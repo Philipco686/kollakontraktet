@@ -21,6 +21,9 @@ export default function NavBar({ user }: { user: User }) {
     { href: '/history', label: 'Historik' },
     { href: '/team', label: 'Team' },
   ]
+  // En öppen analys (/analys/...) hör till Historik
+  const isActive = (href: string) =>
+    pathname === href || (href === '/history' && pathname.startsWith('/analys/'))
 
   return (
     <nav className="bg-white border-b border-slate-100 sticky top-0 z-50">
@@ -36,7 +39,7 @@ export default function NavBar({ user }: { user: User }) {
                 key={href}
                 href={href}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === href
+                  isActive(href)
                     ? 'bg-brand-50 text-brand-700'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
@@ -64,7 +67,7 @@ export default function NavBar({ user }: { user: User }) {
               key={href}
               href={href}
               className={`flex-1 text-center py-2 rounded-lg text-sm font-medium ${
-                pathname === href
+                isActive(href)
                   ? 'bg-brand-50 text-brand-700'
                   : 'text-slate-600'
               }`}

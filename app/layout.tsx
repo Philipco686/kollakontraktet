@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Fraunces } from 'next/font/google'
+import { Inter, Fraunces, Source_Serif_4 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SITE_URL } from '@/lib/site'
 import './globals.css'
@@ -11,6 +11,8 @@ const fraunces = Fraunces({
   variable: '--font-display',
   display: 'swap',
 })
+// Avtalstext och förslag på formuleringar. Neutral serif som går att läsa i små storlekar.
+const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-doc', display: 'swap', preload: false })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -60,7 +62,7 @@ const orgWebsiteJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="sv" className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang="sv" className={`${inter.variable} ${fraunces.variable} ${sourceSerif.variable}`}>
       <body className="bg-slate-50 text-slate-900 antialiased font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgWebsiteJsonLd) }} />
         {children}

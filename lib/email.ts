@@ -50,8 +50,21 @@ export function buildAnalysisEmailHtml(analysis: Analysis, siteUrl: string): str
         .map(rec => `<li style="color:#475569;font-size:13px;margin-bottom:4px">${rec}</li>`)
         .join('')
 
+  const esc = (s: unknown) =>
+    String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  const top = locked && r.top_risk && r.top_risk.title ? r.top_risk : null
+  const freeRiskBlock = top
+    ? `<h3 style="font-size:15px;color:#0f172a;margin:16px 0 8px">${top.risk_level === 'low' ? 'Det viktigaste villkoret' : 'Den största risken'} (gratis smakprov)</h3>
+      <div style="background:#f8fafc;border-radius:10px;padding:12px;margin-bottom:8px">
+        <strong style="color:#0f172a;font-size:14px">${esc(top.number ? `${top.number} ${top.title}` : top.title)}</strong>
+        <span style="font-size:12px;color:#64748b;margin-left:6px">${riskText[top.risk_level] ?? ''}</span>
+        <p style="color:#475569;font-size:13px;margin:4px 0 0">${esc(top.plain_explanation)}</p>
+        ${top.suggestion ? `<p style="color:#0f172a;font-size:13px;margin:8px 0 0"><strong>Förslag på formulering:</strong> ${esc(top.suggestion)}</p>` : ''}
+      </div>`
+    : ''
+
   const lockedBlock = locked
-    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:20px;text-align:center;margin-top:16px">
+    ? `${freeRiskBlock}<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:20px;text-align:center;margin-top:16px">
         <p style="color:#0f172a;font-weight:600;margin:0 0 4px">Resten av analysen är låst</p>
         <p style="color:#64748b;font-size:13px;margin:0 0 12px">Lås upp för att se alla klausuler, ekonomisk risk och förhandlingstips.</p>
         <a href="${siteUrl}/pricing" style="background:#0284c7;color:#fff;text-decoration:none;padding:10px 20px;border-radius:10px;font-weight:600;font-size:14px">Lås upp hela analysen</a>

@@ -8,9 +8,67 @@ import {
 } from 'lucide-react'
 import WithdrawalConsent from '@/components/WithdrawalConsent'
 import { useAnalysis } from './AnalysisProvider'
+import { useCopied } from './hooks'
+import { FINDING_ICON, FOCUS, RiskLabel } from './risk'
 
-/* Gratisanalysen (teaser): sammanfattning syns, resten ligger bakom betalning. */
+/* Gratisanalysens smakprov: en enda risk, visad precis som i hela analysen, så att kunden ser
+ * vad den får innan den betalar. Resten av klausulerna ligger bakom betalningen. */
+export function FreeRiskCard() {
+  const { analysis: a } = useAnalysis()
+  const [copied, copy] = useCopied()
+  if (!a.freeRisk) return null
+  const { finding: f, clause: c } = a.freeRisk
+  const Icon = FINDING_ICON[f.icon]
+
+  return (
+    <section className="card p-5 sm:p-7" aria-labelledby="free-risk-h">
+      <div className="text-xs font-bold uppercase tracking-[0.08em] text-brand-700">Gratis smakprov</div>
+      <h2 id="free-risk-h" className="mb-4 mt-1.5 font-display text-[22px] font-medium tracking-tight text-slate-900">
+        {f.risk === 'low' ? 'Det viktigaste villkoret i ditt avtal' : 'Den största risken i ditt avtal'}
+      </h2>
+
+      <div className="mb-3 flex flex-wrap items-center gap-3">
+        <div aria-hidden="true" className="flex h-[42px] w-[42px] items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+          <Icon className="h-[22px] w-[22px]" />
+        </div>
+        <h3 className="min-w-0 flex-1 text-[17px] font-bold text-slate-900">{f.title}</h3>
+        <RiskLabel risk={f.risk} />
+      </div>
+
+      {c.text && (
+        <figure className="mb-4 rounded-xl bg-slate-50 px-4 py-3">
+          {c.number && <figcaption className="mb-1 text-xs font-bold text-slate-600">{c.number} i avtalet</figcaption>}
+          <blockquote className="font-doc text-[14.5px] leading-relaxed text-slate-900">{c.text}</blockquote>
+        </figure>
+      )}
+
+      <p className="mb-4 text-[15px] leading-relaxed text-slate-700">{f.body}</p>
+
+      {f.suggestion && (
+        <>
+          <div className="rounded-xl bg-brand-50 px-3.5 py-3">
+            <div className="mb-1 text-xs font-bold text-brand-700">Förslag på formulering</div>
+            <div className="font-doc text-[14.5px] leading-relaxed text-slate-900">{f.suggestion}</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => void copy(f.suggestion as string)}
+            className={`btn-secondary no-print mt-2.5 min-h-[44px] px-3.5 py-2 text-[13.5px] ${FOCUS}`}
+          >
+            {copied ? 'Kopierat' : 'Kopiera förslag'}
+          </button>
+          <span className="sr-only" role="status">{copied ? 'Förslaget kopierades till urklipp' : ''}</span>
+        </>
+      )}
+
+      <p className="mt-4 text-sm text-slate-600">Hela analysen går igenom alla klausuler i avtalet på samma sätt.</p>
+    </section>
+  )
+}
+
+/* Gratisanalysen (teaser): sammanfattning och en risk syns, resten ligger bakom betalning. */
 export function PaywallPanel() {
+  const { analysis: a } = useAnalysis()
   const [loading, setLoading] = useState(false)
   const [consent, setConsent] = useState(false)
 
@@ -47,7 +105,9 @@ export function PaywallPanel() {
       <Lock className="mx-auto mb-3 h-9 w-9 text-brand-700" aria-hidden="true" />
       <h2 id="paywall-h" className="mb-1 text-xl font-bold text-slate-900">Det här är bara början</h2>
       <p className="mx-auto mb-5 max-w-md text-slate-600">
-        Du har sett sammanfattningen gratis. Lås upp hela analysen för att se exakt vad som gömmer sig i avtalet.
+        {a.freeRisk
+          ? 'Du har sett sammanfattningen och en risk gratis. Lås upp hela analysen för att se alla klausuler, vad de kan kosta och hur du förhandlar.'
+          : 'Du har sett sammanfattningen gratis. Lås upp hela analysen för att se exakt vad som gömmer sig i avtalet.'}
       </p>
       <ul className="mx-auto mb-6 max-w-sm space-y-2 text-left">
         {preview.map(({ Icon, text }) => (

@@ -101,6 +101,8 @@ export interface AnalysisResult {
   contract_type?: string
   verdict?: Verdict
   missing?: MissingItem[]
+  // Gratisanalysen (teaser) visar en enda risk som smakprov. Finns bara i teasers gjorda efter 23 nov 2026.
+  top_risk?: Clause | null
 }
 
 export interface Clause {

@@ -6,7 +6,8 @@ import { stripDashes } from '@/lib/text'
 
 /* Gör om en sparad analys till det som de tre vyerna behöver. Ren logik, inga databasanrop.
  * Äldre analyser saknar de nya fälten och får rimliga reservvärden, så alla analyser fungerar.
- * Låsta analyser (teaser) får aldrig med sig mer än sammanfattning, risknivå och nyckeluppgifter. */
+ * Låsta analyser (teaser) får aldrig med sig mer än sammanfattning, risknivå, nyckeluppgifter och
+ * smakprovet (en enda risk). */
 
 export type Risk = 'high' | 'medium' | 'low'
 export type AnalysisState = 'locked' | 'needs-generation' | 'full'
@@ -56,6 +57,8 @@ export interface ViewAnalysis {
   keyTerms: KeyFact[]
   clauses: ViewClause[]
   findings: ViewFinding[]
+  /** Gratisanalysens smakprov: en enda risk med sin klausul. Bara för analyser som inte är fulla än. */
+  freeRisk: { finding: ViewFinding; clause: ViewClause } | null
   missing: MissingItem[]
   extras: ViewExtras
 }
@@ -128,6 +131,24 @@ export function computeScore(findings: { risk: Risk }[], overall: Risk): number 
   return Math.round(Math.min(hi, Math.max(lo, raw)))
 }
 
+function toFinding(c: Clause, i: number): ViewFinding {
+  const crisk = asRisk(c.risk_level)
+  const body = clean(c.plain_explanation)
+  const suggestion = typeof c.suggestion === 'string' && c.suggestion.trim() ? clean(c.suggestion) : null
+  return {
+    id: findingIdAt(i),
+    clauseId: clauseIdAt(i),
+    risk: crisk,
+    area: clean(c.area) || clean(c.title),
+    icon: iconFor(c),
+    title: clean(c.title),
+    short: clean(c.short) || firstSentence(body),
+    body,
+    suggestion,
+    noChangeNeeded: suggestion === null && (c.suggestion === null || (c.suggestion === undefined && crisk === 'low')),
+  }
+}
+
 type Row = Pick<Analysis, 'id' | 'title' | 'created_at' | 'result' | 'is_unlocked'>
 
 export function buildViewAnalysis(row: Row): ViewAnalysis {
@@ -151,25 +172,24 @@ export function buildViewAnalysis(row: Row): ViewAnalysis {
 
   const findings: ViewFinding[] = full
     ? rawClauses
-        .map((c, i): ViewFinding => {
-          const crisk = asRisk(c.risk_level)
-          const body = clean(c.plain_explanation)
-          const suggestion = typeof c.suggestion === 'string' && c.suggestion.trim() ? clean(c.suggestion) : null
-          return {
-            id: findingIdAt(i),
-            clauseId: clauseIdAt(i),
-            risk: crisk,
-            area: clean(c.area) || clean(c.title),
-            icon: iconFor(c),
-            title: clean(c.title),
-            short: clean(c.short) || firstSentence(body),
-            body,
-            suggestion,
-            noChangeNeeded: suggestion === null && (c.suggestion === null || (c.suggestion === undefined && crisk === 'low')),
-          }
-        })
+        .map((c, i) => toFinding(c, i))
         .sort((a, b) => RISK_ORDER[a.risk] - RISK_ORDER[b.risk]) // sorteringen är stabil, dokumentordning inom varje nivå
     : []
+
+  // Smakprovet i gratisanalysen. Det har en egen id-serie (c0/f0) så att det aldrig krockar med
+  // klausulerna i den fulla analysen.
+  const top = r.top_risk
+  const freeRisk = !full && top && typeof top === 'object' && clean(top.title) && clean(top.plain_explanation)
+    ? {
+        finding: toFinding(top, -1),
+        clause: {
+          id: clauseIdAt(-1),
+          number: clean(top.number) || null,
+          title: clean(top.title),
+          text: typeof top.original_text === 'string' ? top.original_text : '',
+        },
+      }
+    : null
 
   // Äldre analyser har förhandlingstips från AI:n. Nya analyser bygger dem av förslagen per klausul.
   const storedTips = list<NegotiationTip>(r.negotiation_tips)
@@ -200,6 +220,7 @@ export function buildViewAnalysis(row: Row): ViewAnalysis {
     keyTerms: list<KeyFact>(r.key_facts).slice(0, 8).map(k => ({ label: clean(k.label), value: clean(k.value) })),
     clauses,
     findings,
+    freeRisk,
     missing: full ? list<MissingItem>(r.missing).map(m => ({ title: clean(m.title), body: clean(m.body) })).filter(m => m.body) : [],
     extras: {
       quick: full && r.quick_summary

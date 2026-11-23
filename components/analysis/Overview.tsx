@@ -11,7 +11,7 @@ import { useCopied, useFocusHeading, useGoAsk } from './hooks'
 import { FINDING_ICON, FOCUS, RiskLabel, RiskSquare } from './risk'
 import ScoreRing from './ScoreRing'
 import ExtraCards from './ExtraCards'
-import { GenerateFullPanel, PaywallPanel } from './UnlockPanels'
+import { FreeRiskCard, GenerateFullPanel, PaywallPanel } from './UnlockPanels'
 
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString('sv-SE', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Europe/Stockholm' })
@@ -60,6 +60,7 @@ export default function Overview() {
         )}
       </div>
 
+      {!full && <FreeRiskCard />}
       {a.state === 'locked' && <PaywallPanel />}
       {a.state === 'needs-generation' && <GenerateFullPanel />}
 

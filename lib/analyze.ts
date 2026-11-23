@@ -10,9 +10,10 @@ export const anthropic = new Anthropic({
 // Prompten ber AI:n att undvika tankstreck, och stripDashesDeep tar bort de som ändå slinker igenom.
 // Avtalscitat (original_text) lämnas orörda eftersom de ska återges ordagrant.
 
-// Kort, billig prompt, bara det som visas i teasern
+// Kort, billig prompt, bara det som visas i teasern: sammanfattning, nyckeluppgifter och EN risk
+// som smakprov, så att kunden ser vad hela analysen ger innan hen betalar.
 function teaserPrompt(contractText: string): string {
-  return `Du är en expert på svenska juridiska avtal. Ge en SNABB översikt av avtalet nedan.
+  return `Du är en expert på svenska juridiska avtal. Ge en SNABB översikt av avtalet nedan och lyft fram den enskilt viktigaste risken.
 
 Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanför JSON):
 
@@ -21,13 +22,29 @@ Svara ENDAST med ett JSON-objekt i exakt detta format (inga förklaringar utanf�
   "risk_level": "low|medium|high",
   "key_facts": [
     { "label": "Lön/ersättning", "value": "45 000 kr/mån" }
-  ]
+  ],
+  "top_risk": {
+    "title": "Klausulens namn",
+    "number": "Klausulens nummer exakt som i avtalet, t.ex. \\"§ 9\\" eller \\"9.\\", eller null om avtalet inte numrerar sina klausuler",
+    "original_text": "Citera texten från avtalet",
+    "plain_explanation": "Förklara på vanlig svenska vad detta innebär i praktiken, 2-4 meningar",
+    "area": "Området i 1-3 ord, t.ex. Konkurrens, Uppsägning, Lön",
+    "icon": "shield|pencil|exit|coin|calendar|lock",
+    "short": "En mening, max 140 tecken, om vad klausulen betyder för användaren",
+    "suggestion": "Förslag på ny avtalstext som användaren kan föreslå, eller null om ingen ändring behövs",
+    "risk_level": "low|medium|high",
+    "is_important": true
+  }
 }
 
 Regler:
 - Skriv allt på svenska
 - key_facts: 4-8 konkreta faktapunkter relevanta för detta avtal (lön, hyra, tid, deposition, uppsägning, etc.), var och en med label och value (ingen emoji)
 - risk_level: "high" om avtalet kan kosta mycket pengar eller förlust av rättigheter, annars "medium"/"low"
+- top_risk: den ENDA klausul i avtalet som användaren mest behöver känna till, alltså den med högst risk. Citera den ordagrant. Finns ingen klausul med risk "medium" eller "high", välj den viktigaste klausulen och sätt risk_level "low" och suggestion null
+- top_risk.number: skriv exakt så som klausulen är numrerad i avtalet. Hitta ALDRIG på ett nummer, använd null om avtalet saknar numrering
+- top_risk.suggestion: skriv det som färdig avtalstext, och bara när risk_level är "medium" eller "high"
+- top_risk.icon: shield = skydd, konkurrens eller ansvar. pencil = ändring av villkor. exit = uppsägning eller avslut. coin = pengar eller betalning. calendar = tid, datum eller perioder. lock = sekretess
 - Använd aldrig tankstreck eller långa streck i texten. Skriv med punkt, komma eller kolon i stället.
 - Svara med enbart JSON-objektet, utan inledande text eller markdown.
 
@@ -128,14 +145,14 @@ ${contractText}`
 }
 
 /**
- * Analyserar ett avtal. 'teaser' genererar bara en smakbit (billigt),
+ * Analyserar ett avtal. 'teaser' genererar bara en smakbit med en risk (billigt),
  * 'full' genererar hela analysen. Kastar Error('MAX_TOKENS') om svaret klipptes,
  * och låter Anthropic-fel bubbla upp för hantering i route.
  */
 export async function analyzeContract(contractText: string, mode: 'teaser' | 'full'): Promise<AnalysisResult> {
   const message = await anthropic.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: mode === 'teaser' ? 1500 : 10000,
+    max_tokens: mode === 'teaser' ? 2500 : 10000,
     messages: [
       {
         role: 'user',
@@ -157,7 +174,10 @@ export async function analyzeContract(contractText: string, mode: 'teaser' | 'fu
   if (!jsonMatch) {
     throw new Error('Kunde inte tolka AI-svaret')
   }
-  return stripDashesDeep(JSON.parse(jsonMatch[0]) as AnalysisResult, ['original_text'])
+  const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult
+  // Bara teasern ska ha ett smakprov. Den fulla analysen har alla klausuler i stället.
+  if (mode === 'full') delete parsed.top_risk
+  return stripDashesDeep(parsed, ['original_text'])
 }
 
 export interface ChatTurn {

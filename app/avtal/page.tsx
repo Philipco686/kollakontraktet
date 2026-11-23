@@ -36,7 +36,7 @@ export default function AvtalIndex() {
         </h1>
         <p className="text-lg text-slate-500 max-w-2xl mb-10">
           Vad ska man tänka på i olika avtal? Här är fällorna per avtalstyp, och du kan analysera ditt
-          eget avtal med AI på under en minut.
+          eget avtal med AI.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

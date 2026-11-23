@@ -62,6 +62,7 @@ export default function PricingPage() {
             name={PLANS.onetime.name}
             price={PLANS.onetime.price}
             interval="engångsbetalning"
+            terms="Engångsköp, ingen prenumeration. Analysen kan användas inom 30 dagar."
             description={PLANS.onetime.description}
             features={PLANS.onetime.features}
             ctaLabel="Köp analys"
@@ -75,13 +76,13 @@ export default function PricingPage() {
             name={PLANS.personal.name}
             price={PLANS.personal.price}
             interval="per månad"
+            terms={'Löper tills vidare och förnyas automatiskt varje månad. Säg upp när som helst i kundportalen, uppsägningen gäller från nästa period.'}
             description={PLANS.personal.description}
             features={PLANS.personal.features}
             ctaLabel="Välj Personlig"
             loading={loading === 'personal'}
             onClick={() => handleCheckout('personal')}
             highlight
-            badge="Populärast"
           />
 
           {/* Företag */}
@@ -89,6 +90,7 @@ export default function PricingPage() {
             name={PLANS.business.name}
             price={PLANS.business.price}
             interval="per månad"
+            terms={'Löper tills vidare och förnyas automatiskt varje månad. Säg upp när som helst i kundportalen, uppsägningen gäller från nästa period.'}
             description={PLANS.business.description}
             features={PLANS.business.features}
             ctaLabel="Välj Företag"
@@ -114,6 +116,9 @@ export default function PricingPage() {
         <p className="text-center text-sm text-slate-400 mt-6">
           Betalning sker säkert via Stripe. Avbryt prenumeration när som helst.
         </p>
+        <p className="text-center text-sm text-slate-400 mt-2">
+          Ångrat dig? <Link href="/angra" className="underline hover:text-slate-600">Ångra köp här</Link> inom 14 dagar.
+        </p>
       </div>
     </div>
   )
@@ -123,6 +128,7 @@ interface PricingCardProps {
   name: string
   price: number
   interval: string
+  terms: string
   description: string
   features: readonly string[]
   ctaLabel: string
@@ -133,7 +139,7 @@ interface PricingCardProps {
 }
 
 function PricingCard({
-  name, price, interval, description, features,
+  name, price, interval, terms, description, features,
   ctaLabel, loading, onClick, highlight, badge,
 }: PricingCardProps) {
   return (
@@ -157,14 +163,15 @@ function PricingCard({
         <p className={`text-sm mb-4 ${highlight ? 'text-brand-200' : 'text-slate-500'}`}>
           {description}
         </p>
-        <div className="flex items-end gap-1">
-          <span className={`text-4xl font-extrabold ${highlight ? 'text-white' : 'text-slate-900'}`}>
+        <div className="flex flex-wrap items-end gap-x-1">
+          <span className={`whitespace-nowrap text-4xl font-extrabold ${highlight ? 'text-white' : 'text-slate-900'}`}>
             {price} kr
           </span>
           <span className={`text-sm mb-1 ${highlight ? 'text-brand-200' : 'text-slate-400'}`}>
-            /{interval}
+            {interval}
           </span>
         </div>
+        <p className={`text-xs mt-2 leading-relaxed ${highlight ? 'text-brand-200' : 'text-slate-500'}`}>{terms}</p>
       </div>
 
       <ul className="space-y-3 mb-8 flex-1">

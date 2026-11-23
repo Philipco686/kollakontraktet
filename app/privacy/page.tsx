@@ -91,6 +91,10 @@ export default function PrivacyPage() {
                     <td className="p-3">Berättigat intresse (art. 6.1 f)</td>
                   </tr>
                   <tr>
+                    <td className="p-3">Avtalsbenchmarken: spara rensade klausuler om du väljer att bidra</td>
+                    <td className="p-3">Samtycke (art. 6.1 a)</td>
+                  </tr>
+                  <tr>
                     <td className="p-3">Utskick av e-post som du själv begär (t.ex. maila en analys)</td>
                     <td className="p-3">Fullgörande av avtal / samtycke (art. 6.1 b/a)</td>
                   </tr>
@@ -183,10 +187,14 @@ export default function PrivacyPage() {
               Det är helt frivilligt, kryssrutan är inte förifylld, och du kan analysera avtal utan att bidra.
             </p>
             <p className="mt-2">
-              Väljer du att bidra sparar vi enskilda klausuler i avidentifierad form. Vi sparar aldrig hela
-              dokument, parter, belopp eller andra identifierbara uppgifter, och bidraget kopplas inte till dig
-              eller ditt konto. Underlaget kan användas för att ta fram jämförelser och statistik i tjänsten och
-              i sammanställd form.
+              Väljer du att bidra sparar vi enskilda klausuler, aldrig hela dokumentet. Innan något sparas tar vi
+              automatiskt bort e-postadresser, person- och organisationsnummer, telefonnummer, adresser,
+              postnummer, belopp, företagsnamn och namn som består av flera ord (till exempel för- och efternamn).
+              Bidraget sparas utan koppling till dig eller ditt konto. Den automatiska rensningen kan i undantagsfall
+              missa en uppgift, till exempel ett ensamt förnamn, så bidra inte med avtal som innehåller känsliga
+              uppgifter om andra personer. Underlaget kan användas för att ta fram jämförelser och statistik i
+              tjänsten och i sammanställd form. Den rättsliga grunden är ditt samtycke, som du lämnar genom att
+              kryssa i rutan.
             </p>
           </section>
 

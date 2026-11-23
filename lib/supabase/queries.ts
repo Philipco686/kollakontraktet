@@ -241,7 +241,16 @@ export async function incrementAnalysisCount(
 
 const BENCH_EMAIL_RE = /\b[^\s@]+@[^\s@]+\.[^\s@]+\b/gi
 const BENCH_PNR_RE = /\b\d{6,8}[-+ ]?\d{4}\b/g
-const BENCH_PHONE_RE = /\b(?:\+46|0)\s?\d[\d ]{6,}\d\b/g
+const BENCH_PHONE_RE = /(?:\+46\s?|\b0)\d{1,3}[\s-]?\d[\d\s-]{4,}\d\b/g
+// Företagsnamn som slutar på bolagsform, t.ex. "Nordhamn Logistik AB".
+const BENCH_COMPANY_RE = /\b(?:[A-ZÅÄÖ][\wåäöÅÄÖé&.-]*\s+){1,4}(?:AB|HB|KB|Aktiebolag|Handelsbolag|Kommanditbolag)\b(?:\s*\(publ\))?/g
+// Gatuadresser, t.ex. "Storgatan 12B".
+const BENCH_ADDRESS_RE = /\b[A-ZÅÄÖ][a-zåäöé]*(?:gatan|vägen|gränd|gränden|torget|allén|backen|stigen|leden|gata|väg)\s+\d+\s?[A-Za-z]?\b/g
+// Postnummer, t.ex. "114 35".
+const BENCH_POSTCODE_RE = /\b\d{3}\s?\d{2}\b/g
+// Två eller fler ord med stor bokstav i rad, t.ex. för- och efternamn. Svenska substantiv skrivs
+// med liten bokstav, så sådana följder är nästan alltid namn. Tar hellre bort för mycket än för lite.
+const BENCH_NAME_RE = /\b[A-ZÅÄÖ][a-zåäöé]+(?:\s+[A-ZÅÄÖ][a-zåäöé]+)+\b/g
 // Kronbelopp (t.ex. "45 000 kr", "1 200 000 SEK", "500:-"), behåller procent och tidsangivelser.
 const BENCH_CURRENCY_RE = /\b\d{1,3}(?:[ .]\d{3})+(?:[.,]\d+)?\s?(?:kr|kronor|sek|:-)?\b|\b\d+(?:[.,]\d+)?\s?(?:kr|kronor|sek|:-)\b/gi
 
@@ -250,7 +259,11 @@ function benchScrub(text: string): string {
     .replace(BENCH_EMAIL_RE, '[epost]')
     .replace(BENCH_PNR_RE, '[personnr]')
     .replace(BENCH_PHONE_RE, '[tel]')
+    .replace(BENCH_COMPANY_RE, '[företag]')
+    .replace(BENCH_ADDRESS_RE, '[adress]')
     .replace(BENCH_CURRENCY_RE, '[belopp]')
+    .replace(BENCH_POSTCODE_RE, '[postnr]')
+    .replace(BENCH_NAME_RE, '[namn]')
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 2000)

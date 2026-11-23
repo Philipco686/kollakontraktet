@@ -123,9 +123,10 @@ export default function ContractAnalyzer() {
           />
           <span className="text-slate-600">
             <strong className="text-slate-700">Var med och bygg Avtalsbenchmarken (frivilligt).</strong> Tillåt att
-            avidentifierade klausuler från det här avtalet används för att bygga upp svensk jämförelsedata, så att du
-            och andra så småningom kan se om ett villkor är normalt. Aldrig parter, belopp eller identifierbara uppgifter,
-            och aldrig kopplat till dig. Du får tillgång till jämförelserna när de är klara.
+            klausuler från det här avtalet används för att bygga upp svensk jämförelsedata, så att du och andra så
+            småningom kan se om ett villkor är normalt. Namn, nummer, adresser och belopp tas bort automatiskt innan
+            något sparas, och bidraget kopplas aldrig till dig. Kryssa inte i om avtalet innehåller känsliga uppgifter
+            om andra. Du får tillgång till jämförelserna när de är klara.
           </span>
         </label>
 

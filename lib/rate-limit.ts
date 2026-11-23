@@ -16,7 +16,7 @@ function adminClient() {
  */
 export async function checkRateLimit(
   userId: string,
-  action: 'analyze' | 'extract-pdf' | 'email' | 'ask',
+  action: 'analyze' | 'extract-pdf' | 'email' | 'ask' | 'withdrawal',
   maxPerWindow: number,
   windowMinutes: number
 ): Promise<{ allowed: boolean; retryAfterMinutes?: number }> {

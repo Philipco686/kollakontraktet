@@ -14,7 +14,7 @@ export const PLANS = {
     description: '5 analyser per månad',
     features: [
       '5 avtalsanalyser per månad',
-      'Fullständig klausulgenomgång',
+      'Genomgång av viktiga klausuler',
       'Riskbedömning',
       'PDF-export',
     ],
@@ -26,7 +26,7 @@ export const PLANS = {
     analyses: Infinity,
     description: 'Obegränsade analyser, upp till 5 användare',
     features: [
-      'Obegränsade avtalsanalyser',
+      'Obegränsade avtalsanalyser (högst 20 per timme)',
       'Upp till 5 teammedlemmar',
       'Prioriterad support',
       'API-åtkomst (snart)',
@@ -40,7 +40,7 @@ export const PLANS = {
     analyses: 1,
     description: 'En analys utan prenumeration',
     features: [
-      '1 fullständig avtalsanalys',
+      '1 hel avtalsanalys',
       'Klausulgenomgång',
       'Riskbedömning',
       'Giltig i 30 dagar',

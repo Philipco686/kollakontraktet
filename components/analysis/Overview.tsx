@@ -179,8 +179,8 @@ function HeroActions({ hasSuggestions }: { hasSuggestions: boolean }) {
       </div>
       <p className="mt-2.5 text-sm text-slate-600">
         {hasSuggestions
-          ? 'Varje klausul markerad i avtalet, med förslag på nya formuleringar.'
-          : 'Varje klausul genomgången och förklarad på vanlig svenska.'}
+          ? 'De viktiga klausulerna markerade i avtalet, med förslag på nya formuleringar.'
+          : 'De viktiga klausulerna genomgångna och förklarade på vanlig svenska.'}
         {draft && ' Mejlutkastet kopieras till urklipp, inget skickas.'}
       </p>
       <span className="sr-only" role="status">{copied ? 'Förhandlingsmejlet kopierades till urklipp' : ''}</span>

@@ -57,6 +57,9 @@ export default async function DashboardPage() {
                 <ManageSubscriptionButton />
               </div>
             )}
+            <p className="mt-3 text-xs text-slate-400">
+              Ångrat dig? <Link href="/angra" className="underline hover:text-slate-600">Ångra köp här</Link> inom 14 dagar.
+            </p>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-4">

@@ -66,7 +66,7 @@ export function buildAnalysisEmailHtml(analysis: Analysis, siteUrl: string): str
   const lockedBlock = locked
     ? `${freeRiskBlock}<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:20px;text-align:center;margin-top:16px">
         <p style="color:#0f172a;font-weight:600;margin:0 0 4px">Resten av analysen är låst</p>
-        <p style="color:#64748b;font-size:13px;margin:0 0 12px">Lås upp för att se alla klausuler, ekonomisk risk och förhandlingstips.</p>
+        <p style="color:#64748b;font-size:13px;margin:0 0 12px">Lås upp för att se de viktiga klausulerna, ekonomisk risk och förhandlingstips.</p>
         <a href="${siteUrl}/pricing" style="background:#0284c7;color:#fff;text-decoration:none;padding:10px 20px;border-radius:10px;font-weight:600;font-size:14px">Lås upp hela analysen</a>
       </div>`
     : ''

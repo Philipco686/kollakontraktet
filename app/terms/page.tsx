@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { COMPANY } from '@/lib/site'
 
 export const metadata = {
   title: 'Användarvillkor | Kolla Kontraktet',
@@ -6,7 +7,7 @@ export const metadata = {
   alternates: { canonical: '/terms' },
 }
 
-const LAST_UPDATED = '8 september 2026'
+const LAST_UPDATED = '23 november 2026'
 
 export default function TermsPage() {
   return (
@@ -27,8 +28,11 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-slate-900 mb-2">1. Inledning och avtalsparter</h2>
             <p>
               Dessa användarvillkor (”villkoren”) gäller mellan dig som användare (”du”, ”kunden”) och
-              Philip Eriksson, som i egenskap av näringsidkare tillhandahåller tjänsten Kolla Kontraktet
-              (”vi”, ”oss”, ”tjänsten”). Du når oss på{' '}
+              {COMPANY.name}, som i egenskap av näringsidkare tillhandahåller tjänsten {COMPANY.tradeName}
+              (”vi”, ”oss”, ”tjänsten”).
+              {COMPANY.orgNr && <> Organisationsnummer: {COMPANY.orgNr}.</>}
+              {COMPANY.address && <> Postadress: {COMPANY.address}.</>}
+              {' '}Du når oss på{' '}
               <a href="mailto:kontakt@kollakontraktet.se" className="text-brand-600 hover:underline">kontakt@kollakontraktet.se</a>.
             </p>
             <p className="mt-2">
@@ -109,9 +113,15 @@ export default function TermsPage() {
               Ångrar du dig efter att samtycket lämnats men innan tjänsten hunnit utföras, har du rätt att
               ångra köpet. För löpande prenumerationer gäller ångerrätten själva ingåendet av
               prenumerationsavtalet; har du under perioden redan tagit del av utförda analyser kan vi göra
-              avdrag i proportion till vad som levererats. Kontakta oss på{' '}
-              <a href="mailto:kontakt@kollakontraktet.se" className="text-brand-600 hover:underline">kontakt@kollakontraktet.se</a>{' '}
-              för att utöva ångerrätten eller vid frågor om återbetalning.
+              avdrag i proportion till vad som levererats.
+            </p>
+            <p className="mt-2">
+              Du ångrar ett köp enklast med funktionen{' '}
+              <Link href="/angra" className="text-brand-600 hover:underline">Ångra köp</Link>, som finns i
+              sidfoten och på din översiktssida. Där får du en kvittens per e-post direkt, och en löpande
+              prenumeration avslutas samtidigt. Du kan också meddela oss på{' '}
+              <a href="mailto:kontakt@kollakontraktet.se" className="text-brand-600 hover:underline">kontakt@kollakontraktet.se</a>.
+              Vi återbetalar senast inom 14 dagar från att vi tagit emot din ångring.
             </p>
           </section>
 
@@ -188,10 +198,7 @@ export default function TermsPage() {
               som konsument vända dig till{' '}
               <strong>Allmänna reklamationsnämnden (ARN)</strong>, Box 174, 101 23 Stockholm,{' '}
               <a href="https://www.arn.se" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">www.arn.se</a>,
-              vars rekommendationer vi följer. Du kan även använda EU-kommissionens plattform för
-              tvistlösning online:{' '}
-              <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">ec.europa.eu/consumers/odr</a>.
-              Tvist kan också prövas av svensk allmän domstol.
+              vars rekommendationer vi följer. Tvist kan också prövas av svensk allmän domstol.
             </p>
           </section>
 

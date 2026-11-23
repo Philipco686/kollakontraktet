@@ -53,6 +53,9 @@ export async function POST(request: NextRequest) {
       custom_text: {
         submit: {
           message:
+            (isRecurring
+              ? 'Prenumerationen löper tills vidare och förnyas automatiskt varje månad tills du säger upp den. Uppsägningen gäller från nästa period. '
+              : '') +
             'Genom att slutföra köpet begär du att den digitala tjänsten levereras direkt och samtycker till att din ångerrätt upphör när tjänsten har utförts.',
         },
       },

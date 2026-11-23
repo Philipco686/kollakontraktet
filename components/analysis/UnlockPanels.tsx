@@ -61,7 +61,7 @@ export function FreeRiskCard() {
         </>
       )}
 
-      <p className="mt-4 text-sm text-slate-600">Hela analysen går igenom alla klausuler i avtalet på samma sätt.</p>
+      <p className="mt-4 text-sm text-slate-600">Hela analysen går igenom avtalets viktiga klausuler på samma sätt.</p>
     </section>
   )
 }
@@ -91,7 +91,7 @@ export function PaywallPanel() {
   }
 
   const preview = [
-    { Icon: Search, text: 'Fullständig genomgång av alla klausuler' },
+    { Icon: Search, text: 'Genomgång av avtalets viktiga klausuler' },
     { Icon: AlertTriangle, text: 'Vanliga fällor i just detta avtal' },
     { Icon: Zap, text: 'Konsekvenser om du bryter avtalet' },
     { Icon: Coins, text: 'Din ekonomiska risk i kronor (worst case)' },
@@ -106,7 +106,7 @@ export function PaywallPanel() {
       <h2 id="paywall-h" className="mb-1 text-xl font-bold text-slate-900">Det här är bara början</h2>
       <p className="mx-auto mb-5 max-w-md text-slate-600">
         {a.freeRisk
-          ? 'Du har sett sammanfattningen och en risk gratis. Lås upp hela analysen för att se alla klausuler, vad de kan kosta och hur du förhandlar.'
+          ? 'Du har sett sammanfattningen och en risk gratis. Lås upp hela analysen för att se de viktiga klausulerna, vad de kan kosta och hur du förhandlar.'
           : 'Du har sett sammanfattningen gratis. Lås upp hela analysen för att se exakt vad som gömmer sig i avtalet.'}
       </p>
       <ul className="mx-auto mb-6 max-w-sm space-y-2 text-left">
@@ -165,7 +165,7 @@ export function GenerateFullPanel() {
       <LockOpen className="mx-auto mb-3 h-9 w-9 text-brand-700" aria-hidden="true" />
       <h2 id="generate-h" className="mb-1 text-xl font-bold text-slate-900">Upplåst: generera hela analysen</h2>
       <p className="mx-auto mb-5 max-w-md text-slate-600">
-        Din betalning är klar. Klicka för att skapa den fullständiga analysen med alla klausuler, fällor,
+        Din betalning är klar. Klicka för att skapa den fullständiga analysen med de viktiga klausulerna, fällor,
         ekonomisk risk och förslag på nya formuleringar.
       </p>
       <button type="button" onClick={generate} disabled={generating} className="btn-primary min-h-12 disabled:opacity-60">

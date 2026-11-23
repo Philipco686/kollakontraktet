@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/lib/site'
+import { SITE_URL, companyLine } from '@/lib/site'
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -63,7 +63,7 @@ export default function LandingPage() {
             </h1>
             <p className="text-lg text-[#c4cee4] leading-relaxed mt-6 max-w-lg">
               Klistra in ditt hyreskontrakt, anställningsavtal eller konsultavtal. AI:n flaggar riskerna,
-              förklarar varje klausul på vanlig svenska och visar vad de kan kosta dig.
+              förklarar de viktiga klausulerna på vanlig svenska och visar vad de kan kosta dig.
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-8">
               <Link href="/login" className="btn-accent btn-float text-base px-7 py-3.5">Analysera ditt avtal</Link>
@@ -72,7 +72,7 @@ export default function LandingPage() {
             <div className="flex flex-wrap gap-x-5 gap-y-2 mt-7 text-sm text-[#93a1c2]">
               <span className="flex items-center gap-1.5"><Tick /> Största risken gratis</span>
               <span className="flex items-center gap-1.5"><Tick /> Inget kort krävs</span>
-              <span className="flex items-center gap-1.5"><Tick /> Klart på under en minut</span>
+              <span className="flex items-center gap-1.5"><Tick /> Förklarat på vanlig svenska</span>
             </div>
           </div>
 
@@ -138,7 +138,7 @@ export default function LandingPage() {
                 <div className="font-display font-semibold text-slate-900 text-[15px]">Konsultavtal</div>
                 <div className="text-xs text-slate-400 mt-0.5">Genomgång av klausuler</div>
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 whitespace-nowrap">Medel risk</span>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-red-50 text-red-700 whitespace-nowrap">Hög risk</span>
             </div>
             <div className="p-5 flex flex-col gap-3.5">
               <Clause level="bad" title="Obegränsat ansvar"
@@ -151,8 +151,8 @@ export default function LandingPage() {
                 body="Symmetrisk åt båda håll. Rimligt och standardenligt." />
               <div className="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5">
                 <div>
-                  <div className="text-xs text-slate-500">Ekonomisk risk, worst case</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">Vid vite om 6 månadsarvoden</div>
+                  <div className="text-xs text-slate-500">Exempel på skadeståndskrav</div>
+                  <div className="text-[11px] text-slate-400 mt-0.5">Ett fel som kostar beställaren 6 månadsarvoden</div>
                 </div>
                 <div className="font-display text-2xl font-semibold text-red-700 tabular-nums">270 000 kr</div>
               </div>
@@ -206,7 +206,7 @@ export default function LandingPage() {
           <div className="relative z-10">
             <h2 className="font-display text-3xl sm:text-4xl font-medium text-white tracking-tight">Vad döljer sig i ditt avtal?</h2>
             <p className="text-[#c4cee4] mt-4 max-w-lg mx-auto leading-relaxed">
-              Se den största risken i ditt avtal gratis, på under en minut. Inget kort krävs. Hela analysen kostar 49 kr.
+              Se den största risken i ditt avtal gratis. Inget kort krävs. Hela analysen kostar 49 kr.
             </p>
             <div className="mt-8">
               <Link href="/login" className="btn-accent btn-float text-base px-8 py-3.5">Prova gratis nu</Link>
@@ -218,12 +218,16 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-slate-100 py-8">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-          <span className="font-display font-medium text-slate-500">© 2026 Kolla Kontraktet</span>
+          <span className="text-center sm:text-left">
+            <span className="font-display font-medium text-slate-500">© 2026 Kolla Kontraktet</span>
+            <span className="block text-xs mt-1">{companyLine()}</span>
+          </span>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
             <Link href="/avtal" className="hover:text-slate-600">Avtalsguider</Link>
             <Link href="/pricing" className="hover:text-slate-600">Priser</Link>
             <Link href="/privacy" className="hover:text-slate-600">Integritetspolicy</Link>
             <Link href="/terms" className="hover:text-slate-600">Villkor</Link>
+            <Link href="/angra" className="hover:text-slate-600">Ångra köp</Link>
           </div>
         </div>
       </footer>

@@ -42,6 +42,7 @@ const orgWebsiteJsonLd = {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#organization`,
       name: 'Kolla Kontraktet',
+      legalName: 'Signepartners AB',
       url: SITE_URL,
       logo: `${SITE_URL}/icon.svg`,
       email: 'kontakt@kollakontraktet.se',

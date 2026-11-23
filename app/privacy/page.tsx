@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { COMPANY } from '@/lib/site'
 
 export const metadata = {
   title: 'Integritetspolicy | Kolla Kontraktet',
@@ -6,7 +7,7 @@ export const metadata = {
   alternates: { canonical: '/privacy' },
 }
 
-const LAST_UPDATED = '8 september 2026'
+const LAST_UPDATED = '23 november 2026'
 
 export default function PrivacyPage() {
   return (
@@ -35,8 +36,8 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900 mb-2">1. Personuppgiftsansvarig</h2>
             <p>
-              Personuppgiftsansvarig för behandlingen är Philip Eriksson, som tillhandahåller tjänsten Kolla
-              Kontraktet. Vid frågor om denna policy eller om hur vi behandlar dina uppgifter når du oss på{' '}
+              Personuppgiftsansvarig för behandlingen är {COMPANY.name}
+              {COMPANY.orgNr && <> (org.nr {COMPANY.orgNr})</>}, som tillhandahåller tjänsten Kolla Kontraktet. Vid frågor om denna policy eller om hur vi behandlar dina uppgifter når du oss på{' '}
               <a href="mailto:kontakt@kollakontraktet.se" className="text-brand-600 hover:underline">kontakt@kollakontraktet.se</a>.
             </p>
           </section>

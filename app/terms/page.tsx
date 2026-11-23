@@ -28,7 +28,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-slate-900 mb-2">1. Inledning och avtalsparter</h2>
             <p>
               Dessa användarvillkor (”villkoren”) gäller mellan dig som användare (”du”, ”kunden”) och
-              {COMPANY.name}, som i egenskap av näringsidkare tillhandahåller tjänsten {COMPANY.tradeName}
+              {COMPANY.name}, som tillhandahåller tjänsten {COMPANY.tradeName}
               (”vi”, ”oss”, ”tjänsten”).
               {COMPANY.orgNr && <> Organisationsnummer: {COMPANY.orgNr}.</>}
               {COMPANY.address && <> Postadress: {COMPANY.address}.</>}

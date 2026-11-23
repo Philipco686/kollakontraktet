@@ -10,14 +10,14 @@ export const SITE_URL = raw.replace('https://kollakontraktet.se', 'https://www.k
 // Uppgifter om näringsidkaren. E-handelslagen (8 §) och distansavtalslagen (2 kap. 2 §) kräver namn,
 // organisationsnummer, postadress och e-post. Fält som är null visas inte, så fyll i dem.
 export const COMPANY = {
-  name: 'Signepartners AB',
+  name: 'Signe Partners AB',
   tradeName: 'Kolla Kontraktet',
-  orgNr: null as string | null,
-  address: null as string | null,
+  orgNr: '559607-1869' as string | null,
+  address: 'Saltmätargatan 3 b 1, 111 60 Stockholm' as string | null,
   email: 'kontakt@kollakontraktet.se',
 }
 
-// "Signepartners AB (Kolla Kontraktet), org.nr X, Gatan 1, 123 45 Ort, kontakt@..."
+// "Signe Partners AB (Kolla Kontraktet), org.nr 559607-1869, Saltmätargatan ..., kontakt@..."
 export function companyLine(): string {
   return [
     `${COMPANY.name} (${COMPANY.tradeName})`,

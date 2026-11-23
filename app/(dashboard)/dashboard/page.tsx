@@ -61,8 +61,8 @@ export default async function DashboardPage() {
         ) : (
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="font-medium text-slate-900">Din första analys är gratis</p>
-              <p className="text-sm text-slate-500">Testa direkt. Inget kort krävs.</p>
+              <p className="font-medium text-slate-900">Se den största risken gratis</p>
+              <p className="text-sm text-slate-500">Testa med ett eget avtal. Inget kort krävs.</p>
             </div>
             <Link href="/analyze" className="btn-primary text-sm whitespace-nowrap">
               Analysera avtal

@@ -166,9 +166,9 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           <h2 className="font-display text-2xl font-semibold text-white mb-3">Slipp gissa. Låt AI gå igenom avtalet</h2>
           <p className="text-brand-200 mb-6 max-w-lg mx-auto">
             Klistra in ditt {guide.name.toLowerCase()} så förklarar Kolla Kontraktet varje klausul på vanlig
-            svenska, flaggar riskerna och ger dig förhandlingstips. Första analysen är gratis.
+            svenska, flaggar riskerna och ger dig förhandlingstips. Den största risken ser du gratis.
           </p>
-          <Link href="/login" className="btn-accent">Analysera ditt {guide.name.toLowerCase()} gratis</Link>
+          <Link href="/login" className="btn-accent">Se största risken i ditt {guide.name.toLowerCase()}</Link>
         </section>
 
         {/* FAQ */}

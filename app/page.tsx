@@ -70,7 +70,7 @@ export default function LandingPage() {
               <Link href="#exempel" className="btn-glass rounded-xl px-6 py-3.5 text-base font-medium inline-flex items-center">Se ett exempel</Link>
             </div>
             <div className="flex flex-wrap gap-x-5 gap-y-2 mt-7 text-sm text-[#93a1c2]">
-              <span className="flex items-center gap-1.5"><Tick /> Första analysen gratis</span>
+              <span className="flex items-center gap-1.5"><Tick /> Största risken gratis</span>
               <span className="flex items-center gap-1.5"><Tick /> Inget kort krävs</span>
               <span className="flex items-center gap-1.5"><Tick /> Klart på under en minut</span>
             </div>
@@ -206,7 +206,7 @@ export default function LandingPage() {
           <div className="relative z-10">
             <h2 className="font-display text-3xl sm:text-4xl font-medium text-white tracking-tight">Vad döljer sig i ditt avtal?</h2>
             <p className="text-[#c4cee4] mt-4 max-w-lg mx-auto leading-relaxed">
-              Testa gratis. Din första analys kostar inget och tar under en minut. Inget kort krävs.
+              Se den största risken i ditt avtal gratis, på under en minut. Inget kort krävs. Hela analysen kostar 49 kr.
             </p>
             <div className="mt-8">
               <Link href="/login" className="btn-accent btn-float text-base px-8 py-3.5">Prova gratis nu</Link>

@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Avgör om användaren har kvot kvar i sitt paket, annars kör vi en
-    // gratis teaser (sammanfattning gratis, resten låst bakom betalning).
+    // gratis teaser (sammanfattning och största risken gratis, resten låst bakom betalning).
     const subscription = await getEffectiveSubscription(supabase, user.id, user.email)
     const limit = subscription?.plan ? MONTHLY_LIMIT[subscription.plan] ?? 0 : 0
     const hasQuota = !!subscription && subscription.analyses_used_this_month < limit
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       isTeaser = true
     }
 
-    // Teaser genererar bara sammanfattningen (billigt). Den fulla analysen
+    // Teaser genererar bara sammanfattningen och en risk (billigt). Den fulla analysen
     // görs först när kunden betalat (via /api/analyze/full).
     let result: AnalysisResult
     try {
